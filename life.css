@@ -9,7 +9,7 @@ body {
 
 table {
     background-color: #C5D6C6;
-    border-spacing: 5;
+    border-spacing: 1;
 }
 
 td {
@@ -31,7 +31,7 @@ span {
     border: none;    
     background: linear-gradient(
         to bottom right,
-        #C5DEC6, #587559);
+        #C5DEC6, #00ff08);
 }
 
 td.dead {

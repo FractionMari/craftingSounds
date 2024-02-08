@@ -25,6 +25,7 @@ span {
 
 #start,
 #clear,
+#note,
 #random {
     padding: 1em;
     border-radius: 5px;
@@ -33,6 +34,7 @@ span {
         to bottom right,
         #C5DEC6, #00ff08);
 }
+
 
 td.dead {
     background-color: transparent;

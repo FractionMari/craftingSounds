@@ -11,38 +11,9 @@ var reproductionTime = 100;
 
 // Tone.js variables:
 
-const gainNode = new Tone.Gain().toDestination();
-gainNode.gain.value = 0.1;
+
 document.querySelector("#note").addEventListener('click', function() {
-// synth 7
-let synth7 = new Tone.DuoSynth({
-    volume: -19,
-    voice0: {
-        oscillator: {
-            type: "fmsawtooth",
-
-          },
-        envelope: {
-            attack: 0.9,
-            decay: 0.3,
-            sustain: 1,
-            release: 0.9,
-        },
-        filter: {
-            Q: 17,
-            frequency: 850,
-
-        },
-    },
-
-    voice1: {
-        oscillator: {
-            type: "pulse",
-
-          },
-    },
-
-  }).connect(gainNode);
+    const osc = new Tone.Oscillator(440, "sine").toDestination().start();
   });
 
 

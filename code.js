@@ -11,9 +11,12 @@ var reproductionTime = 100;
 
 // Tone.js variables:
 
+const synth = new Tone.Synth().toDestination();
+
+//play a middle 'C' for the duration of an 8th note
 
 document.querySelector("#note").addEventListener('click', function() {
-    const osc = new Tone.Oscillator(440, "sine").toDestination().start();
+    synth.triggerAttackRelease("C4", "8n");
   });
 
 

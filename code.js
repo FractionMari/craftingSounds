@@ -13,7 +13,7 @@ var reproductionTime = 100;
 
 const gainNode = new Tone.Gain().toDestination();
 gainNode.gain.value = 0.1;
-document.querySelector("#play").addEventListener('click', function() {
+document.querySelector("#note").addEventListener('click', function() {
 // synth 7
 let synth7 = new Tone.DuoSynth({
     volume: -19,

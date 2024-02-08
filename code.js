@@ -1,4 +1,4 @@
-var rows = 38;
+var rows = 100;
 var cols = 100;
 
 var playing = false;

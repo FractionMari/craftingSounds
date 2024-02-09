@@ -1,6 +1,3 @@
-// Importerer Tone.js
-const Tone = require('tone');
-
 // Oppretter en Tone.js synth
 const synth = new Tone.Synth().toMaster();
 

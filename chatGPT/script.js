@@ -7,7 +7,8 @@ const cols = 10;
 const interval = 500; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
-
+// Definerer pentatonisk skala (C pentatonisk)
+const pentatonicScale = ['C4', 'D4', 'E4', 'G4', 'A4'];
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 

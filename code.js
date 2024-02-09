@@ -7,7 +7,7 @@ var grid = new Array(rows);
 var nextGrid = new Array(rows);
 
 var timer;
-var reproductionTime = 10;
+var reproductionTime = 5;
 
 // Tone.js variables:
 const synth = new Tone.PolySynth({}, Tone.Synth).toDestination();

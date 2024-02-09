@@ -265,7 +265,10 @@ function countNeighbors(row, col) {
     let mySum5 = grid[4].reduce((parcelSum, a)=> parcelSum+a,0);
     
     if (mySum > 0) {
-    synth.triggerAttackRelease("C4", "8n");
+    synth.triggerAttackRelease("C4", "16n");
+  };
+  if (mySum2 > 0) {
+    synth.triggerAttackRelease("B3", "16n");
   };
 
     return count;

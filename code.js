@@ -266,7 +266,24 @@ function countNeighbors(row, col) {
     let mySum3 = grid[2].reduce((parcelSum, a)=> parcelSum+a,0);
     let mySum4 = grid[3].reduce((parcelSum, a)=> parcelSum+a,0);
     let mySum5 = grid[4].reduce((parcelSum, a)=> parcelSum+a,0);
-    
+    if (mySum > 0) {
+        "h1"
+      };
+      if (mySum2 > 0) {
+        "h2"
+      };
+      if (mySum3 > 0) {
+        "h3"
+      };
+      if (mySum4 > 0) {
+        "h4"
+      };
+      if (mySum5 > 0) {
+        "h5"
+      }; 
+  
+      
+    /*
     if (mySum > 0) {
     synth.triggerAttackRelease("C4", "16n");
   };
@@ -281,7 +298,8 @@ function countNeighbors(row, col) {
   };
   if (mySum5 > 0) {
     synth4.triggerAttackRelease("F3", "16n");
-  };
+  }; */
+
     return count;
     
 }

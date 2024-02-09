@@ -225,6 +225,7 @@ function countNeighbors(row, col) {
     }
     if (row-1 >= 0 && col-1 >= 0) {
         if (grid[row-1][col-1] == 1) count++;
+        console.log(row); 
     }
     if (row-1 >= 0 && col+1 < cols) {
         if (grid[row-1][col+1] == 1) count++;
@@ -245,11 +246,11 @@ function countNeighbors(row, col) {
         if (grid[row+1][col+1] == 1) count++;
     }
 
-    if (grid[1] > 0) {
-        console.log(true);
-      } else {
-        console.log(false);
-      }
+  //  if (grid[1] > 0) {
+   //     console.log(true);
+    //  } else {
+   //     console.log(false);
+     // }
 
     
     console.log(grid[1]);

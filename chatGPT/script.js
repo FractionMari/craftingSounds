@@ -1,6 +1,9 @@
 // Oppretter en Tone.js polysynth
 const polySynth = new Tone.PolySynth().toMaster();
 
+// Definerer pentatonisk skala (C pentatonisk)
+const pentatonicScale = ['C4', 'D4', 'E4', 'G4', 'A4'];
+
 // Definerer parametere for Game of Life
 const rows = 10;
 const cols = 10;
@@ -77,8 +80,9 @@ function updateGrid() {
                 newGrid[i][j] = 0;
             } else if (grid[i][j] === 0 && neighbors === 3) {
                 newGrid[i][j] = 1;
-                // Legg til tonen i notas arrayen
-                notes.push(Tone.Frequency(440).transpose(i + j).toNote());
+                // Legg til en tilfeldig note fra pentatonisk skala i notas arrayen
+                const randomNoteIndex = Math.floor(Math.random() * pentatonicScale.length);
+                notes.push(pentatonicScale[randomNoteIndex]);
             } else {
                 newGrid[i][j] = grid[i][j];
             }

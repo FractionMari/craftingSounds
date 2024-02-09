@@ -78,6 +78,7 @@ function createTable() {
 
     function cellClickHandler() {
         var rowcol = this.id.split("_");
+        console.log(rowcol);
         var row = rowcol[0];
         var col = rowcol[1];
         

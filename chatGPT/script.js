@@ -1,5 +1,5 @@
-// Oppretter en Tone.js synth
-const synth = new Tone.Synth().toMaster();
+// Oppretter en Tone.js polysynth
+const polySynth = new Tone.PolySynth().toMaster();
 
 // Definerer parametere for Game of Life
 const rows = 10;
@@ -59,6 +59,7 @@ function togglePlay() {
 // Definerer funksjon for å oppdatere tilstanden til gridet
 function updateGrid() {
     let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+    const notes = [];
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -76,12 +77,17 @@ function updateGrid() {
                 newGrid[i][j] = 0;
             } else if (grid[i][j] === 0 && neighbors === 3) {
                 newGrid[i][j] = 1;
-                // Spill en tone når en celle blir født
-                synth.triggerAttackRelease('C4', '8n');
+                // Legg til tonen i notas arrayen
+                notes.push(Tone.Frequency(440).transpose(i + j).toNote());
             } else {
                 newGrid[i][j] = grid[i][j];
             }
         }
+    }
+
+    // Spill tonene
+    if (notes.length > 0) {
+        polySynth.triggerAttackRelease(notes, '8n');
     }
 
     // Oppdaterer HTML-grid med ny tilstand

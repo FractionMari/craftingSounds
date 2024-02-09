@@ -267,20 +267,7 @@ function countNeighbors(row, col) {
     if (mySum > 0) {
     synth.triggerAttackRelease("C4", "8n");
   };
-  if (mySum2 > 0) {
-    synth.triggerAttackRelease("B3", "8n");
-  };
-  if (mySum3 > 0) {
-    synth.triggerAttackRelease("A3", "8n");
-  };
 
-  if (mySum4 > 0) {
-    synth.triggerAttackRelease("G3", "8n");
-  };
-
-  if (mySum5 > 0) {
-    synth.triggerAttackRelease("F3", "8n");
-  };
     return count;
     
 }

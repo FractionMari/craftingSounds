@@ -1,6 +1,9 @@
 // Oppretter en Tone.js polysynth
 const polySynth = new Tone.PolySynth().toMaster();
 
+// Definerer pentatonisk skala (C pentatonisk)
+const pentatonicScale = ['C4', 'D4', 'E4', 'G4', 'A4'];
+
 // Definerer parametere for Game of Life
 const rows = 10;
 const cols = 10;
@@ -59,6 +62,7 @@ function togglePlay() {
 // Definerer funksjon for å oppdatere tilstanden til gridet
 function updateGrid() {
     let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+    const notes = [];
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -76,16 +80,18 @@ function updateGrid() {
                 newGrid[i][j] = 0;
             } else if (grid[i][j] === 0 && neighbors === 3) {
                 newGrid[i][j] = 1;
-                // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
-                const freq = Tone.Frequency('C4').transpose(i);
-                // Konverterer horisontale posisjonen til reverb-tid (basert på 0-1 området)
-                const reverbTime = Tone.Time(j / cols).toSeconds();
-                // Spill tonen med den spesifikke frekvensen og reverb-tiden
-                polySynth.triggerAttackRelease(freq, '8n', undefined, reverbTime);
+                // Legg til en tilfeldig note fra pentatonisk skala i notas arrayen
+                const randomNoteIndex = Math.floor(Math.random() * pentatonicScale.length);
+                notes.push(pentatonicScale[randomNoteIndex]);
             } else {
                 newGrid[i][j] = grid[i][j];
             }
         }
+    }
+
+    // Spill tonene
+    if (notes.length > 0) {
+        polySynth.triggerAttackRelease(notes, '8n');
     }
 
     // Oppdaterer HTML-grid med ny tilstand

@@ -78,10 +78,12 @@ function updateGrid() {
                 newGrid[i][j] = 1;
                 // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
                 const freq = Tone.Frequency('C4').transpose(i);
+                const noteIndex = (i + j) % pentatonicScale.length;
+                const note = pentatonicScale[noteIndex];
                 // Konverterer horisontale posisjonen til reverb-tid (basert på 0-1 området)
                 const reverbTime = Tone.Time(j / cols).toSeconds();
                 // Spill tonen med den spesifikke frekvensen og reverb-tiden
-                polySynth.triggerAttackRelease(freq, '8n', undefined, reverbTime);
+                polySynth.triggerAttackRelease(note, '8n', undefined, reverbTime);
             } else {
                 newGrid[i][j] = grid[i][j];
             }

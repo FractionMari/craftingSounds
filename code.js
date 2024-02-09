@@ -253,7 +253,7 @@ function countNeighbors(row, col) {
         if (grid[row+1][col+1] == 1) count++;
     }
     
-
+  /*
     console.log(grid);
     console.log(grid[0]);
     console.log(grid[1]);
@@ -285,7 +285,7 @@ function countNeighbors(row, col) {
       }; 
   
       
-    /*
+  
     if (mySum > 0) {
     synth.triggerAttackRelease("C4", "16n");
   };

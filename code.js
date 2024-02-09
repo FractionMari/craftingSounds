@@ -10,12 +10,11 @@ var timer;
 var reproductionTime = 10;
 
 // Tone.js variables:
-
-const synth = new Tone.Synth().toDestination();
-const synth1 = new Tone.Synth().toDestination();
-const synth2 = new Tone.Synth().toDestination();
-const synth3 = new Tone.Synth().toDestination();
-const synth4 = new Tone.Synth().toDestination();
+const synth = new Tone.PolySynth(6, Tone.Synth).toDestination();
+const synth1 = new Tone.PolySynth(6, Tone.Synth).toDestination();
+const synth2 = new Tone.PolySynth(6, Tone.Synth).toDestination();
+const synth3 = new Tone.PolySynth(6, Tone.Synth).toDestination();
+const synth4 = new Tone.PolySynth(6, Tone.Synth).toDestination();
 
 //play a middle 'C' for the duration of an 8th note
 

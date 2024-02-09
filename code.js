@@ -7,7 +7,7 @@ var grid = new Array(rows);
 var nextGrid = new Array(rows);
 
 var timer;
-var reproductionTime = 100;
+var reproductionTime = 10;
 
 // Tone.js variables:
 

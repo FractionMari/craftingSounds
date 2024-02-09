@@ -12,6 +12,10 @@ var reproductionTime = 10;
 // Tone.js variables:
 
 const synth = new Tone.Synth().toDestination();
+const synth1 = new Tone.Synth().toDestination();
+const synth2 = new Tone.Synth().toDestination();
+const synth3 = new Tone.Synth().toDestination();
+const synth4 = new Tone.Synth().toDestination();
 
 //play a middle 'C' for the duration of an 8th note
 
@@ -268,9 +272,17 @@ function countNeighbors(row, col) {
     synth.triggerAttackRelease("C4", "16n");
   };
   if (mySum2 > 0) {
-    synth.triggerAttackRelease("B3", "16n");
+    synth1.triggerAttackRelease("B3", "16n");
   };
-
+  if (mySum3 > 0) {
+    synth2.triggerAttackRelease("A3", "16n");
+  };
+  if (mySum4 > 0) {
+    synth3.triggerAttackRelease("G3", "16n");
+  };
+  if (mySum5 > 0) {
+    synth4.triggerAttackRelease("B3", "16n");
+  };
     return count;
     
 }

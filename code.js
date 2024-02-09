@@ -248,12 +248,39 @@ function countNeighbors(row, col) {
         if (grid[row+1][col+1] == 1) count++;
     }
     
+
     console.log(grid);
+    console.log(grid[0]);
     console.log(grid[1]);
     console.log(grid[2]);
-    console.log(row);
-    console.log(row[1]);
-    console.log(row[2]);
+    console.log(grid[3]);
+    console.log(grid[4]);
+    
+   
+    
+    let mySum = grid[0].reduce((parcelSum, a)=> parcelSum+a,0);
+    let mySum2 = grid[1].reduce((parcelSum, a)=> parcelSum+a,0);
+    let mySum3 = grid[2].reduce((parcelSum, a)=> parcelSum+a,0);
+    let mySum4 = grid[3].reduce((parcelSum, a)=> parcelSum+a,0);
+    let mySum5 = grid[4].reduce((parcelSum, a)=> parcelSum+a,0);
+    
+    if (mySum > 0) {
+    synth.triggerAttackRelease("C4", "8n");
+  };
+  if (mySum2 > 0) {
+    synth.triggerAttackRelease("B3", "8n");
+  };
+  if (mySum3 > 0) {
+    synth.triggerAttackRelease("A3", "8n");
+  };
+
+  if (mySum4 > 0) {
+    synth.triggerAttackRelease("G3", "8n");
+  };
+
+  if (mySum5 > 0) {
+    synth.triggerAttackRelease("F3", "8n");
+  };
     return count;
     
 }

@@ -219,7 +219,7 @@ function applyRules(row, col) {
     } else if (grid[row][col] == 0) {
             if (numNeighbors == 3) {
                 nextGrid[row][col] = 1;
-                console.log(nextGrid[row][col]);
+                console.log(nextGrid);
                 synth.triggerAttackRelease('C4', '8n');
             }
         }

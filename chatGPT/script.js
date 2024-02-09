@@ -5,6 +5,8 @@ const synth = new Tone.Synth().toMaster();
 const rows = 10;
 const cols = 10;
 const interval = 500; // Tidsintervall i millisekunder
+let isPlaying = false;
+let timerId;
 
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
@@ -15,7 +17,42 @@ for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         const cell = document.createElement('div');
         cell.classList.add('cell');
+        cell.addEventListener('click', () => toggleCell(i, j));
         gridContainer.appendChild(cell);
+    }
+}
+
+// Opprett event listener for play/pause-knappen
+const playPauseButton = document.getElementById('playPause');
+playPauseButton.addEventListener('click', togglePlay);
+
+// Opprett event listener for clear-knappen
+const clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', clearGrid);
+
+// Definerer funksjon for å bytte tilstanden til en celle
+function toggleCell(i, j) {
+    grid[i][j] = grid[i][j] ? 0 : 1;
+    const cell = gridContainer.children[i * cols + j];
+    cell.classList.toggle('alive');
+}
+
+// Definerer funksjon for å klargjøre gridet
+function clearGrid() {
+    grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cell.classList.remove('alive'));
+}
+
+// Definerer funksjon for å starte eller pause spill-loopen
+function togglePlay() {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+        playPauseButton.textContent = 'Pause';
+        timerId = setInterval(updateGrid, interval);
+    } else {
+        playPauseButton.textContent = 'Play';
+        clearInterval(timerId);
     }
 }
 
@@ -61,6 +98,3 @@ function updateGrid() {
 
     grid = newGrid;
 }
-
-// Starter en loop som oppdaterer gridet med gitt tidsintervall
-setInterval(updateGrid, interval);

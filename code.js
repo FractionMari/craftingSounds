@@ -249,6 +249,11 @@ function countNeighbors(row, col) {
     }
     
     console.log(grid);
+    console.log(grid[1]);
+    console.log(grid[2]);
+    console.log(row);
+    console.log(row[1]);
+    console.log(row[2]);
     return count;
     
 }

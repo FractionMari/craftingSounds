@@ -151,6 +151,7 @@ function clearButtonHandler() {
     var cells = [];
     for (var i = 0; i < cellsList.length; i++) {
         cells.push(cellsList[i]);
+        console.log(cellsList)
     }
     
     for (var i = 0; i < cells.length; i++) {
@@ -227,7 +228,6 @@ function countNeighbors(row, col) {
     }
     if (row-1 >= 0 && col-1 >= 0) {
         if (grid[row-1][col-1] == 1) count++;
-        console.log(col); 
     }
     if (row-1 >= 0 && col+1 < cols) {
         if (grid[row-1][col+1] == 1) count++;
@@ -247,13 +247,6 @@ function countNeighbors(row, col) {
     if (row+1 < rows && col+1 < cols) {
         if (grid[row+1][col+1] == 1) count++;
     }
-
-  //  if (grid[1] > 0) {
-   //     console.log(true);
-    //  } else {
-   //     console.log(false);
-     // }
-
     
     console.log(grid[1]);
     return count;

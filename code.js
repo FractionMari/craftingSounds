@@ -281,7 +281,7 @@ function countNeighbors(row, col) {
     synth3.triggerAttackRelease("G3", "16n");
   };
   if (mySum5 > 0) {
-    synth4.triggerAttackRelease("B3", "16n");
+    synth4.triggerAttackRelease("F3", "16n");
   };
     return count;
     

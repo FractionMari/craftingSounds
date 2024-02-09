@@ -78,7 +78,6 @@ function createTable() {
 
     function cellClickHandler() {
         var rowcol = this.id.split("_");
-        console.log(rowcol);
         var row = rowcol[0];
         var col = rowcol[1];
         
@@ -252,7 +251,7 @@ function countNeighbors(row, col) {
     //  } else {
    //     console.log(false);
      // }
-
+    console.log(rowcol);
     
     console.log(grid[1]);
     return count;

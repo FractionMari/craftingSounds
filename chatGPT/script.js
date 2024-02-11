@@ -2,13 +2,13 @@
 const polySynth = new Tone.PolySynth().toMaster();
 
 // Definerer parametere for Game of Life
-const rows = 10;
-const cols = 10;
+const rows = 20;
+const cols = 20;
 const interval = 500; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 // Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4'];
+const pentatonicScale = ['C1', 'D1', 'E1', 'G1', 'A1', 'C2', 'D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4'];
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 

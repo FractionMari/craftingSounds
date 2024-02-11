@@ -2,8 +2,8 @@
 const polySynth = new Tone.PolySynth().toMaster();
 
 // Definerer parametere for Game of Life
-const rows = 20;
-const cols = 20;
+const rows = 15;
+const cols = 15;
 const interval = 500; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;

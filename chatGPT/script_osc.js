@@ -3,7 +3,7 @@
 
 var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
+
 
 // Update the current slider value (each time you drag the slider handle)
 
@@ -16,7 +16,7 @@ let intervalrange;
 slider.oninput = function() {
     output.innerHTML = this.value;
   }
-
+  output.innerHTML = slider.value; // Display the default slider value
 const rows = 20;
 const cols = 20;
 const interval = intervalrange; // Tidsintervall i millisekunder

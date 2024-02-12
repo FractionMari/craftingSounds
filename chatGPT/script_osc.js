@@ -4,7 +4,7 @@ const polySynth = new Tone.PolySynth().toMaster();
 // Definerer parametere for Game of Life
 const rows = 20;
 const cols = 20;
-const interval = 5; // Tidsintervall i millisekunder
+const interval = 0.5; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 // Definerer pentatonisk skala (C pentatonisk)

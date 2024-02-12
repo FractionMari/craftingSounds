@@ -4,6 +4,7 @@ const startStopBtn = document.getElementById('startStopBtn');
 
 let oscillator;
 let isPlaying = false;
+let audioContext;
 
 function startStop() {
   if (isPlaying) {
@@ -33,28 +34,22 @@ class PhasorOscillator {
   constructor(frequency) {
     this.frequency = frequency;
     this.phase = 0;
-    this.sampleRate = 44100; // Hz
-    this.context = new AudioContext();
-    this.gainNode = this.context.createGain();
-    this.gainNode.connect(this.context.destination);
+    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    this.oscillatorNode = this.audioContext.createOscillator();
+    this.oscillatorNode.connect(this.audioContext.destination);
   }
 
   setFrequency(frequency) {
     this.frequency = frequency;
+    this.oscillatorNode.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
   }
 
   start() {
-    this.intervalId = setInterval(() => {
-      const frequencyHz = this.frequency;
-      const increment = (2 * Math.PI * frequencyHz) / this.sampleRate;
-      this.phase += increment;
-      const value = Math.sin(this.phase);
-      this.gainNode.gain.value = value;
-    }, 1000 / this.sampleRate);
+    this.oscillatorNode.start();
+    this.oscillatorNode.frequency.setValueAtTime(this.frequency, this.audioContext.currentTime);
   }
 
   stop() {
-    clearInterval(this.intervalId);
-    this.gainNode.gain.value = 0;
+    this.oscillatorNode.stop();
   }
 }

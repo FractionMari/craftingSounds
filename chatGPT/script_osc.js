@@ -16,7 +16,6 @@ const polySynth = new Tone.PolySynth().toMaster();
 let intervalrange;
 slider.oninput = function() {
     output.innerHTML = this.value;
-    intervalrange = this.value;
   }
 
 const rows = 20;

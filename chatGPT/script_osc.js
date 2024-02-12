@@ -85,7 +85,10 @@ function updateGrid() {
                 // Konverterer horisontale posisjonen til reverb-tid (basert på 0-1 området)
                 // const reverbTime = Tone.Time(j / cols).toSeconds();
                 // Spill tonen med den spesifikke frekvensen og reverb-tiden
-                polySynth.triggerAttackRelease((i + j), '8n');
+                polySynth.triggerAttackRelease(((i + j)*2), '8n');
+                console.log("i: ", i);
+                console.log("j: ", j);
+                console.log("i + j * 2: ", ((i + j)*2));
             } else {
                 newGrid[i][j] = grid[i][j];
             }

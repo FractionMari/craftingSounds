@@ -1,11 +1,27 @@
 // Denne versjonen bruker kromatisk skala og tester en annen type synthese. fm-synthese
+
+// slider to change interval
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+
+
 // Oppretter en Tone.js polysynth
 const polySynth = new Tone.PolySynth().toMaster();
 
 // Definerer parametere for Game of Life
+let intervalrange;
+slider.oninput = function() {
+    output.innerHTML = this.value;
+    intervalrange = this.value;
+  }
+
 const rows = 20;
 const cols = 20;
-const interval = 100; // Tidsintervall i millisekunder
+const interval = intervalrange; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 // Definerer pentatonisk skala (C pentatonisk)

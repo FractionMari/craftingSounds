@@ -16,7 +16,7 @@ let intervalrange;
 slider.oninput = function() {
     output.innerHTML = this.value;
   }
-  output.innerHTML = slider.value; // Display the default slider value
+
 const rows = 20;
 const cols = 20;
 const interval = intervalrange; // Tidsintervall i millisekunder

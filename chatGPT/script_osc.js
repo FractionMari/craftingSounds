@@ -1,5 +1,4 @@
 // Denne versjonen bruker kromatisk skala og tester en annen type synthese. fm-synthese
-
 // slider to change interval
 
 var slider = document.getElementById("myRange");

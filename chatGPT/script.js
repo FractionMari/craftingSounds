@@ -11,8 +11,9 @@ let timerId;
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
-// Opprettet et array for å holde styr på alle aktive polysynter
+// Opprettet et array for å holde styr på alle aktive synther
 let activeSynths = [];
+let availableSynths = [];
 
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');
@@ -77,6 +78,12 @@ function updateGrid() {
 
             if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
                 newGrid[i][j] = 0;
+                // Finn synth for denne cellen og frigjør den for gjenbruk
+                const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+                if (synthIndex !== -1) {
+                    const synth = activeSynths.splice(synthIndex, 1)[0];
+                    availableSynths.push(synth);
+                }
             } else if (grid[i][j] === 0 && neighbors === 3) {
                 newGrid[i][j] = 1;
                 playNote(i, j);
@@ -103,19 +110,25 @@ function updateGrid() {
 
 // Definerer funksjon for å spille en note
 function playNote(i, j) {
+    let synth;
+    if (availableSynths.length > 0) {
+        // Bruk en tilgjengelig synth hvis tilgjengelig
+        synth = availableSynths.pop();
+    } else {
+        // Opprett en ny synth hvis ingen tilgjengelige synther
+        synth = new Tone.Synth().toDestination();
+    }
+
     // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
     const freq = Tone.Frequency('C4').transpose(i);
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = j / cols;
 
-    // Opprett en ny synth
-    const synth = new Tone.Synth().toDestination();
     // Spill tonen med den spesifikke frekvensen og gain-verdien
     synth.triggerAttackRelease(freq, '8n', undefined, gain);
-    
-    // Legger den nye polysynten til i listen over aktive polysynter
+
+    // Lagre synth-informasjon for senere gjenbruk
+    synth.cellX = i;
+    synth.cellY = j;
     activeSynths.push(synth);
-    
-    // Sletter polysyntene som er ferdige med å spille
-    activeSynths = activeSynths.filter(s => !s._synced);
 }

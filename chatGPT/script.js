@@ -103,7 +103,7 @@ function updateGrid() {
 
 // Definerer funksjon for å spille en note
 function playNote(i, j) {
-    const synth = new Tone.Synth().toDestination();
+    const synth = new Tone.PolySynth().toDestination();
     
     // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
     const freq = Tone.Frequency('C4').transpose(i);

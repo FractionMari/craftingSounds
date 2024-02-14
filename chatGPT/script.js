@@ -33,6 +33,18 @@ for (let i = 0; i < rows; i++) {
 const playPauseButton = document.getElementById('playPause');
 playPauseButton.addEventListener('click', togglePlay);
 
+// Opprett en event listener for glider-knappen
+const gliderButton = document.getElementById('glider');
+gliderButton.addEventListener('click', drawGlider);
+
+// Tegn inn en glider
+
+function drawGlider() {
+    grid = new Array(rows).fill(null).map(() => new Array(cols).fill(4));
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cell.classList.add('alive'));
+
+}
 // Opprett event listener for clear-knappen
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', clearGrid);

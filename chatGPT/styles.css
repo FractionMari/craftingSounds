@@ -13,7 +13,7 @@ body {
 .cell {
     width: 30px;
     height: 30px;
-    border: 2px solid rgb(245, 138, 255);
+    border: 2px solid rgb(230, 8, 250);
 }
 
 .alive {
@@ -27,7 +27,7 @@ body {
   .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
-    width: 100%; /* Full-width */
+    width: 100px; /* Full-width */
     height: 25px; /* Specified height */
     background: #d3d3d3; /* Grey background */
     outline: none; /* Remove outline */
@@ -49,6 +49,8 @@ body {
     height: 25px; /* Slider handle height */
     background: #04AA6D; /* Green background */
     cursor: pointer; /* Cursor on hover */
+    border: 2px solid rgb(245, 138, 255);
+
   }
   
   .slider::-moz-range-thumb {
@@ -56,4 +58,6 @@ body {
     height: 25px; /* Slider handle height */
     background: #04AA6D; /* Green background */
     cursor: pointer; /* Cursor on hover */
+    border: 2px solid rgb(245, 138, 255);
+
   }

@@ -13,11 +13,11 @@ body {
 .cell {
     width: 30px;
     height: 30px;
-    border: 2px solid rgb(230, 255, 138);
+    border: 2px solid rgb(255, 138, 196);
 }
 
 .alive {
-    background-color: rgb(194, 11, 11);
+    background-color: rgb(194, 11, 179);
 }
 .slidecontainer {
     width: 100%; /* Width of the outside container */

@@ -16,7 +16,7 @@ let activeSynths = [];
 let availableSynths = [];
 
 // Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', 'D6', 'E6', 'G6', 'A6', 'C7', 'D7', 'E7', 'G7', 'A7'];
+const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
 
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');

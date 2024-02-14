@@ -7,6 +7,13 @@ const cols = 20;
 const interval = 500; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
+var slider = document.getElementById("myRange");
+
+var interval2
+slider.oninput = function() {
+    interval2 = this.value / 100;
+
+    }
 
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
@@ -65,12 +72,13 @@ function clearGrid() {
     cells.forEach(cell => cell.classList.remove('alive'));
 }
 
+
 // Definerer funksjon for å starte eller pause spill-loopen
 function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        timerId = setInterval(updateGrid, interval);
+        timerId = setInterval(updateGrid, interval2);
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);

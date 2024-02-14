@@ -1,16 +1,15 @@
-// Oppretter en Tone.js polysynth
-const polySynth = new Tone.PolySynth().toMaster();
-
 // Definerer parametere for Game of Life
 const rows = 20;
 const cols = 20;
 const interval = 500; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
-// Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['C1', 'D1', 'E1', 'G1', 'A1', 'C2', 'D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4'];
+
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+
+// Opprettet et array for å holde styr på alle aktive polysynter
+let activeSynths = [];
 
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');
@@ -77,14 +76,7 @@ function updateGrid() {
                 newGrid[i][j] = 0;
             } else if (grid[i][j] === 0 && neighbors === 3) {
                 newGrid[i][j] = 1;
-                // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
-                const freq = Tone.Frequency('C4').transpose(i);
-                const noteIndex = (i + j) % pentatonicScale.length;
-                const note = pentatonicScale[noteIndex];
-                // Konverterer horisontale posisjonen til reverb-tid (basert på 0-1 området)
-                const reverbTime = Tone.Time(j / cols).toSeconds();
-                // Spill tonen med den spesifikke frekvensen og reverb-tiden
-                polySynth.triggerAttackRelease(note, '8n', undefined, reverbTime);
+                playNote();
             } else {
                 newGrid[i][j] = grid[i][j];
             }
@@ -104,4 +96,17 @@ function updateGrid() {
     });
 
     grid = newGrid;
+}
+
+// Definerer funksjon for å spille en note
+function playNote() {
+    const synth = new Tone.PolySynth().toMaster();
+    const note = 'C4';
+    synth.triggerAttackRelease(note, '8n');
+
+    // Legger den nye polysynten til i listen over aktive polysynter
+    activeSynths.push(synth);
+
+    // Sletter polysyntene som er ferdige med å spille
+    activeSynths = activeSynths.filter(s => !s._players.length);
 }

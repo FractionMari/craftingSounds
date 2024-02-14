@@ -108,5 +108,5 @@ function playNote() {
     activeSynths.push(synth);
 
     // Sletter polysyntene som er ferdige med å spille
-    activeSynths = activeSynths.filter(s => !s._players.length);
+    activeSynths = activeSynths.filter(s => s._players && s._players.length);
 }

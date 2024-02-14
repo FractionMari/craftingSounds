@@ -15,6 +15,9 @@ let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 let activeSynths = [];
 let availableSynths = [];
 
+// Definerer pentatonisk skala (C pentatonisk)
+const pentatonicScale = ['C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', 'D6', 'E6', 'G6', 'A6', 'C7', 'D7', 'E7', 'G7', 'A7'];
+
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');
 for (let i = 0; i < rows; i++) {
@@ -119,13 +122,14 @@ function playNote(i, j) {
         synth = new Tone.Synth().toDestination();
     }
 
-    // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
-    const freq = Tone.Frequency('C4').transpose(i);
+    // Konverterer vertikale posisjonen til noten i pentatonisk skala
+    const noteIndex = (i + j) % pentatonicScale.length;
+    const note = pentatonicScale[noteIndex];
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = j / cols;
 
-    // Spill tonen med den spesifikke frekvensen og gain-verdien
-    synth.triggerAttackRelease(freq, '8n', undefined, gain);
+    // Spill tonen med den spesifikke noten og gain-verdien
+    synth.triggerAttackRelease(note, '8n', undefined, gain);
 
     // Lagre synth-informasjon for senere gjenbruk
     synth.cellX = i;

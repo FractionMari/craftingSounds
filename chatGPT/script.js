@@ -1,3 +1,6 @@
+// Oppretter en Tone.js polysynth
+const polySynth = new Tone.PolySynth().toDestination();
+
 // Definerer parametere for Game of Life
 const rows = 20;
 const cols = 20;
@@ -76,7 +79,7 @@ function updateGrid() {
                 newGrid[i][j] = 0;
             } else if (grid[i][j] === 0 && neighbors === 3) {
                 newGrid[i][j] = 1;
-                playNote();
+                playNote(i, j);
             } else {
                 newGrid[i][j] = grid[i][j];
             }
@@ -99,14 +102,14 @@ function updateGrid() {
 }
 
 // Definerer funksjon for å spille en note
-function playNote() {
-    const synth = new Tone.PolySynth().toMaster();
-    const note = 'C4';
-    synth.triggerAttackRelease(note, '8n');
+function playNote(i, j) {
+    const synth = new Tone.Synth().toDestination();
+    
+    // Konverterer vertikale posisjonen til frekvens (basert på C-dur skala)
+    const freq = Tone.Frequency('C4').transpose(i);
+    // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
+    const gain = j / cols;
 
-    // Legger den nye polysynten til i listen over aktive polysynter
-    activeSynths.push(synth);
-
-    // Sletter polysyntene som er ferdige med å spille
-    activeSynths = activeSynths.filter(s => s._players && s._players.length);
+    // Spill tonen med den spesifikke frekvensen og gain-verdien
+    synth.triggerAttackRelease(freq, '8n', undefined, gain);
 }

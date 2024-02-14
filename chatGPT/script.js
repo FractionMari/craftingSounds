@@ -11,7 +11,8 @@ var slider = document.getElementById("myRange");
 
 var interval2
 slider.oninput = function() {
-    interval2 = this.value / 100;
+    interval2 = this.value;
+    console.log(this.value);
 
     }
 

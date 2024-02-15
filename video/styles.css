@@ -35,7 +35,7 @@ body {
 }
 
 .alive {
-    background-color: rgb(255, 92, 220);
+    background-color: rgba(255, 92, 220, 0.486);
 }
 .slidecontainer {
     width: 100%; /* Width of the outside container */

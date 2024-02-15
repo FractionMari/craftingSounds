@@ -89,7 +89,7 @@ function drawPixelGrid(simplifiedPixels) {
     for (let y = 0; y < 20; y++) {
         for (let x = 0; x < 20; x++) {
             const pixel = document.createElement('div');
-            pixel.className = 'pixel';
+            pixel.className = 'alive';
             const isActive = simplifiedPixels.some(p => p.x === x && p.y === y);
             if (isActive) {
                 pixel.style.backgroundColor = 'black';

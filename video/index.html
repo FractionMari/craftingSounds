@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Abstraction</title>
+</head>
+<body>
+    <h1>Camera Abstraction</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="20" height="30"></canvas>
+
+    <script>
+        // Funksjon for å hente video fra kameraet og abstrahere det ned til 20x30 piksler
+        function abstractToPixels() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            // Sett størrelsen på canvas til å matche videoen
+            canvas.width = 20;
+            canvas.height = 30;
+
+            // Tegn videoen inn i canvaset og skaler den ned til 20x30 piksler
+            context.drawImage(video, 0, 0, 20, 30);
+
+            // Hent data fra canvaset og logg det
+            const imageData = context.getImageData(0, 0, 20, 30);
+            console.log(imageData);
+        }
+
+        // Funksjon for å starte videostreamen
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing camera: ', err);
+            }
+        }
+
+        // Start videostreamen når siden lastes
+        window.onload = function() {
+            startCamera();
+        };
+    </script>
+</body>
+</html>

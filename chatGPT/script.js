@@ -92,6 +92,7 @@ function drawGlider(i, j) {
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
+            var cell = document.getElementById(i + "_" + j);
             cell[0].classList.add('alive');
             console.log(i);
         }

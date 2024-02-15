@@ -15,6 +15,7 @@
             grid-template-rows: repeat(20, 1fr);
             width: 640px; /* Samme som videoens bredde */
             height: 640px; /* Samme som videoens høyde */
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .pixel {
@@ -25,7 +26,7 @@
     </style>
 </head>
 <body>
-    <h1>Camera Pixel Grid</h1>
+    <h1>Camera Pixel Grid speil</h1>
     <div id="video-container">
         <video id="video" width="640" height="480" autoplay></video>
         <canvas id="canvas" width="20" height="20"></canvas>

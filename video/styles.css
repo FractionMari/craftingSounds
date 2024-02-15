@@ -19,7 +19,7 @@ body {
 .pixel {
   width: 32px;
   height: 32px;
-  border: 1px solid black;
+  border: 1px solid rgba(241, 13, 230, 0.438);
 }
 
 #grid {

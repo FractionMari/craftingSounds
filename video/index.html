@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-    <h1>Camera Pixel Grid speil</h1>
+    <h1>Camera Pixel Grid 6</h1>
     <div id="video-container">
         <video id="video" width="640" height="480" autoplay></video>
         <canvas id="canvas" width="20" height="20"></canvas>
@@ -67,10 +67,18 @@
                 lastMovementTime = now;
                 lastFrame = currentFrame;
             } else if (timeDiff >= 500) { // If no movement for half a second
+                if (countActivePixels(simplifiedPixels) >= 10) { // Define threshold for significant movement
+                    console.log("Significant movement detected!");
+                    console.log("Active pixels:", simplifiedPixels);
+                }
                 resetPixelGrid();
             }
 
             requestAnimationFrame(processFrame);
+        }
+
+        function countActivePixels(simplifiedPixels) {
+            return simplifiedPixels.length;
         }
 
         function grayscale(imageData) {

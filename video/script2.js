@@ -130,7 +130,7 @@ let availableSynths = [];
 
 // Definerer pentatonisk skala (C pentatonisk)
 const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
-
+/*
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('pixel-grid');
 for (let i = 0; i < rows; i++) {
@@ -141,7 +141,7 @@ for (let i = 0; i < rows; i++) {
         gridContainer.appendChild(cell);
     }
 }
-
+*/
 // Opprett event listener for play/pause-knappen
 const playPauseButton = document.getElementById('playPause');
 playPauseButton.addEventListener('click', togglePlay);
@@ -203,7 +203,7 @@ function togglePlay() {
     }
 }
 
-/*
+
 function drawPixelGrid(simplifiedPixels) {
     const pixelGrid = document.getElementById('pixel-grid');
     pixelGrid.innerHTML = '';
@@ -211,32 +211,23 @@ function drawPixelGrid(simplifiedPixels) {
     for (let y = 0; y < 20; y++) {
         for (let x = 0; x < 20; x++) {
             const pixel = document.createElement('div');
-            pixel.classList.remove('alive');
+            pixel.classList.remove('cell');
             const isActive = simplifiedPixels.some(p => p.x === x && p.y === y);
             if (isActive) {
-                pixel.classList.add('alive');
+                pixel.classList.add('cell');
             }
             pixelGrid.appendChild(pixel);
         }
     }
-} */
+} 
 
 // Definerer funksjon for å oppdatere tilstanden til gridet
-function updateGrid(simplifiedPixels) {
-    const pixelGrid = document.getElementById('pixel-grid');
-    pixelGrid.innerHTML = '';
+function updateGrid() {
     let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             let neighbors = 0;
-            const pixel = document.createElement('div');
-            pixel.classList.remove('alive');
-            const isActive = simplifiedPixels.some(p => p.i === i && p.j === j);
-            if (isActive) {
-                pixel.classList.add('alive');
-            }
-            pixelGrid.appendChild(pixel);
             for (let x = -1; x <= 1; x++) {
                 for (let y = -1; y <= 1; y++) {
                     if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {

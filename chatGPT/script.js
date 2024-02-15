@@ -95,11 +95,11 @@ function drawGlider(i, j) {
 
             var isLive = Math.round(Math.random());
             console.log(isLive);
-            if (i == 8) {
+            if (i == 8 && j == 7) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
-                //grid[i][j] = 1;
+                grid[i][j] = 1;
                 
 
             //var cell = document.getElementById(0 + "_" + 1);

@@ -1,6 +1,6 @@
 body {
     padding: 20px;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(230, 221, 221);
 }
 
 #video, #canvas {
@@ -11,7 +11,7 @@ body {
   display: grid;
   grid-template-columns: repeat(20, 1fr);
   grid-template-rows: repeat(20, 1fr);
-  width: 640px; /* Samme som videoens bredde */
+  width: 640px; /* Samme som videoens bredde  kan vurdere å bruke samme som grid?*/
   height: 640px; /* Samme som videoens høyde */
   transform: scaleX(-1); /* Speilvend pikselrutenettet */
 }

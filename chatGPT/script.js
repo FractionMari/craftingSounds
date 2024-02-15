@@ -95,22 +95,23 @@ function drawGlider(i, j) {
 
             var isLive = Math.round(Math.random());
             console.log(isLive);
-            if (i == 8 && j == 7) {
+            if (i == 0 && j == 0) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
                 
 
-            //var cell = document.getElementById(0 + "_" + 1);
-            //cell.classList.add('alive');
-           /* console.log(i, j);
-            const cells = document.querySelectorAll('.cell');
-            cells[0].classList.add('alive');
-            cells[21].classList.add('alive');
-            cells[22].classList.add('alive');
-            cells[40].classList.add('alive');
-            cells[41].classList.add('alive'); */
+
+            }
+            if (i == 21 && j == 1) {
+
+                const cell = gridContainer.children[i * cols + j];
+                cell.classList.toggle('alive');
+                grid[i][j] = 1;
+                
+
+
             }
         }
     }

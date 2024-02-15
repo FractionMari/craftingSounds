@@ -99,7 +99,7 @@ function drawGlider(i, j) {
             const cells = document.querySelectorAll('.cell');
             cells[0].classList.add('alive');
         }
-    
+    }
 }
 // Opprett event listener for clear-knappen
 const clearButton = document.getElementById('clear');

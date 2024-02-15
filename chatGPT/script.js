@@ -9,7 +9,8 @@ let isPlaying = false;
 let timerId;
 var slider = document.getElementById("myRange");
 
-const interval2
+const interval2;
+
 slider.oninput = function() {
     interval2 = this.value;
     console.log(this.value);

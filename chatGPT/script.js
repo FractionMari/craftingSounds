@@ -89,10 +89,13 @@ for (let i = 0; i < rows; i++) {
 */
 
 function drawGlider(i, j) {
-    grid[i][j] = grid[i][j] ? 0 : 1;
-    const cell = gridContainer.children[0, 1];
-    cell.classList.toggle('alive');
 
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            cell[0].classList.add('alive');
+            console.log(i);
+        }
+    }
 
 }
 // Opprett event listener for clear-knappen

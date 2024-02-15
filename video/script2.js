@@ -88,13 +88,13 @@ function drawPixelGrid(simplifiedPixels) {
 
     for (let y = 0; y < 20; y++) {
         for (let x = 0; x < 20; x++) {
-            const pixel = document.createElement('div');
+            const cell = document.createElement('div');
             pixel.classList.remove('alive');
             const isActive = simplifiedPixels.some(p => p.x === x && p.y === y);
             if (isActive) {
                 pixel.classList.add('alive');
             }
-            pixelGrid.appendChild(pixel);
+            pixelGrid.appendChild(cell);
         }
     }
 }
@@ -152,7 +152,7 @@ const gridContainer = document.getElementById('grid');
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         const cell = document.createElement('div');
-        cell.classList.add('cell');
+        cell.classList.add('alive');
         cell.addEventListener('click', () => toggleCell(i, j));
         gridContainer.appendChild(cell);
     }

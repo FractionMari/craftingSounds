@@ -10,7 +10,7 @@ let timerId;
 var slider = document.getElementById("myRange");
 
 
-const interval2;
+const interval2 = 500;
 
 slider.oninput = function() {
     interval2 = this.value;

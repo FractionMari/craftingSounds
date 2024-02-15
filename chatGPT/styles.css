@@ -1,6 +1,6 @@
 body {
     padding: 20px;
-    background-color: rgb(107, 98, 98);
+    background-color: rgb(236, 182, 218);
 }
 
 
@@ -13,7 +13,7 @@ body {
 .cell {
     width: 30px;
     height: 30px;
-    border: 2px solid rgb(105, 245, 123);
+    border: 2px solid rgb(46, 90, 52);
 }
 
 .alive {

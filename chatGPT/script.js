@@ -93,9 +93,9 @@ function drawGlider(i, j) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
 
-            var isLive = Math.round(Math.random());
-            console.log(isLive);
-            if (i == 0 && j == 0) {
+            //var isLive = Math.round(Math.random());
+            //console.log(isLive);
+            if (i == 0, 21 && j == 0, 1) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
@@ -104,15 +104,7 @@ function drawGlider(i, j) {
 
 
             }
-            if (i == 21 && j == 1) {
-
-                const cell = gridContainer.children[i * cols + j];
-                cell.classList.toggle('alive');
-                grid[i][j] = 1;
-                
-
-
-            }
+ 
         }
     }
 }

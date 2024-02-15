@@ -93,13 +93,14 @@ function drawGlider(i, j) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
 
-            var isLive = 8;
+            var isLive = Math.round(Math.random());
+            console.log(isLive);
             if (isLive == 1) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
-                console.log(i);
+                
 
             //var cell = document.getElementById(0 + "_" + 1);
             //cell.classList.add('alive');

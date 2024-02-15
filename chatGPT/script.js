@@ -2,12 +2,14 @@
 const polySynth = new Tone.PolySynth().toDestination();
 
 // Definerer parametere for Game of Life
+var slider = document.getElementById("myRange");
+console.log(slider.value);
 const rows = 20;
 const cols = 20;
-const interval = 500; // Tidsintervall i millisekunder
+let interval = slider.value; // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
-var slider = document.getElementById("myRange");
+
 
 //const interval2 = 500;
 //slider.oninput = function() {

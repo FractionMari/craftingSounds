@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Pixel Grid 3</title>
+    <title>Camera Pixel Grid</title>
     <style>
         #video, #canvas {
             display: none;
@@ -12,23 +12,23 @@
         #pixel-grid {
             display: grid;
             grid-template-columns: repeat(20, 1fr);
-            grid-template-rows: repeat(30, 1fr);
+            grid-template-rows: repeat(20, 1fr);
             width: 640px; /* Samme som videoens bredde */
-            height: 480px; /* Samme som videoens høyde */
+            height: 640px; /* Samme som videoens høyde */
         }
 
         .pixel {
-            width: 20px;
-            height: 20px;
+            width: 32px;
+            height: 32px;
             border: 1px solid black;
         }
     </style>
 </head>
 <body>
-    <h1>Camera Pixel Grid 3</h1>
+    <h1>Camera Pixel Grid</h1>
     <div id="video-container">
         <video id="video" width="640" height="480" autoplay></video>
-        <canvas id="canvas" width="20" height="30"></canvas>
+        <canvas id="canvas" width="20" height="20"></canvas>
     </div>
     <div id="pixel-grid"></div>
 
@@ -42,7 +42,7 @@
             const context = canvas.getContext('2d');
 
             canvas.width = 20;
-            canvas.height = 30;
+            canvas.height = 20;
 
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -51,7 +51,7 @@
             const grayImageData = grayscale(imageData);
             const contrastImageData = increaseContrast(grayImageData);
 
-            // Simplify image to 20x30 pixels
+            // Simplify image to 20x20 pixels
             const simplifiedPixels = simplifyImage(contrastImageData);
 
             // Draw pixel grid
@@ -103,7 +103,7 @@
             const threshold = 128;
             const simplifiedPixels = [];
 
-            for (let y = 0; y < 30; y++) {
+            for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
                     const index = y * 20 + x;
                     if (imageData[index] < threshold) {
@@ -119,7 +119,7 @@
             const pixelGrid = document.getElementById('pixel-grid');
             pixelGrid.innerHTML = '';
 
-            for (let y = 0; y < 30; y++) {
+            for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
                     const pixel = document.createElement('div');
                     pixel.className = 'pixel';

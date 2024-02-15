@@ -4,94 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Pixel Grid</title>
-    <style>
-        #video, #canvas {
-            display: none;
-        }
-
-        #pixel-grid {
-            display: grid;
-            grid-template-columns: repeat(20, 1fr);
-            grid-template-rows: repeat(30, 1fr);
-            width: 640px; /* Samme som videoens bredde */
-            height: 480px; /* Samme som videoens høyde */
-        }
-
-        .pixel {
-            width: 20px;
-            height: 20px;
-            border: 1px solid black;
-        }
-    </style>
 </head>
 <body>
-    <h1>Camera Pixel Grid versjon 2</h1>
-    <div id="video-container">
-        <video id="video" width="640" height="480" autoplay></video>
-        <canvas id="canvas" width="640" height="480"></canvas>
-    </div>
+    <h1>Camera Pixel Grid 2</h1>
+    <video id="video" width="640" height="480" autoplay></video>
     <div id="pixel-grid"></div>
 
     <script>
-        let lastFrame = null;
-        let lastMovementTime = Date.now();
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+                processFrame();
+            } catch (err) {
+                console.error('Error accessing camera: ', err);
+            }
+        }
 
         function processFrame() {
             const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
+            const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
+            canvas.width = 20;
+            canvas.height = 30;
 
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-            // Convert image to grayscale
-            const grayImageData = grayscale(imageData);
-
-            // Find darkest pixels
-            const darkPixels = findDarkPixels(grayImageData);
-
-            // Draw pixel grid
+            context.drawImage(video, 0, 0, 20, 30);
+            const imageData = context.getImageData(0, 0, 20, 30);
+            const darkPixels = findDarkPixels(imageData);
             drawPixelGrid(darkPixels);
-            
-            // Check for movement
-            const currentFrame = JSON.stringify(darkPixels);
-            const now = Date.now();
-            const timeDiff = now - lastMovementTime;
-
-            if (currentFrame !== lastFrame) {
-                lastMovementTime = now;
-                lastFrame = currentFrame;
-            } else if (timeDiff >= 500) { // If no movement for half a second
-                resetPixelGrid();
-            }
 
             requestAnimationFrame(processFrame);
         }
 
-        function grayscale(imageData) {
-            const grayImageData = new Uint8ClampedArray(imageData.width * imageData.height);
-
-            for (let i = 0; i < imageData.data.length; i += 4) {
-                const r = imageData.data[i];
-                const g = imageData.data[i + 1];
-                const b = imageData.data[i + 2];
-                const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                grayImageData[i / 4] = gray;
-            }
-
-            return grayImageData;
-        }
-
-        function findDarkPixels(grayImageData) {
+        function findDarkPixels(imageData) {
             const darkPixels = [];
 
             for (let y = 0; y < 30; y++) {
                 for (let x = 0; x < 20; x++) {
-                    const index = y * 20 + x;
-                    if (grayImageData[index] < 50) {
+                    const index = (y * 20 + x) * 4; // 4 bytes per pixel (RGBA)
+                    const brightness = imageData.data[index] + imageData.data[index + 1] + imageData.data[index + 2];
+                    if (brightness < 100) {
                         darkPixels.push({x, y});
                     }
                 }
@@ -114,23 +68,6 @@
                     }
                     pixelGrid.appendChild(pixel);
                 }
-            }
-        }
-
-        function resetPixelGrid() {
-            const pixelGrid = document.getElementById('pixel-grid');
-            pixelGrid.innerHTML = '';
-        }
-
-        async function startCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
-                video.play();
-                processFrame();
-            } catch (err) {
-                console.error('Error accessing camera: ', err);
             }
         }
 

@@ -56,8 +56,9 @@ function drawGlider() {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => cells[0].classList.add('alive'));
     cells.forEach(cell => cells[21].classList.add('alive'));
-    cells.forEach(cell => cells[30].classList.add('alive'));
-    cells.forEach(cell => cells[31].classList.add('alive'));
+    cells.forEach(cell => cells[22].classList.add('alive'));
+    cells.forEach(cell => cells[40].classList.add('alive'));
+    cells.forEach(cell => cells[41].classList.add('alive'));
 
 }
 // Opprett event listener for clear-knappen

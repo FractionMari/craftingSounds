@@ -130,9 +130,11 @@ let availableSynths = [];
 
 // Definerer pentatonisk skala (C pentatonisk)
 const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
-/*
+
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('pixel-grid');
+
+
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         const cell = document.createElement('div');
@@ -141,7 +143,7 @@ for (let i = 0; i < rows; i++) {
         gridContainer.appendChild(cell);
     }
 }
-*/
+
 // Opprett event listener for play/pause-knappen
 const playPauseButton = document.getElementById('playPause');
 playPauseButton.addEventListener('click', togglePlay);

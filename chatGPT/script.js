@@ -9,14 +9,12 @@ let isPlaying = false;
 let timerId;
 var slider = document.getElementById("myRange");
 
-
-const interval2 = 500;
-
-slider.oninput = function() {
-    interval2 = this.value;
-    console.log(this.value);
-
-    }
+//const interval2 = 500;
+//slider.oninput = function() {
+//    interval2 = this.value;
+//    console.log(this.value);
+//
+//    }
 
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
@@ -82,7 +80,7 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        timerId = setInterval(updateGrid, interval2);
+        timerId = setInterval(updateGrid, interval);
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);

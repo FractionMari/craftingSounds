@@ -1,0 +1,81 @@
+body {
+    padding: 20px;
+    background-color: rgb(0, 0, 0);
+}
+
+#video, #canvas {
+  display: none;
+}
+
+#pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  width: 640px; /* Samme som videoens bredde */
+  height: 640px; /* Samme som videoens høyde */
+  transform: scaleX(-1); /* Speilvend pikselrutenettet */
+}
+
+.pixel {
+  width: 32px;
+  height: 32px;
+  border: 1px solid black;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(20, 30px);
+    grid-template-rows: repeat(20, 30px);
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgb(253, 86, 8);
+}
+
+.alive {
+    background-color: rgb(255, 92, 220);
+}
+.slidecontainer {
+    width: 100%; /* Width of the outside container */
+  }
+  
+  /* The slider itself */
+  .slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100px; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+  }
+  
+  /* Mouse-over effects */
+  .slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #04AA6D; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border: 2px solid rgb(245, 138, 255);
+
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #04AA6D; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border: 2px solid rgb(245, 138, 255);
+
+  }

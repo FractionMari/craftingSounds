@@ -3,177 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combined Canvas 4</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: black;
-        }
-
-        #container {
-            position: relative;
-        }
-
-        #grid,
-        #pixel-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        #pixel-grid {
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
-        }
-
-        .cell {
-            width: 30px;
-            height: 30px;
-            border: 2px solid rgb(253, 86, 8);
-        }
-
-        .alive {
-            background-color: rgb(255, 92, 220);
-        }
-
-        .pixel {
-            width: 32px;
-            height: 32px;
-            border: 1px solid black;
-        }
-    </style>
+    <title>Conway's Game of Life Sonification</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="container">
-        <div id="grid"></div>
-        <canvas id="pixel-grid"></canvas>
+    <h1>Camera Pixel Grid speil</h1>
+    <div id="video-container">
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" width="20" height="20"></canvas>
     </div>
+    <div id="pixel-grid"></div>
+    <div id="grid"></div>
     <button id="playPause">Play / Pause</button>
     <button id="clear">Clear</button>
     <button id="glider">Draw glider</button>
     
     <div class="slidecontainer">
         <input type="range" min="50" max="1000" value="500" class="slider" id="myRange">
-    </div>
+      </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const rows = 20;
-            const cols = 20;
-            let interval = 500 // Tidsintervall i millisekunder
-            let isPlaying = false;
-            let timerId;
+    <script src="script.js"></script>
 
-            const gridContainer = document.getElementById('grid');
-            const pixelGridCanvas = document.getElementById('pixel-grid');
-            const playPauseButton = document.getElementById('playPause');
-            const clearButton = document.getElementById('clear');
-            const gliderButton = document.getElementById('glider');
-            const slider = document.getElementById("myRange");
-
-            const pixelCtx = pixelGridCanvas.getContext('2d');
-
-            let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-
-            const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6'];
-
-            slider.oninput = function() {
-                interval = this.value;
-            }
-
-            function clearGrid() {
-                grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-                const cells = document.querySelectorAll('.cell');
-                cells.forEach(cell => cell.classList.remove('alive'));
-            }
-
-            function togglePlay() {
-                isPlaying = !isPlaying;
-                if (isPlaying) {
-                    playPauseButton.textContent = 'Pause';
-                    timerId = setInterval(updateGrid, interval);
-                } else {
-                    playPauseButton.textContent = 'Play';
-                    clearInterval(timerId);
-                }
-            }
-
-            function drawGlider() {
-                for (let i = 0; i < rows; i++) {
-                    for (let j = 0; j < cols; j++) {
-                        if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)) {
-                            const cell = gridContainer.children[i * cols + j];
-                            cell.classList.toggle('alive');
-                            grid[i][j] = 1;
-                        }
-                    }
-                }
-            }
-
-            function updateGrid() {
-                let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-
-                const imageData = pixelCtx.getImageData(0, 0, cols, rows);
-                const pixels = imageData.data;
-
-                for (let i = 0; i < pixels.length; i += 4) {
-                    const x = (i / 4) % cols;
-                    const y = Math.floor(i / (4 * cols));
-                    const gray = 0.2126 * pixels[i] + 0.7152 * pixels[i + 1] + 0.0722 * pixels[i + 2];
-                    if (gray < 128) {
-                        newGrid[y][x] = 1;
-                    }
-                }
-
-                const cells = document.querySelectorAll('.cell');
-                newGrid.forEach((row, i) => {
-                    row.forEach((cell, j) => {
-                        if (cell === 1) {
-                            cells[i * cols + j].classList.add('alive');
-                        } else {
-                            cells[i * cols + j].classList.remove('alive');
-                        }
-                    });
-                });
-
-                grid = newGrid;
-            }
-
-            function startCamera() {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function(stream) {
-                        const video = document.createElement('video');
-                        video.srcObject = stream;
-                        video.play();
-                        video.addEventListener('play', function() {
-                            const width = video.videoWidth;
-                            const height = video.videoHeight;
-                            pixelGridCanvas.width = width;
-                            pixelGridCanvas.height = height;
-
-                            function processFrame() {
-                                pixelCtx.drawImage(video, 0, 0, width, height);
-                                requestAnimationFrame(processFrame);
-                            }
-
-                            processFrame();
-                        });
-                    })
-                    .catch(function(err) {
-                        console.error('Error accessing camera: ', err);
-                    });
-            }
-
-            startCamera();
-
-            playPauseButton.addEventListener('click', togglePlay);
-            clearButton.addEventListener('click', clearGrid);
-            gliderButton.addEventListener('click', drawGlider);
-        });
-    </script>
 </body>
 </html>

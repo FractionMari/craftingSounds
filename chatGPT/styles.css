@@ -13,7 +13,7 @@ body {
 .cell {
     width: 30px;
     height: 30px;
-    border: 2px solid rgb(2, 98, 241);
+    border: 2px solid rgb(241, 2, 2);
 }
 
 .alive {

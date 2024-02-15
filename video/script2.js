@@ -152,7 +152,7 @@ const gridContainer = document.getElementById('grid');
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         const cell = document.createElement('div');
-        cell.classList.add('cell');
+        cell.classList.add('alive');
         cell.addEventListener('click', () => toggleCell(i, j));
         gridContainer.appendChild(cell);
     }

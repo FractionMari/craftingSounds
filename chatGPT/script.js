@@ -93,15 +93,22 @@ function drawGlider(i, j) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
 
+            var isLive = Math.round(Math.random());
+            if (isLive == 1) {
+                var cell = document.getElementById(i + "_" + j);
+                cell.setAttribute("class", "live");
+                grid[i][j] = 1;
+
             //var cell = document.getElementById(0 + "_" + 1);
             //cell.classList.add('alive');
-            console.log(i, j);
+           /* console.log(i, j);
             const cells = document.querySelectorAll('.cell');
             cells[0].classList.add('alive');
             cells[21].classList.add('alive');
             cells[22].classList.add('alive');
             cells[40].classList.add('alive');
-            cells[41].classList.add('alive');
+            cells[41].classList.add('alive'); */
+            }
         }
     }
 }
@@ -114,6 +121,7 @@ function toggleCell(i, j) {
     grid[i][j] = grid[i][j] ? 0 : 1;
     const cell = gridContainer.children[i * cols + j];
     cell.classList.toggle('alive');
+    console.log(i);
 }
 
 // Definerer funksjon for å klargjøre gridet

@@ -96,7 +96,7 @@ function drawGlider(i, j) {
             //var isLive = Math.round(Math.random());
             //console.log(isLive);
            
-            if ((i == 0 && j == 0) || (i == 0 && j == 1) || (i == 0 && j == 2) || (i == 1 && j == 1) || (i == 1 && j == 2)){
+            if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');

@@ -98,6 +98,10 @@ function drawGlider(i, j) {
             console.log(i, j);
             const cells = document.querySelectorAll('.cell');
             cells[0].classList.add('alive');
+            cells[21].classList.add('alive');
+            cells[22].classList.add('alive');
+            cells[40].classList.add('alive');
+            cells[41].classList.add('alive');
         }
     }
 }

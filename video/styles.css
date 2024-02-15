@@ -1,6 +1,6 @@
 body {
     padding: 20px;
-    background-color: rgb(230, 221, 221);
+    background-color: rgba(226, 164, 208, 0.829);
 }
 
 #video, #canvas {
@@ -26,6 +26,7 @@ body {
     display: grid;
     grid-template-columns: repeat(20, 30px);
     grid-template-rows: repeat(20, 30px);
+    transform: scaleX(-1); /* Speilvend pikselrutenettet */
 }
 
 .cell {

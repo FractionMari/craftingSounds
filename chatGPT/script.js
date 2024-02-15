@@ -52,8 +52,7 @@ gliderButton.addEventListener('click', drawGlider);
 function drawGlider() {
     grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
     const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => cells[5].classList.add('alive'));
-    cells.forEach(cell => cells[6].classList.add('alive'));
+    cells.forEach(cell => cells[8].classList.add('alive'));
 
 }
 // Opprett event listener for clear-knappen

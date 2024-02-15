@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combined Canvas 2</title>
+    <title>Combined Canvas 3</title>
     <style>
         body {
             display: flex;
@@ -49,7 +49,7 @@
 <body>
     <div id="container">
         <div id="grid"></div>
-        <div id="pixel-grid"></div>
+        <canvas id="pixel-grid"></canvas>
     </div>
     <button id="playPause">Play / Pause</button>
     <button id="clear">Clear</button>
@@ -68,11 +68,13 @@
         let timerId;
 
         const gridContainer = document.getElementById('grid');
-        const pixelGridContainer = document.getElementById('pixel-grid');
+        const pixelGridCanvas = document.getElementById('pixel-grid');
         const playPauseButton = document.getElementById('playPause');
         const clearButton = document.getElementById('clear');
         const gliderButton = document.getElementById('glider');
         const slider = document.getElementById("myRange");
+
+        const pixelCtx = pixelGridCanvas.getContext('2d');
 
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
@@ -114,34 +116,15 @@
         function updateGrid() {
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
-            const pixels = document.querySelectorAll('.pixel');
-            pixels.forEach((pixel, index) => {
-                const x = index % 20;
-                const y = Math.floor(index / 20);
-                if (pixel.style.backgroundColor === 'black') {
+            const imageData = pixelCtx.getImageData(0, 0, cols, rows);
+            const pixels = imageData.data;
+
+            for (let i = 0; i < pixels.length; i += 4) {
+                const x = (i / 4) % cols;
+                const y = Math.floor(i / (4 * cols));
+                const gray = 0.2126 * pixels[i] + 0.7152 * pixels[i + 1] + 0.0722 * pixels[i + 2];
+                if (gray < 128) {
                     newGrid[y][x] = 1;
-                }
-            });
-
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < cols; j++) {
-                    let neighbors = 0;
-                    for (let x = -1; x <= 1; x++) {
-                        for (let y = -1; y <= 1; y++) {
-                            if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
-                                neighbors += grid[i + x][j + y];
-                            }
-                        }
-                    }
-                    neighbors -= grid[i][j];
-
-                    if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
-                        newGrid[i][j] = 0;
-                    } else if (grid[i][j] === 0 && neighbors === 3) {
-                        newGrid[i][j] = 1;
-                    } else {
-                        newGrid[i][j] = grid[i][j];
-                    }
                 }
             }
 
@@ -160,48 +143,28 @@
         }
 
         function startCamera() {
-            const video = document.createElement('video');
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(function(stream) {
+                    const video = document.createElement('video');
                     video.srcObject = stream;
                     video.play();
+                    video.addEventListener('play', function() {
+                        const width = video.videoWidth;
+                        const height = video.videoHeight;
+                        pixelGridCanvas.width = width;
+                        pixelGridCanvas.height = height;
+
+                        function processFrame() {
+                            pixelCtx.drawImage(video, 0, 0, width, height);
+                            requestAnimationFrame(processFrame);
+                        }
+
+                        processFrame();
+                    });
                 })
                 .catch(function(err) {
                     console.error('Error accessing camera: ', err);
                 });
-
-            video.addEventListener('play', function() {
-                const width = video.videoWidth;
-                const height = video.videoHeight;
-                canvas.width = width;
-                canvas.height = height;
-
-                function processFrame() {
-                    ctx.drawImage(video, 0, 0, width, height);
-                    const imageData = ctx.getImageData(0, 0, width, height);
-
-                    for (let i = 0; i < imageData.data.length; i += 4) {
-                        const r = imageData.data[i];
-                        const g = imageData.data[i + 1];
-                        const b = imageData.data[i + 2];
-                        const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                        if (gray < 128) {
-                            const x = (i / 4) % width;
-                            const y = Math.floor(i / (4 * width));
-                            const cell = gridContainer.children[y * cols + x];
-                            cell.classList.add('alive');
-                            grid[y][x] = 1;
-                        }
-                    }
-
-                    requestAnimationFrame(processFrame);
-                }
-
-                processFrame();
-            });
         }
 
         startCamera();

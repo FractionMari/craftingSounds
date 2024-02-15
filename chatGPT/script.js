@@ -95,15 +95,17 @@ function drawGlider(i, j) {
 
             //var isLive = Math.round(Math.random());
             //console.log(isLive);
-            if (i == 0, 21 && j == 0, 1) {
+            if (i == 0 && j == 0) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
+                grid[i + 1][j + 1] = 1;
                 
 
 
             }
+            
  
         }
     }

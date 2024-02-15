@@ -232,7 +232,7 @@ function updateGrid(simplifiedPixels) {
             let neighbors = 0;
             const pixel = document.createElement('div');
             pixel.classList.remove('alive');
-            const isActive = simplifiedPixels.some(p => p.x === x && p.y === y);
+            const isActive = simplifiedPixels.some(p => p.i === i && p.j === j);
             if (isActive) {
                 pixel.classList.add('alive');
             }

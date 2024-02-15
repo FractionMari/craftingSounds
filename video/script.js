@@ -83,16 +83,16 @@ function simplifyImage(imageData) {
 }
 
 function drawPixelGrid(simplifiedPixels) {
-    const pixelGrid = document.getElementById('grid');
+    const pixelGrid = document.getElementById('pixel-grid');
     pixelGrid.innerHTML = '';
 
     for (let y = 0; y < 20; y++) {
         for (let x = 0; x < 20; x++) {
             const pixel = document.createElement('div');
-            pixel.className = 'alive';
+            pixel.classList.remove('alive');
             const isActive = simplifiedPixels.some(p => p.x === x && p.y === y);
             if (isActive) {
-                pixel.style.backgroundColor = 'black';
+                pixel.classList.add('alive');
             }
             pixelGrid.appendChild(pixel);
         }
@@ -100,7 +100,7 @@ function drawPixelGrid(simplifiedPixels) {
 }
 
 function resetPixelGrid() {
-    const pixelGrid = document.getElementById('grid');
+    const pixelGrid = document.getElementById('pixel-grid');
     pixelGrid.innerHTML = '';
 }
 

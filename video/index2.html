@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Canvas</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+
+        #container {
+            position: relative;
+        }
+
+        #grid,
+        #pixel-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #pixel-grid {
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgb(253, 86, 8);
+        }
+
+        .alive {
+            background-color: rgb(255, 92, 220);
+        }
+
+        .pixel {
+            width: 32px;
+            height: 32px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="grid"></div>
+        <div id="pixel-grid"></div>
+    </div>
+    <button id="playPause">Play / Pause</button>
+    <button id="clear">Clear</button>
+    <button id="glider">Draw glider</button>
+    
+    <div class="slidecontainer">
+        <input type="range" min="50" max="1000" value="500" class="slider" id="myRange">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+    <script src="script.js"></script>
+    <script src="video.js"></script>
+</body>
+</html>

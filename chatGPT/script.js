@@ -96,7 +96,7 @@ function drawGlider(i, j) {
             var isLive = Math.round(Math.random());
             if (isLive == 1) {
                 var cell = document.getElementById(i + "_" + j);
-                cell.setAttribute("class", "live");
+                cell.classList.toggle('alive');
                 grid[i][j] = 1;
 
             //var cell = document.getElementById(0 + "_" + 1);

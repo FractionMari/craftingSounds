@@ -152,7 +152,7 @@ const gridContainer = document.getElementById('pixel-grid');
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
         const cell = document.createElement('div');
-        cell.classList.add('alive');
+        cell.classList.add('cell');
         cell.addEventListener('click', () => toggleCell(i, j));
         gridContainer.appendChild(cell);
     }
@@ -167,7 +167,45 @@ const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
 // Tegn inn en glider
+/*
+function drawGlider() {
+    grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cells[0].classList.add('alive'));
+    cells.forEach(cell => cells[21].classList.add('alive'));
+    cells.forEach(cell => cells[22].classList.add('alive'));
+    cells.forEach(cell => cells[40].classList.add('alive'));
+    cells.forEach(cell => cells[41].classList.add('alive')); 
 
+}
+*/
+/*
+function randomButtonHandler() {
+    if (playing) return;
+    clearButtonHandler();
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            var isLive = Math.round(Math.random());
+            if (isLive == 1) {
+                var cell = document.getElementById(i + "_" + j);
+                cell.setAttribute("class", "live");
+                grid[i][j] = 1;
+            }
+        }
+    }
+}
+*/
+
+/* 
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.addEventListener('click', () => toggleCell(i, j));
+        gridContainer.appendChild(cell);
+    }
+}
+*/
 
 function drawGlider(i, j) {
 

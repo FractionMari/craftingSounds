@@ -95,7 +95,7 @@ function drawGlider(i, j) {
 
             var isLive = Math.round(Math.random());
             console.log(isLive);
-            if (isLive == 1) {
+            if (i == 8) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');

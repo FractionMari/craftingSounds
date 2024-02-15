@@ -3,21 +3,21 @@ const polySynth = new Tone.PolySynth().toDestination();
 
 // Definerer parametere for Game of Life
 var slider = document.getElementById("myRange");
-console.log(slider.value);
+
 const rows = 20;
 const cols = 20;
-let interval = slider.value; // Tidsintervall i millisekunder
+let interval = 500 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 
 
 //const interval2 = 500;
-//slider.oninput = function() {
-//    interval2 = this.value;
-//    console.log(this.value);
-//
-//    }
+slider.oninput = function() {
+    interval = this.value;
+    console.log(this.value);
 
+    }
+    console.log(interval);
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 

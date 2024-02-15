@@ -9,12 +9,6 @@ let isPlaying = false;
 let timerId;
 var slider = document.getElementById("myRange");
 
-var interval2
-slider.oninput = function() {
-    interval2 = this.value;
-    console.log(this.value);
-
-    }
 
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
@@ -75,6 +69,13 @@ function clearGrid() {
 }
 
 
+var interval2
+slider.oninput = function() {
+    interval2 = this.value;
+    console.log(this.value);
+
+   
+
 // Definerer funksjon for å starte eller pause spill-loopen
 function togglePlay() {
     isPlaying = !isPlaying;
@@ -87,6 +88,7 @@ function togglePlay() {
     }
 }
 
+}
 // Definerer funksjon for å oppdatere tilstanden til gridet
 function updateGrid() {
     let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));

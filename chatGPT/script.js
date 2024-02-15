@@ -99,7 +99,7 @@ function drawGlider(i, j) {
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
-                grid[i][j] = 1;
+                //grid[i][j] = 1;
                 
 
             //var cell = document.getElementById(0 + "_" + 1);

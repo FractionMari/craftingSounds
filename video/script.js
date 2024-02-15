@@ -83,7 +83,7 @@ function simplifyImage(imageData) {
 }
 
 function drawPixelGrid(simplifiedPixels) {
-    const pixelGrid = document.getElementById('pixel-grid');
+    const pixelGrid = document.getElementById('grid');
     pixelGrid.innerHTML = '';
 
     for (let y = 0; y < 20; y++) {
@@ -100,7 +100,7 @@ function drawPixelGrid(simplifiedPixels) {
 }
 
 function resetPixelGrid() {
-    const pixelGrid = document.getElementById('pixel-grid');
+    const pixelGrid = document.getElementById('grid');
     pixelGrid.innerHTML = '';
 }
 

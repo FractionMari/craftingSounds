@@ -196,7 +196,7 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        timerId = setInterval(drawPixelGrid(simplifiedPixels), interval);
+        timerId = setInterval(updateGrid, interval);
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);
@@ -204,25 +204,31 @@ function togglePlay() {
 }
 
 
-
-// Definerer funksjon for å oppdatere tilstanden til gridet
-function updateGrid() {
+function drawPixelGrid(simplifiedPixels) {
     const pixelGrid = document.getElementById('pixel-grid');
     pixelGrid.innerHTML = '';
 
-    let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-            let neighbors = 0;
-            for (let x = -1; x <= 1; x++) {
-                const pixel = document.createElement('div');
+    for (let y = 0; y < 20; y++) {
+        for (let x = 0; x < 20; x++) {
+            const pixel = document.createElement('div');
             pixel.classList.remove('alive');
             const isActive = simplifiedPixels.some(p => p.x === x && p.y === y);
             if (isActive) {
                 pixel.classList.add('alive');
             }
             pixelGrid.appendChild(pixel);
+        }
+    }
+}
+
+// Definerer funksjon for å oppdatere tilstanden til gridet
+function updateGrid() {
+    let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let neighbors = 0;
+            for (let x = -1; x <= 1; x++) {
                 for (let y = -1; y <= 1; y++) {
                     if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
                         neighbors += grid[i + x][j + y];

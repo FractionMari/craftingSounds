@@ -3,44 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Abstraction</title>
+    <title>Camera Pixel Grid</title>
+    <style>
+        #video, #canvas {
+            display: none;
+        }
+
+        #pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(30, 1fr);
+            width: 640px; /* Samme som videoens bredde */
+            height: 480px; /* Samme som videoens høyde */
+        }
+
+        .pixel {
+            width: 20px;
+            height: 20px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <h1>Camera Abstraction</h1>
-    <video id="video" width="640" height="480" autoplay></video>
-    <canvas id="canvas" width="20" height="30"></canvas>
+    <h1>Camera Pixel Grid versjon 2</h1>
+    <div id="video-container">
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+    <div id="pixel-grid"></div>
 
     <script>
-        // Funksjon for å hente video fra kameraet og abstrahere det ned til 20x30 piksler
-        function abstractToPixels() {
+        let lastFrame = null;
+        let lastMovementTime = Date.now();
+
+        function processFrame() {
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
             const context = canvas.getContext('2d');
 
-            // Sett størrelsen på canvas til å matche videoen
-            canvas.width = 20;
-            canvas.height = 30;
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
 
-            // Tegn videoen inn i canvaset og skaler den ned til 20x30 piksler
-            context.drawImage(video, 0, 0, 20, 30);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-            // Hent data fra canvaset og logg det
-            const imageData = context.getImageData(0, 0, 20, 30);
-            console.log(imageData);
+            // Convert image to grayscale
+            const grayImageData = grayscale(imageData);
+
+            // Find darkest pixels
+            const darkPixels = findDarkPixels(grayImageData);
+
+            // Draw pixel grid
+            drawPixelGrid(darkPixels);
+            
+            // Check for movement
+            const currentFrame = JSON.stringify(darkPixels);
+            const now = Date.now();
+            const timeDiff = now - lastMovementTime;
+
+            if (currentFrame !== lastFrame) {
+                lastMovementTime = now;
+                lastFrame = currentFrame;
+            } else if (timeDiff >= 500) { // If no movement for half a second
+                resetPixelGrid();
+            }
+
+            requestAnimationFrame(processFrame);
         }
 
-        // Funksjon for å starte videostreamen
+        function grayscale(imageData) {
+            const grayImageData = new Uint8ClampedArray(imageData.width * imageData.height);
+
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const r = imageData.data[i];
+                const g = imageData.data[i + 1];
+                const b = imageData.data[i + 2];
+                const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                grayImageData[i / 4] = gray;
+            }
+
+            return grayImageData;
+        }
+
+        function findDarkPixels(grayImageData) {
+            const darkPixels = [];
+
+            for (let y = 0; y < 30; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const index = y * 20 + x;
+                    if (grayImageData[index] < 50) {
+                        darkPixels.push({x, y});
+                    }
+                }
+            }
+
+            return darkPixels;
+        }
+
+        function drawPixelGrid(darkPixels) {
+            const pixelGrid = document.getElementById('pixel-grid');
+            pixelGrid.innerHTML = '';
+
+            for (let y = 0; y < 30; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixel = document.createElement('div');
+                    pixel.className = 'pixel';
+                    const isActive = darkPixels.some(p => p.x === x && p.y === y);
+                    if (isActive) {
+                        pixel.style.backgroundColor = 'black';
+                    }
+                    pixelGrid.appendChild(pixel);
+                }
+            }
+        }
+
+        function resetPixelGrid() {
+            const pixelGrid = document.getElementById('pixel-grid');
+            pixelGrid.innerHTML = '';
+        }
+
         async function startCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 const video = document.getElementById('video');
                 video.srcObject = stream;
+                video.play();
+                processFrame();
             } catch (err) {
                 console.error('Error accessing camera: ', err);
             }
         }
 
-        // Start videostreamen når siden lastes
         window.onload = function() {
             startCamera();
         };

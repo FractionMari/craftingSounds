@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Pixel Grid</title>
     <style>
+
+        body {
+            padding: 20px;
+            background-color: rgba(116, 123, 224, 0.829);
+        }
+
         #video, #canvas {
             display: none;
         }
@@ -67,7 +73,7 @@
                 lastMovementTime = now;
                 lastFrame = currentFrame;
             } else if (timeDiff >= 500) { // If no movement for half a second
-                if (countActivePixels(simplifiedPixels) >= 10) { // Define threshold for significant movement
+                if (countActivePixels(simplifiedPixels) >= 500) { // Define threshold for significant movement
                     console.log("Significant movement detected!");
                     console.log("Active pixels:", simplifiedPixels);
                 }

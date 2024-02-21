@@ -8,7 +8,7 @@
 
         body {
             padding: 20px;
-            background-color: rgba(222, 224, 116, 0.829);
+            background-color: rgba(224, 159, 116, 0.829);
         }
 
         #video, #canvas {
@@ -72,8 +72,8 @@
             if (currentFrame !== lastFrame) {
                 lastMovementTime = now;
                 lastFrame = currentFrame;
-            } else if (timeDiff >= 500) { // If no movement for half a second
-                if (countActivePixels(simplifiedPixels) >= 1000) { // Define threshold for significant movement
+            } else if (timeDiff >= 50) { // If no movement for half a second
+                if (countActivePixels(simplifiedPixels) >= 10) { // Define threshold for significant movement
                     console.log("Significant movement detected!");
                     console.log("Active pixels:", simplifiedPixels);
                     console.log(simplifiedPixels)
@@ -97,6 +97,7 @@
                 const b = imageData.data[i + 2];
                 const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
                 grayImageData[i / 4] = gray;
+                console.log("gråskala: ", gray):
             }
 
             return grayImageData;
@@ -124,6 +125,7 @@
                     const index = y * 20 + x;
                     if (imageData[index] < threshold) {
                         simplifiedPixels.push({x, y});
+                        console.log("simply image:", x, y);
                     }
                 }
             }

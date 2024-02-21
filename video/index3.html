@@ -3,171 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Motion Detection</title>
+    <title>Video to Pixel Grid</title>
     <style>
         body {
-            background-color: red;
+            background-color: rosybrown;
         }
-        video {
-            width: 640px;
-            height: 480px;
-        }
-
-        canvas {
-            display: none;
-        }
-
         #pixel-grid {
             display: grid;
             grid-template-columns: repeat(20, 1fr);
             grid-template-rows: repeat(20, 1fr);
-            width: 320px;
-            height: 240px;
-            border: 1px solid black;
-            margin-top: 20px;
+            width: 400px;
+            height: 400px;
         }
-
         .pixel {
-            width: calc(320px / 20);
-            height: calc(240px / 20);
-            background-color: white;
-            border: 1px solid black;
-        }
-
-        .active {
-            background-color: black;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-    <h1>Video Motion Detection</h1>
-    <video id="video" autoplay></video>
-    <canvas id="canvas"></canvas>
     <div id="pixel-grid"></div>
 
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
+        videoElement.src = 'path/to/your/video.mp4'; // Set the path to your video file
+
         const pixelGrid = document.getElementById('pixel-grid');
 
-        let lastFrame = null; // Definer lastFrame variabel globalt
+        const context = pixelGrid.getContext('2d');
+        const pixelSize = 20;
+        const threshold = 100; // Threshold for darkness
 
-        // Set canvas dimensions to match video
-        video.addEventListener('play', () => {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            processFrame();
-        });
-
-        async function processFrame() {
-            if (video.paused || video.ended) return;
-
-            // Draw current video frame onto canvas
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Get image data from canvas
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const pixels = imageData.data;
-
-            // Convert image to grayscale
-            const grayPixels = grayscale(pixels);
-
-            // Perform motion detection
-            const motionDetected = detectMotion(grayPixels);
-
-            // Update pixel grid based on motion detection
-            updatePixelGrid(motionDetected);
-
-            // Repeat process for next frame
-            requestAnimationFrame(processFrame);
-        }
-
-        function grayscale(pixels) {
-            const grayPixels = [];
-
-            for (let i = 0; i < pixels.length; i += 4) {
-                const r = pixels[i];
-                const g = pixels[i + 1];
-                const b = pixels[i + 2];
-                const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                grayPixels.push(gray);
-            }
-
-            return grayPixels;
-        }
-
-        function detectMotion(grayPixels) {
-            let motionDetected = false;
-
-            // Perform motion detection logic here
-            // For simplicity, let's assume motion is detected if any pixel is significantly different from the previous frame
-            // You may need to adjust this logic based on your specific requirements
-            
-            // Compare current frame with previous frame
-            if (lastFrame) {
-                for (let i = 0; i < grayPixels.length; i++) {
-                    const diff = Math.abs(grayPixels[i] - lastFrame[i]);
-                    if (diff > 20) { // Adjust threshold as needed
-                        motionDetected = true;
-                        break;
-                    }
-                }
-            }
-
-            // Update last frame
-            lastFrame = grayPixels.slice();
-
-            return motionDetected;
-        }
-
-        function updatePixelGrid(motionDetected) {
-            pixelGrid.innerHTML = '';
-
-            // If motion detected, activate pixels in grid, otherwise deactivate them
-            if (motionDetected) {
-                const gridWidth = 20;
-                const gridHeight = 20;
-                const videoWidth = canvas.width;
-                const videoHeight = canvas.height;
-
-                const cellWidth = videoWidth / gridWidth;
-                const cellHeight = videoHeight / gridHeight;
-
-                const activeCells = new Set();
-
-                for (let i = 0; i < videoHeight; i += cellHeight) {
-                    for (let j = 0; j < videoWidth; j += cellWidth) {
-                        const pixelIndex = Math.floor(i / cellHeight) * gridWidth + Math.floor(j / cellWidth);
-                        activeCells.add(pixelIndex);
-                    }
-                }
-
-                for (let i = 0; i < gridHeight; i++) {
-                    for (let j = 0; j < gridWidth; j++) {
-                        const pixel = document.createElement('div');
-                        pixel.classList.add('pixel');
-                        const index = i * gridWidth + j;
-                        if (activeCells.has(index)) {
-                            pixel.classList.add('active');
+        videoElement.addEventListener('play', () => {
+            const drawFrame = () => {
+                context.drawImage(videoElement, 0, 0, pixelSize * 20, pixelSize * 20);
+                const imageData = context.getImageData(0, 0, pixelSize * 20, pixelSize * 20).data;
+                
+                for (let y = 0; y < 20; y++) {
+                    for (let x = 0; x < 20; x++) {
+                        const pixelIndex = (y * pixelSize * 20 + x * pixelSize) * 4;
+                        const averageBrightness = (imageData[pixelIndex] + imageData[pixelIndex + 1] + imageData[pixelIndex + 2]) / 3;
+                        if (averageBrightness < threshold) {
+                            if (!pixelGrid[y][x]) {
+                                pixelGrid[y][x] = true;
+                                context.fillStyle = '#000';
+                                context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            }
+                        } else {
+                            pixelGrid[y][x] = false;
                         }
-                        pixelGrid.appendChild(pixel);
                     }
                 }
-            }
-        }
-
-        // Start video playback
-        async function startVideo() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = stream;
-            } catch (err) {
-                console.error('Error accessing camera: ', err);
-            }
-        }
-
-        startVideo();
+                requestAnimationFrame(drawFrame);
+            };
+            drawFrame();
+        });
     </script>
 </body>
 </html>

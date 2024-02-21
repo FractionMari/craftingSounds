@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Motion Detection</title>
+    <style>
+        video {
+            width: 640px;
+            height: 480px;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        #pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+            width: 320px;
+            height: 240px;
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+
+        .pixel {
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border: 1px solid black;
+        }
+
+        .active {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Motion Detection</h1>
+    <video id="video" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <div id="pixel-grid"></div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const pixelGrid = document.getElementById('pixel-grid');
+
+        // Set canvas dimensions to match video
+        video.addEventListener('play', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            processFrame();
+        });
+
+        async function processFrame() {
+            if (video.paused || video.ended) return;
+
+            // Draw current video frame onto canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Get image data from canvas
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const pixels = imageData.data;
+
+            // Convert image to grayscale
+            const grayPixels = grayscale(pixels);
+
+            // Perform motion detection
+            const motionDetected = detectMotion(grayPixels);
+
+            // Update pixel grid based on motion detection
+            updatePixelGrid(motionDetected);
+
+            // Repeat process for next frame
+            requestAnimationFrame(processFrame);
+        }
+
+        function grayscale(pixels) {
+            const grayPixels = [];
+
+            for (let i = 0; i < pixels.length; i += 4) {
+                const r = pixels[i];
+                const g = pixels[i + 1];
+                const b = pixels[i + 2];
+                const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                grayPixels.push(gray);
+            }
+
+            return grayPixels;
+        }
+
+        function detectMotion(grayPixels) {
+            let motionDetected = false;
+
+            // Perform motion detection logic here
+            // For simplicity, let's assume motion is detected if any pixel is significantly different from the previous frame
+            // You may need to adjust this logic based on your specific requirements
+            
+            // Compare current frame with previous frame
+            if (lastFrame) {
+                for (let i = 0; i < grayPixels.length; i++) {
+                    const diff = Math.abs(grayPixels[i] - lastFrame[i]);
+                    if (diff > 20) { // Adjust threshold as needed
+                        motionDetected = true;
+                        break;
+                    }
+                }
+            }
+
+            // Update last frame
+            lastFrame = grayPixels.slice();
+
+            return motionDetected;
+        }
+
+        function updatePixelGrid(motionDetected) {
+            pixelGrid.innerHTML = '';
+
+            // If motion detected, activate pixels in grid, otherwise deactivate them
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 20; j++) {
+                    const pixel = document.createElement('div');
+                    pixel.classList.add('pixel');
+                    if (motionDetected) {
+                        pixel.classList.add('active');
+                    }
+                    pixelGrid.appendChild(pixel);
+                }
+            }
+        }
+
+        // Start video playback
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing camera: ', err);
+            }
+        }
+
+        startVideo();
+    </script>
+</body>
+</html>

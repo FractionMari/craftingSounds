@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(129, 127, 228);
+            background-color: rgb(228, 184, 127);
         }
 
         #pixel-grid {
@@ -25,20 +25,20 @@
         }
 
         #grid {
-    display: grid;
-    grid-template-columns: repeat(20, 30px);
-    grid-template-rows: repeat(20, 30px);
-}
+            display: grid;
+            grid-template-columns: repeat(20, 30px);
+            grid-template-rows: repeat(20, 30px);
+        }
 
-.cell {
-    width: 30px;
-    height: 30px;
-    border: 2px solid rgb(253, 86, 8);
-}
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgb(253, 86, 8);
+        }
 
-.alive {
-    background-color: rgb(255, 92, 220);
-}
+        .alive {
+            background-color: rgb(255, 92, 220);
+        }
     </style>
 </head>
 <body>
@@ -66,38 +66,7 @@
             }
         };
 
-        const drawFrame = (context, videoWidth, videoHeight) => {
-            context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
-            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
-            
-            for (let y = 0; y < 20; y++) {
-                for (let x = 0; x < 20; x++) {
-                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
-                    let averageBrightness = 0;
 
-                    for (let i = 0; i < pixelSize; i++) {
-                        for (let j = 0; j < pixelSize; j++) {
-                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
-                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                        }
-                    }
-                    averageBrightness /= (pixelSize * pixelSize);
-
-                    if (averageBrightness < threshold) {
-                        if (!pixelGrid[y][x]) {
-                            pixelGrid[y][x] = true;
-                            context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            console.log(pixelGrid);
-                            
-                        }
-                    } else {
-                        pixelGrid[y][x] = false;
-                    }
-                }
-            }
-            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
-        };
 
         const videoElement = document.createElement('video');
         videoElement.autoplay = true;
@@ -175,12 +144,47 @@ function drawGlider(i, j) {
 
             //var isLive = Math.round(Math.random());
             //console.log(isLive);
+
+            const drawFrame = (context, videoWidth, videoHeight) => {
+            context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
+            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
+            
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
+
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                        }
+                    }
+                    averageBrightness /= (pixelSize * pixelSize);
+
+                    if (averageBrightness < threshold) {
+                        if (!pixelGrid[y][x]) {
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            console.log(pixelGrid);
+                            
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
+                    }
+                }
+            }
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+        };
            
             if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
+
+                
                 
 
 

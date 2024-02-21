@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video to Pixel Grid</title>
+    <title>Webcam to Pixel Grid</title>
     <style>
-        body {
-            background-color: rosybrown;
-        }
         #pixel-grid {
             display: grid;
             grid-template-columns: repeat(20, 1fr);
@@ -26,40 +23,70 @@
     <div id="pixel-grid"></div>
 
     <script>
-        const videoElement = document.createElement('video');
-        videoElement.autoplay = true;
-        videoElement.src = 'path/to/your/video.mp4'; // Set the path to your video file
-
-        const pixelGrid = document.getElementById('pixel-grid');
-
-        const context = pixelGrid.getContext('2d');
         const pixelSize = 20;
         const threshold = 100; // Threshold for darkness
+        let pixelGrid = [];
 
-        videoElement.addEventListener('play', () => {
-            const drawFrame = () => {
-                context.drawImage(videoElement, 0, 0, pixelSize * 20, pixelSize * 20);
-                const imageData = context.getImageData(0, 0, pixelSize * 20, pixelSize * 20).data;
-                
-                for (let y = 0; y < 20; y++) {
-                    for (let x = 0; x < 20; x++) {
-                        const pixelIndex = (y * pixelSize * 20 + x * pixelSize) * 4;
-                        const averageBrightness = (imageData[pixelIndex] + imageData[pixelIndex + 1] + imageData[pixelIndex + 2]) / 3;
-                        if (averageBrightness < threshold) {
-                            if (!pixelGrid[y][x]) {
-                                pixelGrid[y][x] = true;
-                                context.fillStyle = '#000';
-                                context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            }
-                        } else {
-                            pixelGrid[y][x] = false;
+        const initPixelGrid = () => {
+            for (let i = 0; i < 20; i++) {
+                pixelGrid[i] = [];
+                for (let j = 0; j < 20; j++) {
+                    pixelGrid[i][j] = false;
+                }
+            }
+        };
+
+        const drawFrame = (context, videoWidth, videoHeight) => {
+            context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
+            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
+            
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
+
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
                         }
                     }
+                    averageBrightness /= (pixelSize * pixelSize);
+
+                    if (averageBrightness < threshold) {
+                        if (!pixelGrid[y][x]) {
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
+                    }
                 }
-                requestAnimationFrame(drawFrame);
-            };
-            drawFrame();
-        });
+            }
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+        };
+
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+                videoElement.play();
+                const pixelGridCanvas = document.getElementById('pixel-grid');
+                const context = pixelGridCanvas.getContext('2d');
+                const { videoWidth, videoHeight } = videoElement;
+
+                pixelGridCanvas.width = videoWidth;
+                pixelGridCanvas.height = videoHeight;
+
+                initPixelGrid();
+                drawFrame(context, videoWidth, videoHeight);
+            })
+            .catch(err => {
+                console.error('An error occurred: ', err);
+            });
     </script>
 </body>
 </html>

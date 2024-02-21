@@ -8,7 +8,7 @@
 
         body {
             padding: 20px;
-            background-color: rgba(224, 159, 116, 0.829);
+            background-color: rgba(147, 224, 116, 0.829);
         }
 
         #video, #canvas {
@@ -97,7 +97,7 @@
                 const b = imageData.data[i + 2];
                 const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
                 grayImageData[i / 4] = gray;
-                console.log("gråskala: ", gray):
+                console.log("gråskala: ", gray);
             }
 
             return grayImageData;

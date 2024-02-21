@@ -72,6 +72,7 @@
             if (currentFrame !== lastFrame) {
                 lastMovementTime = now;
                 lastFrame = currentFrame;
+                console.log(currentFrame);
             } else if (timeDiff >= 50) { // If no movement for half a second
                 if (countActivePixels(simplifiedPixels) >= 10) { // Define threshold for significant movement
                     console.log("Significant movement detected!");

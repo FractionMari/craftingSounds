@@ -7,9 +7,13 @@
     <style>
 
         body {
-            background-color: royalblue;
+            background-color: rgb(92, 225, 65);
         }
+
         #pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(20, 1fr);
             width: 400px;
             height: 400px;
         }
@@ -75,15 +79,17 @@
             .then(stream => {
                 videoElement.srcObject = stream;
                 videoElement.play();
-                const pixelGridCanvas = document.getElementById('pixel-grid');
-                const context = pixelGridCanvas.getContext('2d');
-                const { videoWidth, videoHeight } = videoElement;
+                videoElement.onloadedmetadata = () => {
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const context = pixelGridCanvas.getContext('2d');
+                    const { videoWidth, videoHeight } = videoElement;
 
-                pixelGridCanvas.width = videoWidth;
-                pixelGridCanvas.height = videoHeight;
+                    pixelGridCanvas.width = videoWidth;
+                    pixelGridCanvas.height = videoHeight;
 
-                initPixelGrid();
-                drawFrame(context, videoWidth, videoHeight);
+                    initPixelGrid();
+                    drawFrame(context, videoWidth, videoHeight);
+                };
             })
             .catch(err => {
                 console.error('An error occurred: ', err);

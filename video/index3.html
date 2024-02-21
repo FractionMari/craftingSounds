@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Motion Detection</title>
     <style>
+        body {
+            background-color: red;
+        }
         video {
             width: 640px;
             height: 480px;
@@ -25,8 +28,8 @@
         }
 
         .pixel {
-            width: 16px;
-            height: 16px;
+            width: calc(320px / 20);
+            height: calc(240px / 20);
             background-color: white;
             border: 1px solid black;
         }

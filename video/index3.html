@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Motion Detection</title>
     <style>
-                body {
-            padding: 20px;
-            background-color: rgba(147, 224, 116, 0.829);
-        }
         video {
             width: 640px;
             height: 480px;
@@ -126,14 +122,34 @@
             pixelGrid.innerHTML = '';
 
             // If motion detected, activate pixels in grid, otherwise deactivate them
-            for (let i = 0; i < 20; i++) {
-                for (let j = 0; j < 20; j++) {
-                    const pixel = document.createElement('div');
-                    pixel.classList.add('pixel');
-                    if (motionDetected) {
-                        pixel.classList.add('active');
+            if (motionDetected) {
+                const gridWidth = 20;
+                const gridHeight = 20;
+                const videoWidth = canvas.width;
+                const videoHeight = canvas.height;
+
+                const cellWidth = videoWidth / gridWidth;
+                const cellHeight = videoHeight / gridHeight;
+
+                const activeCells = new Set();
+
+                for (let i = 0; i < videoHeight; i += cellHeight) {
+                    for (let j = 0; j < videoWidth; j += cellWidth) {
+                        const pixelIndex = Math.floor(i / cellHeight) * gridWidth + Math.floor(j / cellWidth);
+                        activeCells.add(pixelIndex);
                     }
-                    pixelGrid.appendChild(pixel);
+                }
+
+                for (let i = 0; i < gridHeight; i++) {
+                    for (let j = 0; j < gridWidth; j++) {
+                        const pixel = document.createElement('div');
+                        pixel.classList.add('pixel');
+                        const index = i * gridWidth + j;
+                        if (activeCells.has(index)) {
+                            pixel.classList.add('active');
+                        }
+                        pixelGrid.appendChild(pixel);
+                    }
                 }
             }
         }

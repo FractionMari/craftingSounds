@@ -25,15 +25,15 @@
         }
 
 
-.cell {
-    width: 30px;
-    height: 30px;
-    border: 2px solid rgb(253, 86, 8);
-}
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgb(253, 86, 8);
+        }
 
-.alive {
-    background-color: rgb(255, 92, 220);
-}
+        .alive {
+            background-color: rgb(255, 92, 220);
+        }
     </style>
 </head>
 <body>
@@ -101,7 +101,7 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const pixelGridCanvas = document.getElementById('grid');
                     const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 

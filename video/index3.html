@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webcam to Pixel Grid</title>
     <style>
+
+        body {
+            background-color: royalblue;
+        }
         #pixel-grid {
-            display: grid;
-            grid-template-columns: repeat(20, 1fr);
-            grid-template-rows: repeat(20, 1fr);
             width: 400px;
             height: 400px;
         }
@@ -20,7 +21,7 @@
     </style>
 </head>
 <body>
-    <div id="pixel-grid"></div>
+    <canvas id="pixel-grid"></canvas>
 
     <script>
         const pixelSize = 20;

@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Motion Detection</title>
     <style>
+                body {
+            padding: 20px;
+            background-color: rgba(147, 224, 116, 0.829);
+        }
         video {
             width: 640px;
             height: 480px;
@@ -47,6 +51,8 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const pixelGrid = document.getElementById('pixel-grid');
+
+        let lastFrame = null; // Definer lastFrame variabel globalt
 
         // Set canvas dimensions to match video
         video.addEventListener('play', () => {

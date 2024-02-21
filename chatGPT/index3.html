@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(127, 228, 152);
+            background-color: rgb(228, 159, 127);
         }
 
         #pixel-grid {
@@ -88,7 +88,7 @@
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            grid[i][j] = 1;
+                            grid[y][x] = 1;
                             
                     
                             

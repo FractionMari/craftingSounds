@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(228, 204, 127);
+            background-color: rgb(127, 228, 152);
         }
 
         #pixel-grid {
@@ -88,6 +88,7 @@
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[i][j] = 1;
                             
                     
                             
@@ -176,7 +177,7 @@ function drawGlider(i, j) {
         for (let j = 0; j < cols; j++) {
 
             //var isLive = Math.round(Math.random());
-            console.log(drawFrame);
+            
            
             if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
 

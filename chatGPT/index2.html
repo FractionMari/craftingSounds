@@ -7,13 +7,13 @@
     <style>
 
         body {
-            background-color: rgb(137, 127, 228);
+            background-color: rgb(127, 228, 149);
         }
 
-        #pixel-grid {
+        #grid {
             display: grid;
-            grid-template-columns: repeat(20, 1fr);
-            grid-template-rows: repeat(20, 1fr);
+            grid-template-columns: repeat(20, 30px);
+            grid-template-rows: repeat(20, 30px);
             width: 640px;
             height: 640px;
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
@@ -24,11 +24,6 @@
             border: 1px solid #000;
         }
 
-        #grid {
-    display: grid;
-    grid-template-columns: repeat(20, 30px);
-    grid-template-rows: repeat(20, 30px);
-}
 
 .cell {
     width: 30px;
@@ -42,8 +37,8 @@
     </style>
 </head>
 <body>
-    <canvas id="pixel-grid"></canvas>
-    <div id="grid"></div>
+
+    <div id="grid"> <canvas width="20" height="20" id="grid"></canvas></div>
     <button id="playPause">Play / Pause</button>
     <button id="clear">Clear</button>
     <button id="glider">Draw glider</button>

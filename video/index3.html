@@ -38,7 +38,6 @@
                 pixelGrid[i] = [];
                 for (let j = 0; j < 20; j++) {
                     pixelGrid[i][j] = false;
-                    console.log(pixelGrid[i][j]);
                 }
             }
         };
@@ -65,6 +64,7 @@
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            console.log(pixelGrid[y][x]);
                             
                         }
                     } else {

@@ -7,10 +7,10 @@
     <style>
 
         body {
-            background-color: rgb(137, 127, 228);
+            background-color: rgb(127, 228, 177);
         }
 
-        #grid {
+        #pixel-grid {
             display: grid;
             grid-template-columns: repeat(20, 30px);
             grid-template-rows: repeat(20, 30px);
@@ -24,22 +24,26 @@
             border: 1px solid #000;
         }
 
+        #grid {
+    display: grid;
+    grid-template-columns: repeat(20, 30px);
+    grid-template-rows: repeat(20, 30px);
+}
 
-        .cell {
-            width: 30px;
-            height: 30px;
-            border: 2px solid rgb(253, 86, 8);
-        }
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgb(253, 86, 8);
+}
 
-        .alive {
-            background-color: rgb(255, 92, 220);
-        }
+.alive {
+    background-color: rgb(255, 92, 220);
+}
     </style>
 </head>
 <body>
-
-    <div id="grid"> </div>
-    <canvas width="20" height="20" id="grid"></canvas>
+    <canvas id="pixel-grid"></canvas>
+    <div id="grid"></div>
     <button id="playPause">Play / Pause</button>
     <button id="clear">Clear</button>
     <button id="glider">Draw glider</button>
@@ -103,7 +107,7 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('grid');
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 

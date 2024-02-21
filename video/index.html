@@ -8,7 +8,7 @@
 
         body {
             padding: 20px;
-            background-color: rgba(127, 116, 224, 0.829);
+            background-color: rgba(213, 224, 116, 0.829);
         }
 
         #video, #canvas {
@@ -125,7 +125,7 @@
                     const index = y * 20 + x;
                     if (imageData[index] < threshold) {
                         simplifiedPixels.push({x, y});
-                        console.log("simply image:", simplifiedPixels);
+                        console.log(imageData);
                     }
                 }
             }

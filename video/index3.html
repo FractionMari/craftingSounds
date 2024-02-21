@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(65, 225, 65);
+            background-color: rgb(228, 127, 198);
         }
 
         #pixel-grid {
@@ -19,8 +19,8 @@
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
         .pixel {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border: 1px solid #000;
         }
     </style>
@@ -29,7 +29,7 @@
     <canvas id="pixel-grid"></canvas>
 
     <script>
-        const pixelSize = 20;
+        const pixelSize = 30;
         const threshold = 100; // Threshold for darkness
         let pixelGrid = [];
 
@@ -38,6 +38,7 @@
                 pixelGrid[i] = [];
                 for (let j = 0; j < 20; j++) {
                     pixelGrid[i][j] = false;
+                    console.log(pixelgrid[i][j]);
                 }
             }
         };
@@ -64,7 +65,7 @@
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            console.log(pixelGrid[y]);
+                            
                         }
                     } else {
                         pixelGrid[y][x] = false;

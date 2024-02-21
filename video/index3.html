@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(225, 84, 65);
+            background-color: rgb(65, 225, 65);
         }
 
         #pixel-grid {
@@ -64,7 +64,7 @@
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            console.log(context);
+                            console.log(pixelGrid[y]);
                         }
                     } else {
                         pixelGrid[y][x] = false;

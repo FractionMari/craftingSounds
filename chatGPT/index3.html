@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(228, 159, 127);
+            background-color: rgb(218, 228, 127);
         }
 
         #pixel-grid {
@@ -28,6 +28,7 @@
             display: grid;
             grid-template-columns: repeat(20, 30px);
             grid-template-rows: repeat(20, 30px);
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .cell {
@@ -37,7 +38,7 @@
         }
 
         .alive {
-            background-color: rgb(255, 92, 220);
+            background-color: rgb(146, 83, 11);
         }
     </style>
 </head>

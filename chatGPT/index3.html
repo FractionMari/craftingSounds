@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webcam to Pixel Grid</title>
     <style>
-
         body {
-            background-color: rgb(99, 216, 84);
+            background-color: rgb(84, 157, 216);
+            margin: 0;
+            padding: 0;
         }
 
         #video-container {
             position: relative;
             width: 640px; /* Just an example width */
-            height: 640px; /* Just an example height */
+            height: 480px; /* Just an example height */
         }
 
         #controls {
@@ -22,42 +23,22 @@
             height: 400px; /* Just an example height */
         }
 
-
-        #pixel-grid {
+        #video, #pixel-grid {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: grid;
-            grid-template-columns: repeat(20, 30px);
-            grid-template-rows: repeat(20, 30px);
-            width: 640px;
-            height: 640px;
+        }
+
+        #pixel-grid {
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
-        .pixel {
+
+        .pixel, .cell {
             width: 30px;
             height: 30px;
             border: 1px solid #000;
-        }
-
-        #grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 640px;
-            height: 640px;
-            display: grid;
-            grid-template-columns: repeat(20, 30px);
-            grid-template-rows: repeat(20, 30px);
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
-        }
-
-        .cell {
-            width: 30px;
-            height: 30px;
-            border: 2px solid rgb(253, 86, 8);
         }
 
         .alive {
@@ -68,9 +49,18 @@
 <body>
 
     <div id="video-container">
+        <video id="video" autoplay muted>
+            <source src="path/to/your/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <canvas id="pixel-grid"></canvas>
         <div id="grid"></div>
+    </div>
 
+    <div id="controls">
+        <button id="playPause">Play / Pause</button>
+        <button id="clear">Clear</button>
+        <button id="glider">Draw glider</button>
     </div>
 
 
@@ -161,7 +151,6 @@
 const polySynth = new Tone.PolySynth().toDestination();
 
 // Definerer parametere for Game of Life
-var slider = document.getElementById("myRange");
 
 const rows = 20;
 const cols = 20;

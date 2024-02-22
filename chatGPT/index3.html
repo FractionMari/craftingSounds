@@ -7,17 +7,17 @@
     <style>
 
         body {
-            background-color: rgb(79, 153, 64);
+            background-color: rgb(84, 168, 216);
         }
 
         #video-container {
             position: relative;
-            width: 400px; /* Just an example width */
-            height: 400px; /* Just an example height */
+            width: 640px; /* Just an example width */
+            height: 640px; /* Just an example height */
         }
 
         #controls {
-            position: relative;
+            position: absolute;
             width: 400px; /* Just an example width */
             height: 400px; /* Just an example height */
         }
@@ -120,6 +120,7 @@
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
                             grid[y][x] = 1;
+                            console.log(pixelSize);
                             
                     
                             

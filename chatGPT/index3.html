@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(155, 12, 250);
+            background-color: rgb(250, 194, 12);
         }
 
         #video-container {
@@ -83,7 +83,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
 
     <script>
-        const pixelSize = 30;
+        const pixelSize = 60;
         const threshold = 100; // Threshold for darkness
         let pixelGrid = [];
 
@@ -120,7 +120,7 @@
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
                             grid[y][x] = 1;
-                            console.log(pixelSize);
+                            
                             
                     
                             

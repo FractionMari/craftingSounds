@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(250, 28, 12);
+            background-color: rgb(250, 167, 12);
         }
 
         #video-container {
@@ -116,12 +116,10 @@
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            context.fillRect(x * pixelSize, y * pixelSize);
                             grid[y][x] = 1;
-                            console.log(grid);
-                            console.log(grid[y][x]);
-                            
-                            
+
+ 
                     
                             
                         }

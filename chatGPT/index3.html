@@ -7,13 +7,13 @@
     <style>
 
         body {
-            background-color: rgb(250, 167, 12);
+            background-color: rgb(207, 238, 96);
         }
 
         #video-container {
             position: relative;
-            width: 600px; /* Just an example width */
-            height: 600px; /* Just an example height */
+            width: 640px; /* Just an example width */
+            height: 640px; /* Just an example height */
         }
 
         #controls {
@@ -28,15 +28,15 @@
             top: 0;
             left: 0;
             display: grid;
-            grid-template-columns: repeat(20, 30px);
-            grid-template-rows: repeat(20, 30px);
-            width: 600px;
-            height: 600px; 
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(20, 32px);
+            width: 640px;
+            height: 640px; 
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
         .pixel {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border: 1px solid #000;
         }
 
@@ -44,17 +44,17 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 600px;
-            height: 600px;
+            width: 640px;
+            height: 640px;
             display: grid;
-            grid-template-columns: repeat(20, 30px);
-            grid-template-rows: repeat(20, 30px);
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(20, 32px);
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .cell {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border: 2px solid rgb(253, 8, 200);
         }
 
@@ -81,7 +81,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
 
     <script>
-        const pixelSize = 30;
+        const pixelSize = 32;
         const threshold = 100; // Threshold for darkness
         let pixelGrid = [];
 
@@ -116,7 +116,7 @@
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize);
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
                             grid[y][x] = 1;
 
  

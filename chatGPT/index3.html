@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(238, 136, 96);
+            background-color: rgb(96, 181, 238);
         }
 
         #video-container {
@@ -150,12 +150,12 @@
                     drawFrame(context, videoWidth, videoHeight);
 
                     setInterval(() => {
-                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.clearRect(0, 0, pixelGridCanvas.width, pixelGridCanvas.height);
                     // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
-                    const offsetX = (video.videoWidth - video.videoHeight) / 2;
-                    context.drawImage(video, offsetX, 0, video.videoHeight, video.videoHeight, 0, 0, canvas.width, canvas.height);
+                    const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+                    context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, pixelGridCanvas.width, pixelGridCanvas.height);
                     }, 100); // Oppdaterer hvert 100ms for å få en jevn visning
-                    console.log(drawFrame);
+                    
                 };
             })
             .catch(err => {

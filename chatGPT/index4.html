@@ -1,57 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Square Webcam Input</title>
-    <style>
-        body {
-            background-color: #43a10d;
-            margin: 0;
-            padding: 0;
-        }
-
-        #video-container {
-            position: relative;
-            width: 50%; /* Just an example width */
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        #video {
-            width: 150%; /* Gjør bredden dobbelt så stor som høyden for å opprettholde kvadratisk form */
-            height: 100%;
-            display: block;
-            object-fit: cover; /* Justerer video for å dekke hele området */
-            object-position: center; /* Plasserer videoen sentrert i forhold til området */
-            transform: scaleX(-1); /* Speilvend videoen */
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webcam Video</title>
+<style>
+  video {
+    width: 640px;
+    height: 480px;
+    object-fit: cover; /* Sørg for at videoen dekker hele området */
+  }
+</style>
 </head>
 <body>
 
-    <div id="video-container">
-        <video id="video" autoplay playsinline></video>
-    </div>
+<video id="video" autoplay></video>
+<canvas id="canvas" width="640" height="640"></canvas>
 
-    <script>
-        const video = document.getElementById('video');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const context = canvas.getContext('2d');
 
-        // Sjekker om nettleseren støtter getUserMedia
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    // Legger videostreamen til videokildeelementet
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function(error) {
-                    console.error('Error accessing the camera:', error);
-                });
-        } else {
-            console.error('getUserMedia is not supported by this browser');
-        }
-    </script>
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+      video.play();
+    })
+    .catch(err => console.error('Feil med å hente videostream: ', err));
+
+  video.addEventListener('play', () => {
+    setInterval(() => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
+      const offsetX = (video.videoWidth - 640) / 2;
+      const offsetY = (video.videoHeight - 480) / 2;
+      context.drawImage(video, offsetX, offsetY, 640, 480, 0, 0, 640, 640);
+    }, 100); // Oppdaterer hvert 100ms for å få en jevn visning
+  });
+});
+</script>
 
 </body>
 </html>

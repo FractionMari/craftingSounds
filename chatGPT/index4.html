@@ -5,16 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Webcam Video</title>
 <style>
+
+    body {
+        background-color: salmon;
+    }
   video {
-    width: 640px;
-    height: 480px;
-    object-fit: cover; /* Sørg for at videoen dekker hele området */
+    display: none; /* Skjul videoelementet, da vi bare trenger det for strømtilgang */
   }
 </style>
 </head>
 <body>
 
-<video id="video" autoplay></video>
+<video id="video" width="640" height="480" autoplay></video>
 <canvas id="canvas" width="640" height="640"></canvas>
 
 <script>
@@ -34,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
-      const offsetX = (video.videoWidth - 640) / 2;
-      const offsetY = (video.videoHeight - 480) / 2;
-      context.drawImage(video, offsetX, offsetY, 640, 480, 0, 0, 640, 640);
+      const offsetX = (video.videoWidth - video.videoHeight) / 2;
+      context.drawImage(video, offsetX, 0, video.videoHeight, video.videoHeight, 0, 0, canvas.width, canvas.height);
     }, 100); // Oppdaterer hvert 100ms for å få en jevn visning
   });
 });

@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(96, 181, 238);
+            background-color: rgb(207, 238, 96);
         }
 
         #video-container {
@@ -148,20 +148,14 @@
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
-
-                    setInterval(() => {
-                    context.clearRect(0, 0, pixelGridCanvas.width, pixelGridCanvas.height);
-                    // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
-                    const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-                    context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, pixelGridCanvas.width, pixelGridCanvas.height);
-                    }, 100); // Oppdaterer hvert 100ms for å få en jevn visning
-                    
+                    console.log(drawFrame);
                 };
             })
             .catch(err => {
                 console.error('An error occurred: ', err);
             });
 
+            
 
             // Oppretter en Tone.js polysynth
 const polySynth = new Tone.PolySynth().toDestination();

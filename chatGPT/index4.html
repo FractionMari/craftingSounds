@@ -6,7 +6,7 @@
     <title>Square Webcam Input</title>
     <style>
         body {
-            background-color: #f0f0f0;
+            background-color: #da3939;
             margin: 0;
             padding: 0;
         }
@@ -20,8 +20,9 @@
 
         #video {
             width: 100%;
-            height: auto;
+            height: 100%;
             display: block;
+            object-fit: cover; /* Justerer video for å dekke hele området */
             transform: scaleX(-1); /* Speilvend videoen */
         }
     </style>

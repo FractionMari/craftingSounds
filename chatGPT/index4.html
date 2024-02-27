@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Webcam Input</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #video-container {
+            position: relative;
+            width: 50%; /* Just an example width */
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            display: block;
+            transform: scaleX(-1); /* Speilvend videoen */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="video-container">
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+
+        // Sjekker om nettleseren støtter getUserMedia
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    // Legger videostreamen til videokildeelementet
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(error) {
+                    console.error('Error accessing the camera:', error);
+                });
+        } else {
+            console.error('getUserMedia is not supported by this browser');
+        }
+    </script>
+
+</body>
+</html>

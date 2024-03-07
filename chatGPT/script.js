@@ -10,6 +10,8 @@ let slider = document.getElementById("myRange");
 let interval = slider.value; // = document.getElementById("myRange");//500 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
+
+console.log(interval);
 /*
 // slider
 var slider = document.getElementById("myRange");

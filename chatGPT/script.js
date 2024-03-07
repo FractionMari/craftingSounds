@@ -2,13 +2,16 @@
 const polySynth = new Tone.PolySynth().toDestination();
 
 // Definerer parametere for Game of Life
-var slider = document.getElementById("myRange");
+
 
 const rows = 20;
 const cols = 20;
-let interval = 500 // Tidsintervall i millisekunder
+let interval = document.getElementById("myRange");//500 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
+
+// slider
+var slider = document.getElementById("myRange");
 
 
 //const interval2 = 500;
@@ -38,6 +41,8 @@ for (let i = 0; i < rows; i++) {
         gridContainer.appendChild(cell);
     }
 }
+
+
 
 // Opprett event listener for play/pause-knappen
 const playPauseButton = document.getElementById('playPause');

@@ -10,6 +10,14 @@ let interval = document.getElementById("myRange"); //500 // Tidsintervall i mill
 let isPlaying = false;
 let timerId;
 
+interval.oninput = function() {
+    interval = this.value;
+    console.log(this.value);
+
+    
+timerId = setInterval(updateGrid, interval);
+}
+
 console.log(interval.value);
 /*
 // slider
@@ -164,16 +172,10 @@ function togglePlay() {
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
 
-        interval.oninput = function() {
-            interval = this.value;
-            console.log(this.value);
-        
-            
-        timerId = setInterval(updateGrid, interval);
-        }
+
     } else {
         playPauseButton.textContent = 'Play';
-        clearInterval(timerId);
+        //clearInterval(timerId);
     }
 }
 

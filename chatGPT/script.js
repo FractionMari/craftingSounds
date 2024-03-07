@@ -169,7 +169,7 @@ function togglePlay() {
             console.log(this.value);
         
             
-        timerId = setInterval(updateGrid, this.value);
+        timerId = setInterval(updateGrid, interval);
         }
     } else {
         playPauseButton.textContent = 'Play';

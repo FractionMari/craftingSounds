@@ -51,6 +51,10 @@ gliderButton.addEventListener('click', drawGlider);
 const gliderButton2 = document.getElementById('glider2');
 gliderButton2.addEventListener('click', secondGlider);
 
+// Opprett en event listener for å tegne 4 gliders
+const gliderButton4 = document.getElementById('4gliders');
+gliderButton4.addEventListener('click', fourGliders);
+
 // Tegn inn en glider
 
 
@@ -88,6 +92,29 @@ function secondGlider(i, j) {
             //console.log(isLive);
            
             if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18)){
+
+                const cell = gridContainer.children[i * cols + j];
+                cell.classList.toggle('alive');
+                grid[i][j] = 1;
+                
+
+
+            }
+            
+ 
+        }
+    }
+}
+
+function fourGliders(i, j) {
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+
+            //var isLive = Math.round(Math.random());
+            //console.log(isLive);
+           
+            if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18) || (i == 19 && j == 19) || (i == 18 && j == 18) || (i == 18 && j == 17) || (i == 17 && j == 19) || (i == 17 && j == 19) || (i == 19 && j == 0) || (i == 19 && j == 2) || (i == 18 && j == 1) || (i == 18 && j == 2) || (i == 17 && j == 1) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1) ){
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');

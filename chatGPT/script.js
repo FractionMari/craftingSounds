@@ -165,7 +165,7 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        timerId = setInterval(updateGrid, interval);
+        timerId = setInterval(updateGrid, interval.value);
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);

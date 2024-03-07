@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(238, 141, 96);
+            background-color: rgb(238, 96, 214);
         }
 
         #video-container {
@@ -33,6 +33,7 @@
             width: 640px;
             height: 480px; 
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
+            display: none;
         }
         .pixel {
             width: 32px;
@@ -67,6 +68,7 @@
 
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
+        <canvas id="canvas" width="640" height="640"></canvas>
         <div id="grid"></div>
 
     </div>
@@ -96,7 +98,10 @@
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
-            context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
+              // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
+            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+            context.drawImage(video, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+          //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             
             for (let y = 0; y < 20; y++) {

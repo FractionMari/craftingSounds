@@ -15,8 +15,6 @@ console.log(interval.value);
 // slider
 var slider = document.getElementById("myRange");
 
-
-//const interval2 = 500;
 slider.oninput = function() {
     interval = this.value;
     console.log(this.value);
@@ -165,7 +163,14 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        timerId = setInterval(updateGrid, interval.value);
+
+        interval.oninput = function() {
+            interval = this.value;
+            console.log(this.value);
+        
+            
+        timerId = setInterval(updateGrid, this.value);
+        }
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);

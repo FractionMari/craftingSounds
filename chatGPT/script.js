@@ -6,7 +6,7 @@ const polySynth = new Tone.PolySynth().toDestination();
 
 const rows = 20;
 const cols = 20;
-let interval = document.getElementById("slider"); //500 // Tidsintervall i millisekunder
+let interval = document.getElementById("myRange"); //500 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 

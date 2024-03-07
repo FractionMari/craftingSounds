@@ -6,34 +6,23 @@ const polySynth = new Tone.PolySynth().toDestination();
 
 const rows = 20;
 const cols = 20;
-let interval = document.getElementById("myRange"); //500 // Tidsintervall i millisekunder
+let slider = document.getElementById("myRange");
+let interval = slider.value; // = document.getElementById("myRange");//500 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
-
-interval.oninput = function() {
-    interval = this.value;
-    console.log(this.value);
-
-    
-timerId = setInterval(updateGrid, interval);
-}
-
-console.log(interval.value);
 /*
 // slider
 var slider = document.getElementById("myRange");
 
+
+//const interval2 = 500;
 slider.oninput = function() {
     interval = this.value;
     console.log(this.value);
 
     }
-    
-    
-    
-*/
-
-
+    console.log(interval);
+    */
 // Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
@@ -171,11 +160,10 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-
-
+        timerId = setInterval(updateGrid, interval);
     } else {
         playPauseButton.textContent = 'Play';
-        //clearInterval(timerId);
+        clearInterval(timerId);
     }
 }
 

@@ -47,46 +47,14 @@ playPauseButton.addEventListener('click', togglePlay);
 const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
+// Opprett en event listener for den andre glider-knappen
+const gliderButton2 = document.getElementById('glider2');
+gliderButton2.addEventListener('click', secondGlider);
+
 // Tegn inn en glider
-/*
-function drawGlider() {
-    grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => cells[0].classList.add('alive'));
-    cells.forEach(cell => cells[21].classList.add('alive'));
-    cells.forEach(cell => cells[22].classList.add('alive'));
-    cells.forEach(cell => cells[40].classList.add('alive'));
-    cells.forEach(cell => cells[41].classList.add('alive')); 
 
-}
-*/
-/*
-function randomButtonHandler() {
-    if (playing) return;
-    clearButtonHandler();
-    for (var i = 0; i < rows; i++) {
-        for (var j = 0; j < cols; j++) {
-            var isLive = Math.round(Math.random());
-            if (isLive == 1) {
-                var cell = document.getElementById(i + "_" + j);
-                cell.setAttribute("class", "live");
-                grid[i][j] = 1;
-            }
-        }
-    }
-}
-*/
 
-/* 
-for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
-        cell.addEventListener('click', () => toggleCell(i, j));
-        gridContainer.appendChild(cell);
-    }
-}
-*/
+
 
 function drawGlider(i, j) {
 
@@ -97,6 +65,29 @@ function drawGlider(i, j) {
             //console.log(isLive);
            
             if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
+
+                const cell = gridContainer.children[i * cols + j];
+                cell.classList.toggle('alive');
+                grid[i][j] = 1;
+                
+
+
+            }
+            
+ 
+        }
+    }
+}
+
+function secondGlider(i, j) {
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+
+            //var isLive = Math.round(Math.random());
+            //console.log(isLive);
+           
+            if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18)){
 
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');

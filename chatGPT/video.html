@@ -100,7 +100,7 @@
         const drawFrame = (context, videoWidth, videoHeight) => {
               // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-            context.drawImage(video, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
           //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             

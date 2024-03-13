@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(248, 145, 240);
+            background-color: rgb(248, 246, 145);
         }
 
         #video-container {
@@ -29,7 +29,7 @@
             left: 0;
             display: grid;
             grid-template-columns: repeat(20, 32px);
-            grid-template-rows: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
             width: 640px;
             height: 480px; 
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
@@ -104,7 +104,7 @@
           //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             
-            for (let y = 0; y < 20; y++) {
+            for (let y = 0; y < 15; y++) {
                 for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
@@ -168,7 +168,7 @@ const polySynth = new Tone.PolySynth().toDestination();
 // Definerer parametere for Game of Life
 
 const rows = 20;
-const cols = 20;
+const cols = 15;
 let interval = 500 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;

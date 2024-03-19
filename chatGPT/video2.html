@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(208, 139, 214);
+            background-color: rgb(240, 8, 27);
         }
 
         #video-container {
@@ -106,7 +106,7 @@
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             
             for (let y = 0; y < 20; y++) {
-                for (let x = 0; x < 20; x++) {
+                for (let x = 0; x < 15; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
 

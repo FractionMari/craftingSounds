@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crafting sounds</title>
+    <title>Finne ut av dette med initial triggers</title>
     <style>
 
         body {
-            background-color: rgb(96, 238, 207);
+            background-color: rgb(238, 96, 226);
         }
 
         #video-container {
@@ -300,7 +300,7 @@ function updateGrid() {
     newGrid.forEach((row, i) => {
         row.forEach((cell, j) => {
             if (cell === 1) {
-                cells[i * cols + j].classList.add('alive');
+                cells[i * cols + j + 1].classList.add('alive');
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }

@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crafting</title>
+    <title>Crafting sounds</title>
     <style>
 
         body {
-            background-color: rgb(136, 238, 96);
+            background-color: rgb(96, 238, 207);
         }
 
         #video-container {
             position: relative;
             width: 640px; /* Just an example width */
-            height: 780px; /* Just an example height */
+            height: 700px; /* Just an example height */
         }
 
         #controls {
@@ -255,6 +255,7 @@ function togglePlay() {
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
         timerId = setInterval(updateGrid, interval);
+        console.log(timerId);
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);

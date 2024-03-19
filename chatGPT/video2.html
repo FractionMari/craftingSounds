@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam to Pixel Grid 2</title>
+    <title>Få til rektangel</title>
     <style>
 
         body {
-            background-color: rgb(238, 228, 96);
+            background-color: rgb(192, 214, 139);
         }
 
         #video-container {
             position: relative;
             width: 640px; /* Just an example width */
-            height: 640px; /* Just an example height */
+            height: 500px; /* Just an example height */
         }
 
         #controls {
@@ -28,7 +28,6 @@
             top: 0;
             left: 0;
             display: grid;
-
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
 
         }
@@ -46,14 +45,14 @@
             height: 480px;
             display: grid;
             grid-template-columns: repeat(20, 32px);
-            grid-template-rows: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .cell {
             width: 32px;
             height: 32px;
-            border: 2px solid rgb(122, 92, 9);
+            border: 2px solid rgb(223, 55, 13);
         }
 
         .alive {

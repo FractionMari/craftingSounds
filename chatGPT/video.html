@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(238, 96, 226);
+            background-color: rgb(13, 245, 13);
         }
 
         #video-container {
@@ -300,7 +300,8 @@ function updateGrid() {
     newGrid.forEach((row, i) => {
         row.forEach((cell, j) => {
             if (cell === 1) {
-                cells[i * cols + j + 1].classList.add('alive');
+                // her fucker jeg det opp litt
+                cells[i * cols + j + 2].classList.add('alive');
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }

@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(240, 8, 27);
+            background-color: rgb(78, 8, 240);
         }
 
         #video-container {
@@ -64,6 +64,12 @@
     </style>
 </head>
 <body>
+    <div id="controls">
+        <button id="playPause">Play / Pause</button>
+        <button id="clear">Clear</button>
+        <button id="glider">Draw glider</button>
+    </div>
+    <br>
 
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
@@ -74,11 +80,7 @@
     </div>
 
 
-<div id="controls">
-    <button id="playPause">Play / Pause</button>
-    <button id="clear">Clear</button>
-    <button id="glider">Draw glider</button>
-</div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
 

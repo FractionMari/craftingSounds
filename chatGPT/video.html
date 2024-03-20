@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(199, 216, 123);
+            background-color: rgb(216, 123, 208);
         }
 
         #video-container {
@@ -119,11 +119,11 @@
 
                     if (averageBrightness < threshold) {
                         if (!pixelGrid[y][x]) {
-                            grid[y][x] = 1;
+                            
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                        
+                            grid[y][x] = 1;
                             
                         }
                     } else {
@@ -252,11 +252,11 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        //timerId = setInterval(updateGrid, interval);
-        console.log(timerId);
+        timerId = setInterval(updateGrid, interval);
+        console.log(updateGrid);
     } else {
         playPauseButton.textContent = 'Play';
-       // clearInterval(timerId);
+        clearInterval(timerId);
     }
 }
 

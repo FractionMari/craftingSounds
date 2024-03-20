@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(227, 243, 8);
+            background-color: rgb(137, 8, 243);
         }
 
         #video-container {
@@ -284,7 +284,9 @@ function updateGrid() {
                     availableSynths.push(synth);
                 }
             } else if (grid[i][j] === 0 && neighbors === 3) {
-                newGrid[i][j] = 1;
+              // her fucka jeg opp
+                // newGrid[i][j] = 1;
+               grid[i][j] = 1;
                 playNote(i, j);
             } else {
                 newGrid[i][j] = grid[i][j];

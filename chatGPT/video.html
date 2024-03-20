@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(123, 216, 123);
+            background-color: rgb(199, 216, 123);
         }
 
         #video-container {
@@ -169,7 +169,7 @@ const rows = 20;
 const cols = 20;
 let interval = 500 // Tidsintervall i millisekunder
 let isPlaying = false;
-let timerId = 40;
+let timerId;
 
 
 // Initialiserer Game of Life grid
@@ -252,11 +252,11 @@ function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
-        timerId = setInterval(updateGrid, interval);
+        //timerId = setInterval(updateGrid, interval);
         console.log(timerId);
     } else {
         playPauseButton.textContent = 'Play';
-        clearInterval(timerId);
+       // clearInterval(timerId);
     }
 }
 

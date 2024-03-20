@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finne ut av dette med initial triggers</title>
+    <title>Finne ut initial triggers</title>
     <style>
 
         body {
-            background-color: rgb(228, 36, 186);
+            background-color: rgb(216, 123, 196);
         }
 
         #video-container {
@@ -119,13 +119,11 @@
 
                     if (averageBrightness < threshold) {
                         if (!pixelGrid[y][x]) {
+                            grid[y][x] = 1;
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            grid[y][x] = 1;
-
- 
-                    
+                        
                             
                         }
                     } else {
@@ -301,7 +299,7 @@ function updateGrid() {
         row.forEach((cell, j) => {
             if (cell === 1) {
                 // her fucker jeg det opp litt
-                cells[i * cols + j + 300].classList.add('alive');
+                cells[i * cols + j].classList.add('alive');
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }

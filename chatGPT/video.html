@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(216, 123, 208);
+            background-color: rgb(210, 216, 123);
         }
 
         #video-container {
@@ -300,6 +300,7 @@ function updateGrid() {
             if (cell === 1) {
                 // her fucker jeg det opp litt
                 cells[i * cols + j].classList.add('alive');
+                console.log(cells);
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }

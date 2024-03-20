@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(190, 135, 72);
+            background-color: rgb(72, 190, 111);
         }
 
         #video-container {
@@ -28,6 +28,8 @@
             left: 0;
             display: grid;
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
 
         }
         .pixel {
@@ -43,8 +45,8 @@
             width: 640px;
             height: 480px;
             display: grid;
-            grid-template-columns: repeat(15, 32px);
-            grid-template-rows: repeat(20, 32px);
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 

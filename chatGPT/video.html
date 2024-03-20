@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(210, 216, 123);
+            background-color: rgb(69, 73, 12);
         }
 
         #video-container {
@@ -253,7 +253,6 @@ function togglePlay() {
     if (isPlaying) {
         playPauseButton.textContent = 'Pause';
         timerId = setInterval(updateGrid, interval);
-        console.log(updateGrid);
     } else {
         playPauseButton.textContent = 'Play';
         clearInterval(timerId);
@@ -300,7 +299,7 @@ function updateGrid() {
             if (cell === 1) {
                 // her fucker jeg det opp litt
                 cells[i * cols + j].classList.add('alive');
-                console.log(cells);
+                console.log(cols);
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }

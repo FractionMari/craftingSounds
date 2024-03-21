@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(190, 178, 72);
+            background-color: rgb(170, 72, 190);
         }
 
         #video-container {
@@ -91,9 +91,9 @@
         let pixelGrid = [];
 
         const initPixelGrid = () => {
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 20; i++) {
                 pixelGrid[i] = [];
-                for (let j = 0; j < 15; j++) {
+                for (let j = 0; j < 20; j++) {
                     pixelGrid[i][j] = false;
                     
                 }
@@ -108,8 +108,8 @@
           //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             
-            for (let y = 0; y < 15; y++) {
-                for (let x = 0; x < 15; x++) {
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
 

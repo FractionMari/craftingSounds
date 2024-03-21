@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(168, 190, 72);
+            background-color: rgb(190, 178, 72);
         }
 
         #video-container {
@@ -59,7 +59,9 @@
         .alive {
             background-color: rgb(20, 2, 3);
         }
-
+        video {
+    display: none; /* Skjul videoelementet, da vi bare trenger det for strømtilgang */
+  }
     </style>
 </head>
 <body>
@@ -72,7 +74,7 @@
 
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
-
+        <video id="video" width="640" height="480" autoplay></video>
         <canvas id="canvas" width="640" height="640"></canvas>
         <div id="grid"></div>
 

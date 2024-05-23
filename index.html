@@ -7,13 +7,13 @@
     <style>
 
         body {
-            background-color: rgb(243, 239, 8);
+            background-color: rgb(243, 102, 8);
         }
 
         #video-container {
             position: relative;
-            width: 1280px; /* Just an example width 640 x 2*/
-            height: 960px; /* Just an example height 480 x 2 */
+            width: 576px; /* 18x32*/
+            height: 352px; /* 11x32*/
         }
 
         #controls {
@@ -28,10 +28,10 @@
             top: 0;
             left: 0;
             display: grid;
-            grid-template-columns: repeat(20, 62px);
-            grid-template-rows: repeat(15, 62px);
-            width: 1280px; /* 640 x 2*/
-            height: 960px; /* 480 x 2 */
+            grid-template-columns: repeat(18, 32px);/* 18x11 piksler*/
+            grid-template-rows: repeat(11, 32px); /* 18x11 piksler*/
+            width: 576px; /* 18x32*/
+            height: 352px; /* 11x32*/
             transform: scaleX(-1); /* Speilvend pikselrutenettet */
 
         }

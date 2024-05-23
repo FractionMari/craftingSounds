@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(243, 239, 8);
+            background-color: rgb(8, 243, 28);
         }
 
         #video-container {
@@ -196,6 +196,14 @@ for (let i = 0; i < rows; i++) {
 // Opprett event listener for play/pause-knappen
 const playPauseButton = document.getElementById('playPause');
 playPauseButton.addEventListener('click', togglePlay);
+
+document.onkeydown = function(e){
+    e = e || window.event;
+    var key = e.which || e.keyCode;
+    if(key===84){
+        togglePlay;
+    }
+}
 
 // Opprett en event listener for glider-knappen
 const gliderButton = document.getElementById('glider');

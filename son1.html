@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(8, 176, 243);
+            background-color: rgb(8, 243, 47);
         }
 
         #video-container {
@@ -78,6 +78,7 @@
     <button id="playPause">Play / Pause</button>
     <button id="clear">Clear</button>
     <button id="glider">Draw glider</button>
+    <button id="glider2">Draw glider 2</button>
 </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
@@ -205,10 +206,22 @@ document.addEventListener('keydown', (event) => {
 const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
+// Opprett en event listener for den andre glider-knappen
+const gliderButton2 = document.getElementById('glider2');
+gliderButton2.addEventListener('click', secondGlider);
+
+
 // Legg til en keydown-hendelse for å lytte etter "G"-tasten
 document.addEventListener('keydown', (event) => {
     if (event.key.toLowerCase() === 'g') {
         drawGlider();
+    }
+});
+
+// Legg til en keydown-hendelse for å lytte etter "G"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'h') {
+        secondGlider();
     }
 });
 
@@ -228,14 +241,33 @@ function drawGlider(i, j) {
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
                 
-
-
             }
             
- 
         }
     }
 }
+
+
+function secondGlider(i, j) {
+
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+
+        //var isLive = Math.round(Math.random());
+        //console.log(isLive);
+       
+        if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18)){
+
+            const cell = gridContainer.children[i * cols + j];
+            cell.classList.toggle('alive');
+            grid[i][j] = 1;
+
+        }
+    
+    }
+}
+}
+
 // Opprett event listener for clear-knappen
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', clearGrid);
@@ -328,7 +360,7 @@ function updateGrid() {
 }
 
 // Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['C1', 'D1', 'E1', 'G1', 'A1', 'C2', 'D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4' ];
+const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
 
 
 //['C2', 'G2', 'D2', 'A2', 'E2', 'B2', 'F#2', 'Db2', 'Ab2', 'Eb2', 'Bb2', 'F2'];

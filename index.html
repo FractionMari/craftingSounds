@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(216, 8, 243);
+            background-color: rgb(243, 8, 59);
         }
 
         #video-container {
@@ -208,6 +208,13 @@ document.addEventListener('keydown', (event) => {
 const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
+// Legg til en keydown-hendelse for å lytte etter "G"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'g') {
+        drawGlider();
+    }
+});
+
 // Tegn inn en glider
 
 function drawGlider(i, j) {
@@ -235,6 +242,13 @@ function drawGlider(i, j) {
 // Opprett event listener for clear-knappen
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', clearGrid);
+
+// Legg til en keydown-hendelse for å lytte etter "C"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'c') {
+        clearGrid();
+    }
+});
 
 // Definerer funksjon for å bytte tilstanden til en celle
 function toggleCell(i, j) {

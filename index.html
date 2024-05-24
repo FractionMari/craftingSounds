@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(8, 243, 28);
+            background-color: rgb(216, 8, 243);
         }
 
         #video-container {
@@ -197,21 +197,18 @@ for (let i = 0; i < rows; i++) {
 const playPauseButton = document.getElementById('playPause');
 playPauseButton.addEventListener('click', togglePlay);
 
-document.onkeydown = function(e){
-    e = e || window.event;
-    var key = e.which || e.keyCode;
-    if(key===84){
-        togglePlay;
+// Legg til en keydown-hendelse for å lytte etter "P"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'p') {
+        togglePlay();
     }
-}
+});
 
 // Opprett en event listener for glider-knappen
 const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
 // Tegn inn en glider
-
-
 
 function drawGlider(i, j) {
 

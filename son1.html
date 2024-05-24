@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(141, 243, 8);
+            background-color: rgb(243, 200, 8);
         }
 
         #video-container {
@@ -168,7 +168,7 @@ const polySynth = new Tone.PolySynth().toDestination();
 
 const rows = 15;
 const cols = 20;
-let interval = 50 // Tidsintervall i millisekunder
+let interval = 100 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 
@@ -357,7 +357,8 @@ function updateGrid() {
 }
 
 // Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['C2', 'G2', 'D2', 'A2', 'E2', 'B2', 'F#2', 'Db2', 'Ab2', 'Eb2', 'Bb2', 'F2'];
+const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
+
 
 //['C2', 'G2', 'D2', 'A2', 'E2', 'B2', 'F#2', 'Db2', 'Ab2', 'Eb2', 'Bb2', 'F2'];
 

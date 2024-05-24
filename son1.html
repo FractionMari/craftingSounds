@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(98, 8, 243);
+            background-color: rgb(243, 8, 223);
         }
 
         #video-container {
@@ -385,6 +385,7 @@ function playNote(i, j) {
 
     // Spill tonen med den spesifikke noten og gain-verdien
     synth.triggerAttackRelease(note, '8n', undefined, gain);
+    console.log(gain);
 
     // Lagre synth-informasjon for senere gjenbruk
     synth.cellX = i;

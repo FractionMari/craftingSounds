@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finne ut initial triggers</title>
+    <title>Game of Life Music</title>
     <style>
-
         body {
-            background-color: rgb(8, 243, 28);
+            background-color: rgb(243, 227, 8);
         }
 
         #video-container {
             position: relative;
-            width: 640px; /* Just an example width */
-            height: 700px; /* Just an example height */
+            width: 640px;
+            height: 700px;
         }
 
         #controls {
             position: static;
-            width: 400px; /* Just an example width */
-            height: 400px; /* Just an example height */
+            width: 400px;
+            height: 400px;
         }
-
 
         #pixel-grid {
             position: absolute;
@@ -30,11 +28,11 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            width: 640px; 
-            height: 480px; 
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
-
+            width: 640px;
+            height: 480px;
+            transform: scaleX(-1);
         }
+
         .pixel {
             width: 32px;
             height: 32px;
@@ -50,7 +48,7 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+            transform: scaleX(-1);
         }
 
         .cell {
@@ -66,13 +64,11 @@
 </head>
 <body>
 
-    <div id="video-container">
-        <canvas id="pixel-grid"></canvas>
-        <canvas id="canvas" width="640" height="640"></canvas>
-        <div id="grid"></div>
-
-    </div>
-
+<div id="video-container">
+    <canvas id="pixel-grid"></canvas>
+    <canvas id="canvas" width="640" height="640"></canvas>
+    <div id="grid"></div>
+</div>
 
 <div id="controls">
     <button id="playPause">Play / Pause</button>
@@ -80,109 +76,93 @@
     <button id="glider">Draw glider</button>
 </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
 
-    <script>
-        const pixelSize = 32;
-        const threshold = 100; // Threshold for darkness
-        let pixelGrid = [];
+<script>
+    const pixelSize = 32;
+    const threshold = 100; // Threshold for darkness
+    let pixelGrid = [];
 
-        const initPixelGrid = () => {
-            for (let i = 0; i < 20; i++) {
-                pixelGrid[i] = [];
-                for (let j = 0; j < 20; j++) {
-                    pixelGrid[i][j] = false;
-                    
-                }
+    const initPixelGrid = () => {
+        for (let i = 0; i < 20; i++) {
+            pixelGrid[i] = [];
+            for (let j = 0; j < 20; j++) {
+                pixelGrid[i][j] = false;
             }
-        };
+        }
+    };
 
-        const drawFrame = (context, videoWidth, videoHeight) => {
-              // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
-            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
-          //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
-            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
-            
-            for (let y = 0; y < 20; y++) {
-                for (let x = 0; x < 20; x++) {
-                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
-                    let averageBrightness = 0;
+    const drawFrame = (context, videoWidth, videoHeight) => {
+        const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+        context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+        const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
-                    for (let i = 0; i < pixelSize; i++) {
-                        for (let j = 0; j < pixelSize; j++) {
-                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
-                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                        }
-                    }
-                    averageBrightness /= (pixelSize * pixelSize);
+        for (let y = 0; y < 20; y++) {
+            for (let x = 0; x < 20; x++) {
+                const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                let averageBrightness = 0;
 
-                    if (averageBrightness < threshold) {
-                        if (!pixelGrid[y][x]) {
-                            
-                            pixelGrid[y][x] = true;
-                            context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            grid[y][x] = 1;
-                            
-                        }
-                    } else {
-                        pixelGrid[y][x] = false;
+                for (let i = 0; i < pixelSize; i++) {
+                    for (let j = 0; j < pixelSize; j++) {
+                        const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                        averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
                     }
                 }
+                averageBrightness /= (pixelSize * pixelSize);
+
+                if (averageBrightness < threshold) {
+                    if (!pixelGrid[y][x]) {
+                        pixelGrid[y][x] = true;
+                        context.fillStyle = '#000';
+                        context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                        grid[y][x] = 1;
+                    }
+                } else {
+                    pixelGrid[y][x] = false;
+                }
             }
-            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
-        };
+        }
+        requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+    };
 
-        const videoElement = document.createElement('video');
-        videoElement.autoplay = true;
+    const videoElement = document.createElement('video');
+    videoElement.autoplay = true;
 
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                videoElement.srcObject = stream;
-                videoElement.play();
-                videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('pixel-grid');
-                    const context = pixelGridCanvas.getContext('2d');
-                    const { videoWidth, videoHeight } = videoElement;
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            videoElement.srcObject = stream;
+            videoElement.play();
+            videoElement.onloadedmetadata = () => {
+                const pixelGridCanvas = document.getElementById('pixel-grid');
+                const context = pixelGridCanvas.getContext('2d');
+                const { videoWidth, videoHeight } = videoElement;
 
-                    pixelGridCanvas.width = videoWidth;
-                    pixelGridCanvas.height = videoHeight;
+                pixelGridCanvas.width = videoWidth;
+                pixelGridCanvas.height = videoHeight;
 
-                    initPixelGrid();
-                    drawFrame(context, videoWidth, videoHeight);
-                    console.log(drawFrame);
-                };
-            })
-            .catch(err => {
-                console.error('An error occurred: ', err);
-            });
+                initPixelGrid();
+                drawFrame(context, videoWidth, videoHeight);
+            };
+        })
+        .catch(err => {
+            console.error('An error occurred: ', err);
+        });
 
-            
-
-            // Oppretter en Tone.js polysynth
 const polySynth = new Tone.PolySynth().toDestination();
-
-// Definerer parametere for Game of Life
 
 const rows = 15;
 const cols = 20;
-let interval = 500 // Tidsintervall i millisekunder
+let interval = 500;
 let isPlaying = false;
 let timerId;
 
-
-// Initialiserer Game of Life grid
 let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
-// Opprettet et array for å holde styr på alle aktive synther
 let activeSynths = [];
 let availableSynths = [];
 
-// Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
+const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6'];
 
-// Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
@@ -193,66 +173,39 @@ for (let i = 0; i < rows; i++) {
     }
 }
 
-// Opprett event listener for play/pause-knappen
 const playPauseButton = document.getElementById('playPause');
 playPauseButton.addEventListener('click', togglePlay);
 
-// Legg til en keydown-hendelse for å lytte etter "P"-tasten
-document.addEventListener('keydown', (event) => {
-    if (event.key.toLowerCase() === 'p') {
-        togglePlay();
-    }
-});
-
-// Opprett en event listener for glider-knappen
 const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
-// Tegn inn en glider
-
 function drawGlider(i, j) {
-
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-
-            //var isLive = Math.round(Math.random());
-            
-           
-            if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
-
+            if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)) {
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
-                
-
-
             }
-            
- 
         }
     }
 }
-// Opprett event listener for clear-knappen
+
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', clearGrid);
 
-// Definerer funksjon for å bytte tilstanden til en celle
 function toggleCell(i, j) {
     grid[i][j] = grid[i][j] ? 0 : 1;
     const cell = gridContainer.children[i * cols + j];
     cell.classList.toggle('alive');
-    console.log(i);
 }
 
-// Definerer funksjon for å klargjøre gridet
 function clearGrid() {
     grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => cell.classList.remove('alive'));
 }
 
-
-// Definerer funksjon for å starte eller pause spill-loopen
 function togglePlay() {
     isPlaying = !isPlaying;
     if (isPlaying) {
@@ -264,7 +217,6 @@ function togglePlay() {
     }
 }
 
-// Definerer funksjon for å oppdatere tilstanden til gridet
 function updateGrid() {
     let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
@@ -282,31 +234,25 @@ function updateGrid() {
 
             if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
                 newGrid[i][j] = 0;
-                // Finn synth for denne cellen og frigjør den for gjenbruk
                 const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
                 if (synthIndex !== -1) {
                     const synth = activeSynths.splice(synthIndex, 1)[0];
                     availableSynths.push(synth);
                 }
             } else if (grid[i][j] === 0 && neighbors === 3) {
-              // her fucka jeg opp
-               newGrid[i][j] = 1;
-               //grid[i][j] = 1;
-                playNote(i, j);
+                newGrid[i][j] = 1;
+                playNoteBasedOnNeighbors(i, j);
             } else {
                 newGrid[i][j] = grid[i][j];
             }
         }
     }
 
-    // Oppdaterer HTML-grid med ny tilstand
     const cells = document.querySelectorAll('.cell');
     newGrid.forEach((row, i) => {
         row.forEach((cell, j) => {
             if (cell === 1) {
-                // her fucker jeg det opp litt
                 cells[i * cols + j].classList.add('alive');
-                console.log(i);
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }
@@ -316,32 +262,24 @@ function updateGrid() {
     grid = newGrid;
 }
 
-// Definerer funksjon for å spille en note
-function playNote(i, j) {
-    let synth;
-    if (availableSynths.length > 0) {
-        // Bruk en tilgjengelig synth hvis tilgjengelig
-        synth = availableSynths.pop();
-    } else {
-        // Opprett en ny synth hvis ingen tilgjengelige synther
-        synth = new Tone.Synth().toDestination();
+function playNoteBasedOnNeighbors(i, j) {
+    let neighbors = 0;
+    for (let x = -1; x <= 1; x++) {
+        for (let y = -1; y <= 1; y++) {
+            if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
+                neighbors += grid[i + x][j + y];
+            }
+        }
     }
+    neighbors -= grid[i][j];
 
-    // Konverterer vertikale posisjonen til noten i pentatonisk skala
-    const noteIndex = (i + j) % pentatonicScale.length;
+    let synth = new Tone.Synth().toDestination();
+    const noteIndex = neighbors % pentatonicScale.length;
     const note = pentatonicScale[noteIndex];
-    // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = j / cols;
 
-    // Spill tonen med den spesifikke noten og gain-verdien
     synth.triggerAttackRelease(note, '8n', undefined, gain);
-
-    // Lagre synth-informasjon for senere gjenbruk
-    synth.cellX = i;
-    synth.cellY = j;
-    activeSynths.push(synth);
 }
-
-    </script>
+</script>
 </body>
 </html>

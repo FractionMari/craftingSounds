@@ -3,119 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Cellular Automata</title>
+    <title>Finne ut initial triggers</title>
     <style>
-        #canvas {
-            border: 1px solid black;
+
+        body {
+            background-color: rgb(243, 8, 59);
+        }
+
+        #video-container {
+            position: relative;
+            width: 640px; /* Just an example width */
+            height: 700px; /* Just an example height */
+        }
+
+        #controls {
+            position: static;
+            width: 400px; /* Just an example width */
+            height: 400px; /* Just an example height */
+        }
+
+
+        #pixel-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: grid;
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
+            width: 640px; 
+            height: 480px; 
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+
+        }
+        .pixel {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #000;
+        }
+
+        #grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 640px;
+            height: 640px;
+            display: grid;
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+        }
+
+        .cell {
+            width: 32px;
+            height: 32px;
+            border: 2px solid rgb(102, 8, 253);
+        }
+
+        .alive {
+            background-color: rgb(20, 2, 3);
         }
     </style>
 </head>
 <body>
-    <video id="video" width="640" height="480" autoplay></video>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    
+
+    <div id="video-container">
+        <canvas id="pixel-grid"></canvas>
+        <canvas id="canvas" width="640" height="640"></canvas>
+        <div id="grid"></div>
+
+    </div>
+
+
+<div id="controls">
+    <button id="playPause">Play / Pause</button>
+    <button id="clear">Clear</button>
+    <button id="glider">Draw glider</button>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        const pixelSize = 32;
+        const threshold = 100; // Threshold for darkness
+        let pixelGrid = [];
 
-        const threshold = 128; // Threshold for triggering cellular automata update
-        let isRunning = false;
+        const initPixelGrid = () => {
+            for (let i = 0; i < 20; i++) {
+                pixelGrid[i] = [];
+                for (let j = 0; j < 20; j++) {
+                    pixelGrid[i][j] = false;
+                    
+                }
+            }
+        };
 
-        // Function to apply cellular automata rule
-        function applyRule(grid) {
-            const newGrid = [];
-            for (let i = 0; i < grid.length; i++) {
-                newGrid[i] = [];
-                for (let j = 0; j < grid[i].length; j++) {
-                    const neighbors = countNeighbors(grid, i, j);
-                    // Apply rule based on the number of neighbors
-                    if (neighbors < 2) {
-                        newGrid[i][j] = 0; // Cell dies from underpopulation
-                    } else if (neighbors > 3) {
-                        newGrid[i][j] = 0; // Cell dies from overpopulation
-                    } else if (neighbors === 3) {
-                        newGrid[i][j] = 1; // Cell is born
+        const drawFrame = (context, videoWidth, videoHeight) => {
+              // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
+            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+          //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
+            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
+            
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
+
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                        }
+                    }
+                    averageBrightness /= (pixelSize * pixelSize);
+
+                    if (averageBrightness < threshold) {
+                        if (!pixelGrid[y][x]) {
+                            
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[y][x] = 1;
+                            
+                        }
                     } else {
-                        newGrid[i][j] = grid[i][j]; // Cell survives
+                        pixelGrid[y][x] = false;
                     }
                 }
             }
-            return newGrid;
-        }
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+        };
 
-        // Function to count live neighbors of a cell
-        function countNeighbors(grid, x, y) {
-            let count = 0;
-            const rows = grid.length;
-            const cols = grid[0].length;
-            for (let i = -1; i <= 1; i++) {
-                for (let j = -1; j <= 1; j++) {
-                    const row = (x + i + rows) % rows;
-                    const col = (y + j + cols) % cols;
-                    count += grid[row][col];
-                }
-            }
-            count -= grid[x][y]; // Exclude the cell itself
-            return count;
-        }
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
 
-        // Function to update canvas based on the grid
-        function updateCanvas(grid) {
-            const cellSize = Math.min(canvas.width / grid.length, canvas.height / grid[0].length);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < grid.length; i++) {
-                for (let j = 0; j < grid[i].length; j++) {
-                    if (grid[i][j] === 1) {
-                        ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
-                    }
-                }
-            }
-        }
-
-        // Function to convert video frame to grayscale and update cellular automata grid
-        function processVideoFrame() {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-            const grid = [];
-            for (let i = 0; i < imageData.height; i++) {
-                grid[i] = [];
-                for (let j = 0; j < imageData.width; j++) {
-                    const index = (i * imageData.width + j) * 4;
-                    // Convert RGB to grayscale
-                    const brightness = (data[index] + data[index + 1] + data[index + 2]) / 3;
-                    grid[i][j] = brightness < threshold ? 1 : 0;
-                }
-            }
-            return grid;
-        }
-
-        // Function to run cellular automata
-        function runAutomata() {
-            if (!isRunning) {
-                isRunning = true;
-                const grid = processVideoFrame();
-                updateCanvas(grid);
-                const intervalId = setInterval(() => {
-                    const newGrid = applyRule(grid);
-                    updateCanvas(newGrid);
-                    grid = newGrid;
-                }, 100); // Adjust interval as needed
-            }
-        }
-
-        // Initialize
         navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                video.srcObject = stream;
-                video.onloadedmetadata = function(e) {
-                    runAutomata();
+            .then(stream => {
+                videoElement.srcObject = stream;
+                videoElement.play();
+                videoElement.onloadedmetadata = () => {
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const context = pixelGridCanvas.getContext('2d');
+                    const { videoWidth, videoHeight } = videoElement;
+
+                    pixelGridCanvas.width = videoWidth;
+                    pixelGridCanvas.height = videoHeight;
+
+                    initPixelGrid();
+                    drawFrame(context, videoWidth, videoHeight);
+                    console.log(drawFrame);
                 };
             })
-            .catch(function(err) {
-                console.error('Error accessing webcam:', err);
+            .catch(err => {
+                console.error('An error occurred: ', err);
             });
+
+            
+
+            // Oppretter en Tone.js polysynth
+const polySynth = new Tone.PolySynth().toDestination();
+
+// Definerer parametere for Game of Life
+
+const rows = 15;
+const cols = 20;
+let interval = 500 // Tidsintervall i millisekunder
+let isPlaying = false;
+let timerId;
+
+
+// Initialiserer Game of Life grid
+let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+
+// Opprettet et array for å holde styr på alle aktive synther
+let activeSynths = [];
+let availableSynths = [];
+
+// Definerer pentatonisk skala (C pentatonisk)
+const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
+
+// Oppretter grid-elementer i HTML
+const gridContainer = document.getElementById('grid');
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.addEventListener('click', () => toggleCell(i, j));
+        gridContainer.appendChild(cell);
+    }
+}
+
+// Opprett event listener for play/pause-knappen
+const playPauseButton = document.getElementById('playPause');
+playPauseButton.addEventListener('click', togglePlay);
+
+// Legg til en keydown-hendelse for å lytte etter "P"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'p') {
+        togglePlay();
+    }
+});
+
+// Opprett en event listener for glider-knappen
+const gliderButton = document.getElementById('glider');
+gliderButton.addEventListener('click', drawGlider);
+
+// Legg til en keydown-hendelse for å lytte etter "G"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'g') {
+        drawGlider();
+    }
+});
+
+// Tegn inn en glider
+
+function drawGlider(i, j) {
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+
+            //var isLive = Math.round(Math.random());
+            
+           
+            if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
+
+                const cell = gridContainer.children[i * cols + j];
+                cell.classList.toggle('alive');
+                grid[i][j] = 1;
+                
+
+
+            }
+            
+ 
+        }
+    }
+}
+// Opprett event listener for clear-knappen
+const clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', clearGrid);
+
+// Legg til en keydown-hendelse for å lytte etter "C"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'c') {
+        clearGrid();
+    }
+});
+
+// Definerer funksjon for å bytte tilstanden til en celle
+function toggleCell(i, j) {
+    grid[i][j] = grid[i][j] ? 0 : 1;
+    const cell = gridContainer.children[i * cols + j];
+    cell.classList.toggle('alive');
+    console.log(i);
+}
+
+// Definerer funksjon for å klargjøre gridet
+function clearGrid() {
+    grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cell.classList.remove('alive'));
+}
+
+
+// Definerer funksjon for å starte eller pause spill-loopen
+function togglePlay() {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+        playPauseButton.textContent = 'Pause';
+        timerId = setInterval(updateGrid, interval);
+    } else {
+        playPauseButton.textContent = 'Play';
+        clearInterval(timerId);
+    }
+}
+
+// Definerer funksjon for å oppdatere tilstanden til gridet
+function updateGrid() {
+    let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let neighbors = 0;
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
+                        neighbors += grid[i + x][j + y];
+                    }
+                }
+            }
+            neighbors -= grid[i][j];
+
+            if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
+                newGrid[i][j] = 0;
+                // Finn synth for denne cellen og frigjør den for gjenbruk
+                const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+                if (synthIndex !== -1) {
+                    const synth = activeSynths.splice(synthIndex, 1)[0];
+                    availableSynths.push(synth);
+                }
+            } else if (grid[i][j] === 0 && neighbors === 3) {
+              // her fucka jeg opp
+               newGrid[i][j] = 1;
+               //grid[i][j] = 1;
+                playNote(i, j);
+            } else {
+                newGrid[i][j] = grid[i][j];
+            }
+        }
+    }
+
+    // Oppdaterer HTML-grid med ny tilstand
+    const cells = document.querySelectorAll('.cell');
+    newGrid.forEach((row, i) => {
+        row.forEach((cell, j) => {
+            if (cell === 1) {
+                // her fucker jeg det opp litt
+                cells[i * cols + j].classList.add('alive');
+                console.log(i);
+            } else {
+                cells[i * cols + j].classList.remove('alive');
+            }
+        });
+    });
+
+    grid = newGrid;
+}
+// Definerer kvintsirkelen som noter
+const quintCircle = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
+
+// Definerer funksjon for å spille en note basert på posisjonen på kvintsirkelen
+function playNote(i, j) {
+    let synth;
+    if (availableSynths.length > 0) {
+        // Bruk en tilgjengelig synth hvis tilgjengelig
+        synth = availableSynths.pop();
+    } else {
+        // Opprett en ny synth hvis ingen tilgjengelige synther
+        synth = new Tone.Synth().toDestination();
+    }
+
+    // Beregne indeks basert på posisjonen i rutenettet
+    const noteIndex = (i + j) % quintCircle.length;
+    const note = quintCircle[noteIndex];
+
+    // Spill tonen
+    synth.triggerAttackRelease(note, '8n');
+
+    // Lagre synth-informasjon for senere gjenbruk
+    synth.cellX = i;
+    synth.cellY = j;
+    activeSynths.push(synth);
+}
+
+
+
     </script>
 </body>
 </html>

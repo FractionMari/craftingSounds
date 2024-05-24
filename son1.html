@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(243, 8, 223);
+            background-color: rgb(141, 243, 8);
         }
 
         #video-container {
@@ -152,7 +152,7 @@
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
-                    console.log(drawFrame);
+                    //console.log(drawFrame);
                 };
             })
             .catch(err => {
@@ -281,7 +281,7 @@ function toggleCell(i, j) {
     grid[i][j] = grid[i][j] ? 0 : 1;
     const cell = gridContainer.children[i * cols + j];
     cell.classList.toggle('alive');
-    console.log(i);
+  //  console.log(i);
 }
 
 // Definerer funksjon for å klargjøre gridet
@@ -346,7 +346,7 @@ function updateGrid() {
             if (cell === 1) {
                 // her fucker jeg det opp litt
                 cells[i * cols + j].classList.add('alive');
-                console.log(i);
+                //console.log(i);
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }
@@ -378,7 +378,8 @@ function playNote(i, j) {
     }
 
     // Konverterer vertikale posisjonen til noten i pentatonisk skala
-    const noteIndex = (i + j) % pentatonicScale.length;
+    const noteIndex = (i) % pentatonicScale.length; // endret fra i + j til i
+    console.log(i);
     const note = pentatonicScale[noteIndex];
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = j / cols;

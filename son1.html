@@ -106,9 +106,16 @@
         }
 
         // Initialize
-        video.addEventListener('play', () => {
-            runAutomata();
-        });
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.onloadedmetadata = function(e) {
+                    runAutomata();
+                };
+            })
+            .catch(function(err) {
+                console.error('Error accessing webcam:', err);
+            });
     </script>
 </body>
 </html>

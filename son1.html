@@ -179,9 +179,6 @@ let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 let activeSynths = [];
 let availableSynths = [];
 
-// Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
-
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');
 for (let i = 0; i < rows; i++) {
@@ -329,10 +326,16 @@ function updateGrid() {
 
     grid = newGrid;
 }
-// Definerer kvintsirkelen som noter
-const quintCircle = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
 
-// Definerer funksjon for å spille en note basert på posisjonen på kvintsirkelen
+// Definerer pentatonisk skala (C pentatonisk)
+const pentatonicScale = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
+
+
+//['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
+
+
+
+// Definerer funksjon for å spille en note
 function playNote(i, j) {
     let synth;
     if (availableSynths.length > 0) {
@@ -343,20 +346,20 @@ function playNote(i, j) {
         synth = new Tone.Synth().toDestination();
     }
 
-    // Beregne indeks basert på posisjonen i rutenettet
-    const noteIndex = (i + j) % quintCircle.length;
-    const note = quintCircle[noteIndex];
+    // Konverterer vertikale posisjonen til noten i pentatonisk skala
+    const noteIndex = (i + j) % pentatonicScale.length;
+    const note = pentatonicScale[noteIndex];
+    // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
+    const gain = j / cols;
 
-    // Spill tonen
-    synth.triggerAttackRelease(note, '8n');
+    // Spill tonen med den spesifikke noten og gain-verdien
+    synth.triggerAttackRelease(note, '8n', undefined, gain);
 
     // Lagre synth-informasjon for senere gjenbruk
     synth.cellX = i;
     synth.cellY = j;
     activeSynths.push(synth);
 }
-
-
 
     </script>
 </body>

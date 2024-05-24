@@ -5,29 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hilbert Curve Sonification</title>
     <style>
-        canvas {
+        #canvas {
             border: 1px solid black;
         }
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="600" height="600"></canvas>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
     <audio id="audio" autoplay></audio>
     
-    <script src="hilbert.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hilbert-curve/dist/hilbert.min.js"></script>
     <script>
+        const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const audio = document.getElementById('audio');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Set up webcam input
+        let isPlaying = false;
 
-        // Function to draw the Hilbert Curve
-        function drawHilbertCurve(order) {
+        function drawHilbertCurve(order, points) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const size = canvas.width;
-            const points = hilbert(order);
             const step = size / (1 << order);
             ctx.beginPath();
             ctx.moveTo(points[0].x * step, points[0].y * step);
@@ -37,13 +37,11 @@
             ctx.stroke();
         }
 
-        // Function to sonify the Hilbert Curve
-        function sonifyHilbertCurve(order) {
-            const points = hilbert(order);
+        function sonifyHilbertCurve(order, points) {
             const audioBuffer = audioCtx.createBuffer(1, points.length, audioCtx.sampleRate);
             const bufferData = audioBuffer.getChannelData(0);
             for (let i = 0; i < points.length; i++) {
-                bufferData[i] = points[i].x / canvas.width; // You can modify this to sonify y-coordinate or both coordinates
+                bufferData[i] = points[i].x / canvas.width; // Use x-coordinate for sonification
             }
             const source = audioCtx.createBufferSource();
             source.buffer = audioBuffer;
@@ -51,10 +49,47 @@
             source.start();
         }
 
-        // Example: Draw and sonify Hilbert Curve of order 4
-        const order = 4;
-        drawHilbertCurve(order);
-        sonifyHilbertCurve(order);
+        function generateHilbertCurve(order) {
+            const points = hilbert(order);
+            drawHilbertCurve(order, points);
+            if (isPlaying) {
+                sonifyHilbertCurve(order, points);
+            }
+        }
+
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing webcam:', err);
+            }
+        }
+
+        function init() {
+            setupCamera();
+            video.addEventListener('play', () => {
+                setInterval(() => {
+                    if (video.paused || video.ended) {
+                        return;
+                    }
+                    generateHilbertCurve(4); // Adjust order as needed
+                }, 100); // Adjust interval as needed
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === ' ') {
+                    isPlaying = !isPlaying;
+                    if (isPlaying) {
+                        audio.play();
+                    } else {
+                        audio.pause();
+                    }
+                }
+            });
+        }
+
+        init();
     </script>
 </body>
 </html>

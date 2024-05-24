@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(185, 85, 127);
+            background-color: rgb(185, 175, 85);
         }
 
         #video-container {
@@ -384,7 +384,7 @@ function playNote(i, j) {
 
     // Konverterer vertikale posisjonen til noten i pentatonisk skala
     const noteIndex = (i) % pentatonicScale.length; // endret fra i + j til i
-    console.log(i);
+    console.log(noteIndex);
     const note = pentatonicScale[noteIndex];
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = ((j / cols) / 2);

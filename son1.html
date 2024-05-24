@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(243, 8, 106);
+            background-color: rgb(185, 85, 127);
         }
 
         #video-container {
@@ -387,7 +387,7 @@ function playNote(i, j) {
     console.log(i);
     const note = pentatonicScale[noteIndex];
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
-    const gain = j / cols;
+    const gain = ((j / cols) / 2);
 
     // Spill tonen med den spesifikke noten og gain-verdien
     synth.triggerAttackRelease(note, '8n', undefined, gain);

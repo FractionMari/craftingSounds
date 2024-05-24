@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game of Life Music</title>
+    <title>Game of Life med Hilbert-kurve sonifisering</title>
     <style>
+
         body {
-            background-color: rgb(243, 227, 8);
+            background-color: rgb(243, 8, 59);
         }
 
         #video-container {
             position: relative;
-            width: 640px;
-            height: 700px;
+            width: 640px; /* Just an example width */
+            height: 700px; /* Just an example height */
         }
 
         #controls {
             position: static;
-            width: 400px;
-            height: 400px;
+            width: 400px; /* Just an example width */
+            height: 400px; /* Just an example height */
         }
+
 
         #pixel-grid {
             position: absolute;
@@ -28,11 +30,11 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            width: 640px;
-            height: 480px;
-            transform: scaleX(-1);
-        }
+            width: 640px; 
+            height: 480px; 
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
 
+        }
         .pixel {
             width: 32px;
             height: 32px;
@@ -48,7 +50,7 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            transform: scaleX(-1);
+            transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .cell {
@@ -64,11 +66,13 @@
 </head>
 <body>
 
-<div id="video-container">
-    <canvas id="pixel-grid"></canvas>
-    <canvas id="canvas" width="640" height="640"></canvas>
-    <div id="grid"></div>
-</div>
+    <div id="video-container">
+        <canvas id="pixel-grid"></canvas>
+        <canvas id="canvas" width="640" height="640"></canvas>
+        <div id="grid"></div>
+
+    </div>
+
 
 <div id="controls">
     <button id="playPause">Play / Pause</button>
@@ -76,210 +80,150 @@
     <button id="glider">Draw glider</button>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+    <script>
+        const pixelSize = 32;
+        const threshold = 100; // Threshold for darkness
+        let pixelGrid = [];
 
-<script>
-    const pixelSize = 32;
-    const threshold = 100; // Threshold for darkness
-    let pixelGrid = [];
-
-    const initPixelGrid = () => {
-        for (let i = 0; i < 20; i++) {
-            pixelGrid[i] = [];
-            for (let j = 0; j < 20; j++) {
-                pixelGrid[i][j] = false;
-            }
-        }
-    };
-
-    const drawFrame = (context, videoWidth, videoHeight) => {
-        const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-        context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
-        const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
-
-        for (let y = 0; y < 20; y++) {
-            for (let x = 0; x < 20; x++) {
-                const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
-                let averageBrightness = 0;
-
-                for (let i = 0; i < pixelSize; i++) {
-                    for (let j = 0; j < pixelSize; j++) {
-                        const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
-                        averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                    }
-                }
-                averageBrightness /= (pixelSize * pixelSize);
-
-                if (averageBrightness < threshold) {
-                    if (!pixelGrid[y][x]) {
-                        pixelGrid[y][x] = true;
-                        context.fillStyle = '#000';
-                        context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                        grid[y][x] = 1;
-                    }
-                } else {
-                    pixelGrid[y][x] = false;
+        const initPixelGrid = () => {
+            for (let i = 0; i < 20; i++) {
+                pixelGrid[i] = [];
+                for (let j = 0; j < 20; j++) {
+                    pixelGrid[i][j] = false;
+                    
                 }
             }
-        }
-        requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
-    };
+        };
 
-    const videoElement = document.createElement('video');
-    videoElement.autoplay = true;
+        const drawFrame = (context, videoWidth, videoHeight) => {
+              // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
+            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+          //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
+            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
+            
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
 
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            videoElement.srcObject = stream;
-            videoElement.play();
-            videoElement.onloadedmetadata = () => {
-                const pixelGridCanvas = document.getElementById('pixel-grid');
-                const context = pixelGridCanvas.getContext('2d');
-                const { videoWidth, videoHeight } = videoElement;
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                        }
+                    }
+                    averageBrightness /= (pixelSize * pixelSize);
 
-                pixelGridCanvas.width = videoWidth;
-                pixelGridCanvas.height = videoHeight;
-
-                initPixelGrid();
-                drawFrame(context, videoWidth, videoHeight);
-            };
-        })
-        .catch(err => {
-            console.error('An error occurred: ', err);
-        });
-
-const polySynth = new Tone.PolySynth().toDestination();
-
-const rows = 15;
-const cols = 20;
-let interval = 500;
-let isPlaying = false;
-let timerId;
-
-let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-
-let activeSynths = [];
-let availableSynths = [];
-
-const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6'];
-
-const gridContainer = document.getElementById('grid');
-for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
-        cell.addEventListener('click', () => toggleCell(i, j));
-        gridContainer.appendChild(cell);
-    }
-}
-
-const playPauseButton = document.getElementById('playPause');
-playPauseButton.addEventListener('click', togglePlay);
-
-const gliderButton = document.getElementById('glider');
-gliderButton.addEventListener('click', drawGlider);
-
-function drawGlider(i, j) {
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-            if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)) {
-                const cell = gridContainer.children[i * cols + j];
-                cell.classList.toggle('alive');
-                grid[i][j] = 1;
-            }
-        }
-    }
-}
-
-const clearButton = document.getElementById('clear');
-clearButton.addEventListener('click', clearGrid);
-
-function toggleCell(i, j) {
-    grid[i][j] = grid[i][j] ? 0 : 1;
-    const cell = gridContainer.children[i * cols + j];
-    cell.classList.toggle('alive');
-}
-
-function clearGrid() {
-    grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach(cell => cell.classList.remove('alive'));
-}
-
-function togglePlay() {
-    isPlaying = !isPlaying;
-    if (isPlaying) {
-        playPauseButton.textContent = 'Pause';
-        timerId = setInterval(updateGrid, interval);
-    } else {
-        playPauseButton.textContent = 'Play';
-        clearInterval(timerId);
-    }
-}
-
-function updateGrid() {
-    let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-            let neighbors = 0;
-            for (let x = -1; x <= 1; x++) {
-                for (let y = -1; y <= 1; y++) {
-                    if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
-                        neighbors += grid[i + x][j + y];
+                    if (averageBrightness < threshold) {
+                        if (!pixelGrid[y][x]) {
+                            
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[y][x] = 1;
+                            
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
                     }
                 }
             }
-            neighbors -= grid[i][j];
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+        };
 
-            if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
-                newGrid[i][j] = 0;
-                const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
-                if (synthIndex !== -1) {
-                    const synth = activeSynths.splice(synthIndex, 1)[0];
-                    availableSynths.push(synth);
-                }
-            } else if (grid[i][j] === 0 && neighbors === 3) {
-                newGrid[i][j] = 1;
-                playNoteBasedOnNeighbors(i, j);
-            } else {
-                newGrid[i][j] = grid[i][j];
-            }
-        }
-    }
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
 
-    const cells = document.querySelectorAll('.cell');
-    newGrid.forEach((row, i) => {
-        row.forEach((cell, j) => {
-            if (cell === 1) {
-                cells[i * cols + j].classList.add('alive');
-            } else {
-                cells[i * cols + j].classList.remove('alive');
-            }
-        });
-    });
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+                videoElement.play();
+                videoElement.onloadedmetadata = () => {
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const context = pixelGridCanvas.getContext('2d');
+                    const { videoWidth, videoHeight } = videoElement;
 
-    grid = newGrid;
+                    pixelGridCanvas.width = videoWidth;
+                    pixelGridCanvas.height = videoHeight;
+
+                    initPixelGrid();
+                    drawFrame(context, videoWidth, videoHeight);
+                };
+            })
+            .catch(err => {
+                console.error('An error occurred: ', err);
+            });
+
+            // Opprett en Tone.js synth
+const synth = new Tone.Synth().toDestination();
+
+// Definer en Hilbert-kurve
+let hilbertPath = [];
+let currentPos;
+
+// Generer Hilbert-kurven
+function generateHilbertPath(order, position, orientation, step) {
+    if (order == 0) return;
+
+    // Venstre sving
+    generateHilbertPath(order - 1, position, !orientation, step);
+
+    // Fremover
+    drawLine(position, orientation, step);
+    position.add(p5.Vector.mult(orientation, step));
+
+    // Høyre sving
+    generateHilbertPath(order - 1, position, orientation, step);
+
+    // Fremover
+    drawLine(position, !orientation, step);
+    position.add(p5.Vector.mult(!orientation, step));
+
+    // Fremover
+    generateHilbertPath(order - 1, position, orientation, step);
+
+    // Høyre sving
+    drawLine(position, orientation, step);
+    position.add(p5.Vector.mult(orientation, step));
+
+    // Venstre sving
+    generateHilbertPath(order - 1, position, !orientation, step);
 }
 
-function playNoteBasedOnNeighbors(i, j) {
-    let neighbors = 0;
-    for (let x = -1; x <= 1; x++) {
-        for (let y = -1; y <= 1; y++) {
-            if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
-                neighbors += grid[i + x][j + y];
-            }
-        }
-    }
-    neighbors -= grid[i][j];
-
-    let synth = new Tone.Synth().toDestination();
-    const noteIndex = neighbors % pentatonicScale.length;
-    const note = pentatonicScale[noteIndex];
-    const gain = j / cols;
-
-    synth.triggerAttackRelease(note, '8n', undefined, gain);
+// Tegn en linje fra nåværende posisjon i retning av orienteringen
+function drawLine(position, orientation, step) {
+    let nextPos = p5.Vector.add(position, p5.Vector.mult(orientation, step));
+    hilbertPath.push({ start: position.copy(), end: nextPos.copy() });
 }
-</script>
+
+// Tegn Hilbert-kurven
+function draw() {
+    stroke(255);
+    for (let i = 0; i < hilbertPath.length; i++) {
+        let { start, end } = hilbertPath[i];
+        line(start.x, start.y, end.x, end.y);
+    }
+}
+
+// Spill toner langs Hilbert-kurven basert på Game of Life gridet
+let noteIndex = 0;
+for (let i = 0; i < hilbertPath.length; i++) {
+    let { start } = hilbertPath[i];
+    let x = map(start.x, 0, width, 0, rows);
+    let y = map(start.y, 0, height, 0, cols);
+    let cellState = grid[Math.floor(x)][Math.floor(y)];
+
+    // Spill tonen basert på celletilstanden
+    if (cellState === 1) {
+        let note = Tone.Frequency("C4").transpose(Math.floor(y * 2));
+        synth.triggerAttackRelease(note, "8n", "+" + i * 0.1);
+    }
+}
+            
+
+    </script>
 </body>
 </html>

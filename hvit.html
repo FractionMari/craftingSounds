@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(19, 122, 122);
+            background-color: rgb(122, 115, 19);
         }
 
         #video-container {
@@ -84,7 +84,7 @@
 
     <script>
         const pixelSize = 32;
-        const threshold = 100; // Threshold for darkness
+        const threshold = 200; // Threshold for darkness
         let pixelGrid = [];
 
         const initPixelGrid = () => {
@@ -119,7 +119,7 @@
                     averageBrightness /= (pixelSize * pixelSize);
                     console.log(averageBrightness);
 
-                    if (averageBrightness < threshold) {
+                    if (averageBrightness > threshold) {
                         if (!pixelGrid[y][x]) {
                             
                             pixelGrid[y][x] = true;

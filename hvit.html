@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finne ut initial triggers</title>
+    <title>Trigges av lys og ikke mørke.</title>
     <style>
 
         body {
-            background-color: rgb(22, 1, 5);
+            background-color: rgb(5, 1, 22);
         }
 
         #video-container {
@@ -84,7 +84,7 @@
 
     <script>
         const pixelSize = 32;
-        const threshold = 155; // Threshold for brightness
+        const threshold = 100; // Threshold for darkness
         let pixelGrid = [];
 
         const initPixelGrid = () => {
@@ -92,13 +92,16 @@
                 pixelGrid[i] = [];
                 for (let j = 0; j < 20; j++) {
                     pixelGrid[i][j] = false;
+                    
                 }
             }
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
+              // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+          //  context.drawImage(videoElement, 0, 0, videoWidth, videoHeight);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             
             for (let y = 0; y < 20; y++) {
@@ -110,16 +113,19 @@
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                            console.log(averageBrightness);
                         }
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    if (averageBrightness > threshold) {
+                    if (averageBrightness < threshold) {
                         if (!pixelGrid[y][x]) {
+                            
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
                             grid[y][x] = 1;
+                            
                         }
                     } else {
                         pixelGrid[y][x] = false;
@@ -217,11 +223,20 @@ function drawGlider(i, j) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
 
+            //var isLive = Math.round(Math.random());
+            
+           
             if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
+
                 const cell = gridContainer.children[i * cols + j];
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
+                
+
+
             }
+            
+ 
         }
     }
 }
@@ -282,13 +297,16 @@ function updateGrid() {
 
             if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
                 newGrid[i][j] = 0;
+                // Finn synth for denne cellen og frigjør den for gjenbruk
                 const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
                 if (synthIndex !== -1) {
                     const synth = activeSynths.splice(synthIndex, 1)[0];
                     availableSynths.push(synth);
                 }
             } else if (grid[i][j] === 0 && neighbors === 3) {
-                newGrid[i][j] = 1;
+              // her fucka jeg opp
+               newGrid[i][j] = 1;
+               //grid[i][j] = 1;
                 playNote(i, j);
             } else {
                 newGrid[i][j] = grid[i][j];
@@ -296,10 +314,12 @@ function updateGrid() {
         }
     }
 
+    // Oppdaterer HTML-grid med ny tilstand
     const cells = document.querySelectorAll('.cell');
     newGrid.forEach((row, i) => {
         row.forEach((cell, j) => {
             if (cell === 1) {
+                // her fucker jeg det opp litt
                 cells[i * cols + j].classList.add('alive');
                 console.log(i);
             } else {
@@ -315,17 +335,23 @@ function updateGrid() {
 function playNote(i, j) {
     let synth;
     if (availableSynths.length > 0) {
+        // Bruk en tilgjengelig synth hvis tilgjengelig
         synth = availableSynths.pop();
     } else {
+        // Opprett en ny synth hvis ingen tilgjengelige synther
         synth = new Tone.Synth().toDestination();
     }
 
+    // Konverterer vertikale posisjonen til noten i pentatonisk skala
     const noteIndex = (i + j) % pentatonicScale.length;
     const note = pentatonicScale[noteIndex];
+    // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = j / cols;
 
+    // Spill tonen med den spesifikke noten og gain-verdien
     synth.triggerAttackRelease(note, '8n', undefined, gain);
 
+    // Lagre synth-informasjon for senere gjenbruk
     synth.cellX = i;
     synth.cellY = j;
     activeSynths.push(synth);

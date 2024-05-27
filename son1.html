@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(185, 175, 85);
+            background-color: rgb(36, 24, 211);
         }
 
         #video-container {
@@ -32,7 +32,7 @@
             grid-template-rows: repeat(15, 32px);
             width: 640px; 
             height: 480px; 
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+            /*transform: scaleX(-1); /* Speilvend pikselrutenettet */
 
         }
         .pixel {
@@ -51,7 +51,7 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+           /* transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .cell {
@@ -122,7 +122,7 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    if (averageBrightness < threshold) {
+                    if (averageBrightness > threshold) {
                         if (!pixelGrid[y][x]) {
                             
                             pixelGrid[y][x] = true;

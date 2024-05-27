@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(5, 1, 22);
+            background-color: rgb(19, 122, 122);
         }
 
         #video-container {
@@ -113,10 +113,11 @@
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                            console.log(averageBrightness);
+                            
                         }
                     }
                     averageBrightness /= (pixelSize * pixelSize);
+                    console.log(averageBrightness);
 
                     if (averageBrightness < threshold) {
                         if (!pixelGrid[y][x]) {

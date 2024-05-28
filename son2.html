@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(243, 8, 59);
+            background-color: rgb(138, 211, 4);
         }
 
         #video-container {
@@ -32,13 +32,14 @@
             grid-template-rows: repeat(15, 32px);
             width: 640px; 
             height: 480px; 
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+            /*transform: scaleX(-1); /* Speilvend pikselrutenettet */
 
         }
         .pixel {
             width: 32px;
             height: 32px;
             border: 1px solid #000;
+            border-radius: 50px;
         }
 
         #grid {
@@ -50,17 +51,20 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            transform: scaleX(-1); /* Speilvend pikselrutenettet */
+           /* transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
 
         .cell {
             width: 32px;
             height: 32px;
-            border: 2px solid rgb(102, 8, 253);
+            border: 2px solid rgb(0, 0, 0);
+            border-radius: 50px;
+            
         }
 
         .alive {
             background-color: rgb(20, 2, 3);
+            border-radius: 50px;
         }
     </style>
 </head>
@@ -78,14 +82,16 @@
     <button id="playPause">Play / Pause</button>
     <button id="clear">Clear</button>
     <button id="glider">Draw glider</button>
-    
+    <button id="glider2">Draw glider 2</button>
 </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
 
     <script>
         const pixelSize = 32;
-        const threshold = 100; // Threshold for darkness
+        const threshold = 155; // Threshold for darkness
+        const threshold2 = 156; // ikke lysere enn
+        
         let pixelGrid = [];
 
         const initPixelGrid = () => {
@@ -118,7 +124,7 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    if (averageBrightness < threshold) {
+                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {
                             
                             pixelGrid[y][x] = true;
@@ -152,7 +158,7 @@
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
-                    console.log(drawFrame);
+                    //console.log(drawFrame);
                 };
             })
             .catch(err => {
@@ -168,7 +174,7 @@ const polySynth = new Tone.PolySynth().toDestination();
 
 const rows = 15;
 const cols = 20;
-let interval = 500 // Tidsintervall i millisekunder
+let interval = 100 // Tidsintervall i millisekunder
 let isPlaying = false;
 let timerId;
 
@@ -179,9 +185,6 @@ let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 // Opprettet et array for å holde styr på alle aktive synther
 let activeSynths = [];
 let availableSynths = [];
-
-// Definerer pentatonisk skala (C pentatonisk)
-const pentatonicScale = ['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
 
 // Oppretter grid-elementer i HTML
 const gridContainer = document.getElementById('grid');
@@ -209,10 +212,22 @@ document.addEventListener('keydown', (event) => {
 const gliderButton = document.getElementById('glider');
 gliderButton.addEventListener('click', drawGlider);
 
+// Opprett en event listener for den andre glider-knappen
+const gliderButton2 = document.getElementById('glider2');
+gliderButton2.addEventListener('click', secondGlider);
+
+
 // Legg til en keydown-hendelse for å lytte etter "G"-tasten
 document.addEventListener('keydown', (event) => {
     if (event.key.toLowerCase() === 'g') {
         drawGlider();
+    }
+});
+
+// Legg til en keydown-hendelse for å lytte etter "G"-tasten
+document.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() === 'h') {
+        secondGlider();
     }
 });
 
@@ -232,14 +247,30 @@ function drawGlider(i, j) {
                 cell.classList.toggle('alive');
                 grid[i][j] = 1;
                 
-
-
             }
             
- 
         }
     }
 }
+
+
+function secondGlider(i, j) {
+
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+       
+        if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18)){
+
+            const cell = gridContainer.children[i * cols + j];
+            cell.classList.toggle('alive');
+            grid[i][j] = 1;
+
+        }
+    
+    }
+}
+}
+
 // Opprett event listener for clear-knappen
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', clearGrid);
@@ -256,7 +287,7 @@ function toggleCell(i, j) {
     grid[i][j] = grid[i][j] ? 0 : 1;
     const cell = gridContainer.children[i * cols + j];
     cell.classList.toggle('alive');
-    console.log(i);
+  //  console.log(i);
 }
 
 // Definerer funksjon for å klargjøre gridet
@@ -321,7 +352,7 @@ function updateGrid() {
             if (cell === 1) {
                 // her fucker jeg det opp litt
                 cells[i * cols + j].classList.add('alive');
-                console.log(i);
+                //console.log(i);
             } else {
                 cells[i * cols + j].classList.remove('alive');
             }
@@ -330,6 +361,17 @@ function updateGrid() {
 
     grid = newGrid;
 }
+
+// Definerer pentatonisk skala (C pentatonisk)
+let pentatonicScale = ['C0', 'G0', 'D1', 'A1', 'E3', 'B3', 'F#4', 'Db5', 'Ab5', 'Eb6', 'Bb6', 'F7','C8'];
+
+
+//['C2', 'G2', 'D2', 'A2', 'E2', 'B2', 'F#2', 'Db2', 'Ab2', 'Eb2', 'Bb2', 'F2','C3', 'G3', 'D3', 'A3', 'E3', 'B3', 'F#3', 'Db3', 'Ab2', 'Eb2', 'Bb2', 'F2'];
+
+
+//['D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5', 'A5', 'C6', ];
+
+//['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
 
 // Definerer funksjon for å spille en note
 function playNote(i, j) {
@@ -343,64 +385,21 @@ function playNote(i, j) {
     }
 
     // Konverterer vertikale posisjonen til noten i pentatonisk skala
-    const noteIndex = (i + j) % pentatonicScale.length;
+    const noteIndex = (i) % pentatonicScale.length; // endret fra i + j til i
+    console.log(noteIndex);
     const note = pentatonicScale[noteIndex];
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
-    const gain = j / cols;
+    const gain = ((j / cols) / 2);
 
     // Spill tonen med den spesifikke noten og gain-verdien
-    synth.triggerAttackRelease(note, '8n', undefined, gain);
+    synth.triggerAttackRelease(note, '16n', undefined, gain);
+    console.log(gain);
 
     // Lagre synth-informasjon for senere gjenbruk
     synth.cellX = i;
     synth.cellY = j;
     activeSynths.push(synth);
 }
-
-// Definerer trommelyder
-const drumSounds = ['kick', 'snare', 'hihat'];
-
-// Definerer funksjon for å spille en trommelyd basert på posisjonen i rutenettet
-function playDrum(i, j) {
-    // Beregne trommelyd basert på posisjonen i rutenettet
-    const soundIndex = (i + j) % drumSounds.length;
-    const drumSound = drumSounds[soundIndex];
-
-    // Spill trommelyden
-    switch (drumSound) {
-        case 'kick':
-            playKick();
-            break;
-        case 'snare':
-            playSnare();
-            break;
-        case 'hihat':
-            playHiHat();
-            break;
-        default:
-            break;
-    }
-}
-
-// Definerer funksjoner for å spille forskjellige trommelyder
-function playKick() {
-    // Spill kick-trommelyden
-    // Implementer din egen logikk for å spille kick-trommelyden her
-    console.log('Kick');
-}
-
-function playSnare() {
-    // Spill snare-trommelyden
-    // Implementer din egen logikk for å spille snare-trommelyden her
-    console.log('Snare');
-}
-
-function playHiHat() {
-    // Spill hihat-trommelyden
-    // Implementer din egen logikk for å spille hihat-trommelyden her
-    console.log('Hi-Hat');
-}
-
 
     </script>
 </body>

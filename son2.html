@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(211, 4, 201);
+            background-color: rgb(166, 211, 4);
         }
 
         #video-container {
@@ -361,9 +361,10 @@ function updateGrid() {
 }
 
 // Definerer pentatonisk skala (C pentatonisk)
-let pentatonicScale = ['C0', 'G0', 'D1', 'A1', 'E3', 'B3', 'F#4', 'Db5', 'Ab5', 'Eb6', 'Bb6', 'F7','C8'];
+let pentatonicScale = ['C2', 'G2', 'D2', 'A2', 'E2', 'B2', 'F#2', 'Db2', 'Ab2', 'Eb2', 'Bb2', 'F2','C3', 'G3', 'D3', 'A3', 'E3', 'B3', 'F#3', 'Db3', 'Ab2', 'Eb2', 'Bb2', 'F2'];
 
 
+// ['C0', 'G0', 'D1', 'A1', 'E3', 'B3', 'F#4', 'Db5', 'Ab5', 'Eb6', 'Bb6', 'F7','C8'];
 //['C2', 'G2', 'D2', 'A2', 'E2', 'B2', 'F#2', 'Db2', 'Ab2', 'Eb2', 'Bb2', 'F2','C3', 'G3', 'D3', 'A3', 'E3', 'B3', 'F#3', 'Db3', 'Ab2', 'Eb2', 'Bb2', 'F2'];
 
 
@@ -379,7 +380,7 @@ function playNote(i, j) {
         synth = availableSynths.pop();
     } else {
         // Opprett en ny synth hvis ingen tilgjengelige synther
-        synth = new Tone.DuoSynth().toDestination();
+        synth = new Tone.PluckSynth().toDestination();
     }
 
     // Konverterer vertikale posisjonen til noten i pentatonisk skala

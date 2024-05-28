@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(211, 163, 4);
+            background-color: rgb(211, 35, 4);
         }
         #video-container {
             position: relative;
@@ -153,6 +153,7 @@
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
         let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
         let pentatonicScale2 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
+        let pentatonicScale2 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
         let currentScale = pentatonicScale;
 
         const gridContainer = document.getElementById('grid');
@@ -297,8 +298,11 @@
 
             grid = newGrid;
 
-            if (activeCellCount > 10) {
+            if (activeCellCount > 15) {
                 currentScale = pentatonicScale2;
+            } 
+            if (activeCellCount > 30) {
+                currentScale = pentatonicScale3;
             } else {
                 currentScale = pentatonicScale;
             }

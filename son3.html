@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(211, 11, 4);
+            background-color: rgb(168, 38, 5);
         }
         #video-container {
             position: relative;
@@ -316,11 +316,14 @@
 
             if (activeCellCount > 15) {
                 currentScale = pentatonicScale2;
+                currentNote = droneNote2;
             } 
             if (activeCellCount > 30) {
                 currentScale = pentatonicScale3;
+                currentNote = droneNote3;
             } else {
                 currentScale = pentatonicScale;
+                currentNote = droneNote;
             }
         }
 

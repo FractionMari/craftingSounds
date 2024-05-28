@@ -6,17 +6,17 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(4, 211, 201);
+            background-color: rgb(211, 163, 4);
         }
         #video-container {
             position: relative;
-            width: 640px; /* Just an example width */
-            height: 700px; /* Just an example height */
+            width: 640px;
+            height: 700px;
         }
         #controls {
             position: static;
-            width: 400px; /* Just an example width */
-            height: 400px; /* Just an example height */
+            width: 400px;
+            height: 400px;
         }
         #pixel-grid {
             position: absolute;
@@ -25,9 +25,8 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            width: 640px; 
+            width: 640px;
             height: 480px;
-            /*transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
         .pixel {
             width: 32px;
@@ -44,7 +43,6 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            /* transform: scaleX(-1); /* Speilvend pikselrutenettet */
         }
         .cell {
             width: 32px;
@@ -64,18 +62,20 @@
         <canvas id="canvas" width="640" height="640"></canvas>
         <div id="grid"></div>
     </div>
+
     <div id="controls">
         <button id="playPause">Play / Pause</button>
         <button id="clear">Clear</button>
         <button id="glider">Draw glider</button>
         <button id="glider2">Draw glider 2</button>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
     <script>
         const pixelSize = 32;
-        const threshold = 155; // Threshold for darkness
-        const threshold2 = 156; // ikke lysere enn
-        
+        const threshold = 155;
+        const threshold2 = 156;
+
         let pixelGrid = [];
 
         const initPixelGrid = () => {
@@ -88,11 +88,10 @@
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
-            // Beskjærer bilde fra midten for å oppnå et kvadratisk bilde
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
-            
+
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
@@ -144,21 +143,18 @@
                 console.error('An error occurred: ', err);
             });
 
-        // Definerer parametere for Game of Life
         const rows = 15;
         const cols = 20;
-        let interval = 100 // Tidsintervall i millisekunder
+        let interval = 100;
         let isPlaying = false;
         let timerId;
-
-        // Initialiserer Game of Life grid
-        let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-
-        // Opprettet et array for å holde styr på alle aktive synther
         let activeSynths = [];
         let availableSynths = [];
+        let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+        let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
+        let pentatonicScale2 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
+        let currentScale = pentatonicScale;
 
-        // Oppretter grid-elementer i HTML
         const gridContainer = document.getElementById('grid');
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
@@ -169,40 +165,33 @@
             }
         }
 
-        // Opprett event listener for play/pause-knappen
         const playPauseButton = document.getElementById('playPause');
         playPauseButton.addEventListener('click', togglePlay);
 
-        // Legg til en keydown-hendelse for å lytte etter "P"-tasten
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'p') {
                 togglePlay();
             }
         });
 
-        // Opprett en event listener for glider-knappen
         const gliderButton = document.getElementById('glider');
         gliderButton.addEventListener('click', drawGlider);
 
-        // Opprett en event listener for den andre glider-knappen
         const gliderButton2 = document.getElementById('glider2');
         gliderButton2.addEventListener('click', secondGlider);
 
-        // Legg til en keydown-hendelse for å lytte etter "G"-tasten
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'g') {
                 drawGlider();
             }
         });
 
-        // Legg til en keydown-hendelse for å lytte etter "G"-tasten
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'h') {
                 secondGlider();
             }
         });
 
-        // Tegn inn en glider
         function drawGlider(i, j) {
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {
@@ -218,7 +207,7 @@
         function secondGlider(i, j) {
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {
-                    if ((i == 0 && j == 1) || (i == 1 && j == 2) || (i == 1 && j == 3) || (i == 2 && j == 1) || (i == 2 && j == 2)){
+                    if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18)){
                         const cell = gridContainer.children[i * cols + j];
                         cell.classList.toggle('alive');
                         grid[i][j] = 1;
@@ -227,154 +216,112 @@
             }
         }
 
-        // Opprett en event listener for clear-knappen
         const clearButton = document.getElementById('clear');
         clearButton.addEventListener('click', clearGrid);
 
-        // Legg til en keydown-hendelse for å lytte etter "C"-tasten
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'c') {
                 clearGrid();
             }
         });
 
-        // Funksjon for å toggle en celle
-        function toggleCell(row, col) {
-            const cell = gridContainer.children[row * cols + col];
+        function toggleCell(i, j) {
+            grid[i][j] = grid[i][j] ? 0 : 1;
+            const cell = gridContainer.children[i * cols + j];
             cell.classList.toggle('alive');
-            grid[row][col] = grid[row][col] ? 0 : 1;
         }
 
-        // Funksjon for å oppdatere grid til neste generasjon
-        function updateGrid() {
-            let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
-            let numActiveCells = 0;
-
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    const numNeighbors = countNeighbors(row, col);
-                    if (grid[row][col] === 1) {
-                        if (numNeighbors === 2 || numNeighbors === 3) {
-                            newGrid[row][col] = 1;
-                            numActiveCells++;
-                        }
-                    } else {
-                        if (numNeighbors === 3) {
-                            newGrid[row][col] = 1;
-                            numActiveCells++;
-                        }
-                    }
-                }
-            }
-
-            grid = newGrid;
-            renderGrid();
-
-            // Bytt skala basert på antall aktiverte celler
-            if (numActiveCells > 10) {
-                changeScale();
-            }
+        function clearGrid() {
+            grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => cell.classList.remove('alive'));
         }
 
-        // Funksjon for å endre skala
-        function changeScale() {
-            pentatonicScale = pentatonicScale2;
-        }
-
-        // Funksjon for å telle antall naboer
-        function countNeighbors(row, col) {
-            const deltas = [-1, 0, 1];
-            let count = 0;
-
-            for (let i = 0; i < deltas.length; i++) {
-                for (let j = 0; j < deltas.length; j++) {
-                    if (!(deltas[i] === 0 && deltas[j] === 0)) {
-                        const newRow = row + deltas[i];
-                        const newCol = col + deltas[j];
-
-                        if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
-                            count += grid[newRow][newCol];
-                        }
-                    }
-                }
-            }
-
-            return count;
-        }
-
-        // Funksjon for å rendre grid i HTML
-        function renderGrid() {
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    const cell = gridContainer.children[row * cols + col];
-                    if (grid[row][col] === 1) {
-                        cell.classList.add('alive');
-                    } else {
-                        cell.classList.remove('alive');
-                    }
-                }
-            }
-        }
-
-        // Funksjon for å toggle play/pause
         function togglePlay() {
             isPlaying = !isPlaying;
             if (isPlaying) {
+                playPauseButton.textContent = 'Pause';
                 timerId = setInterval(updateGrid, interval);
             } else {
+                playPauseButton.textContent = 'Play';
                 clearInterval(timerId);
             }
         }
 
-        // Funksjon for å tømme grid
-        function clearGrid() {
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    grid[row][col] = 0;
-                }
-            }
-            renderGrid();
-        }
+        function updateGrid() {
+            let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+            let activeCellCount = 0;
 
-        // Pentatonic skalaer
-        let pentatonicScale = [261.63, 293.66, 329.63, 392.00, 440.00]; // C4, D4, E4, G4, A4
-        let pentatonicScale2 = [277.18, 311.13, 369.99, 415.30, 466.16]; // C#4, D#4, F#4, G#4, A#4
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    let neighbors = 0;
+                    for (let x = -1; x <= 1; x++) {
+                        for (let y = -1; y <= 1; y++) {
+                            if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
+                                neighbors += grid[i + x][j + y];
+                            }
+                        }
+                    }
+                    neighbors -= grid[i][j];
 
-        // Tone.js synth
-        let synth = new Tone.PolySynth(Tone.Synth).toDestination();
-        synth.volume.value = -10;
+                    if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
+                        newGrid[i][j] = 0;
+                        const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+                        if (synthIndex !== -1) {
+                            const synth = activeSynths.splice(synthIndex, 1)[0];
+                            availableSynths.push(synth);
+                        }
+                    } else if (grid[i][j] === 0 && neighbors === 3) {
+                        newGrid[i][j] = 1;
+                        playNote(i, j);
+                    } else {
+                        newGrid[i][j] = grid[i][j];
+                    }
 
-        // Funksjon for å spille toner basert på cellens status
-        function playTones() {
-            let activeNotes = [];
-
-            for (let row = 0; row < rows; row++) {
-                for (let col = 0; col < cols; col++) {
-                    if (grid[row][col] === 1) {
-                        const noteIndex = (row * cols + col) % pentatonicScale.length;
-                        const note = pentatonicScale[noteIndex];
-                        activeNotes.push(note);
+                    if (newGrid[i][j] === 1) {
+                        activeCellCount++;
                     }
                 }
             }
 
-            synth.triggerAttackRelease(activeNotes, '8n');
-        }
+            const cells = document.querySelectorAll('.cell');
+            newGrid.forEach((row, i) => {
+                row.forEach((cell, j) => {
+                    if (cell === 1) {
+                        cells[i * cols + j].classList.add('alive');
+                    } else {
+                        cells[i * cols + j].classList.remove('alive');
+                    }
+                });
+            });
 
-        // Funksjon for å kjøre musikkoppdatering
-        function musicUpdate() {
-            playTones();
-            if (isPlaying) {
-                setTimeout(musicUpdate, interval);
+            grid = newGrid;
+
+            if (activeCellCount > 10) {
+                currentScale = pentatonicScale2;
+            } else {
+                currentScale = pentatonicScale;
             }
         }
 
-        // Start musikkoppdateringen når grid er i spillmodus
-        playPauseButton.addEventListener('click', () => {
-            if (isPlaying) {
-                musicUpdate();
+        function playNote(i, j) {
+            let synth;
+            if (availableSynths.length > 0) {
+                synth = availableSynths.pop();
+            } else {
+                synth = new Tone.Synth().toDestination();
             }
-        });
+
+            const noteIndex = (i) % currentScale.length;
+            const note = currentScale[noteIndex];
+            const gain = ((j / cols) / 2);
+
+            synth.triggerAttackRelease(note, '16n', undefined, gain);
+
+            synth.cellX = i;
+            synth.cellY = j;
+            activeSynths.push(synth);
+        }
     </script>
 </body>
 </html>

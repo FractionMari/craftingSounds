@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(211, 180, 4);
+            background-color: rgb(4, 211, 201);
         }
 
         #video-container {
@@ -112,6 +112,7 @@
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             
             for (let y = 0; y < 20; y++) {
+                console.log(y);
                 for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
@@ -386,14 +387,14 @@ function playNote(i, j) {
 
     // Konverterer vertikale posisjonen til noten i pentatonisk skala
     const noteIndex = (i) % pentatonicScale.length; // endret fra i + j til i
-    console.log(noteIndex);
+    //console.log(noteIndex);
     const note = pentatonicScale[noteIndex];
     // Konverterer horisontale posisjonen til gain (basert på 0-1 området)
     const gain = ((j / cols) / 2);
 
     // Spill tonen med den spesifikke noten og gain-verdien
     synth.triggerAttackRelease(note, '16n', undefined, gain);
-    console.log(gain);
+    //console.log(gain);
 
     // Lagre synth-informasjon for senere gjenbruk
     synth.cellX = i;

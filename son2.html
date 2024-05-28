@@ -7,7 +7,7 @@
     <style>
 
         body {
-            background-color: rgb(211, 4, 21);
+            background-color: rgb(211, 4, 201);
         }
 
         #video-container {
@@ -379,7 +379,7 @@ function playNote(i, j) {
         synth = availableSynths.pop();
     } else {
         // Opprett en ny synth hvis ingen tilgjengelige synther
-        synth = new Tone.Synth().toDestination();
+        synth = new Tone.DuoSynth().toDestination();
     }
 
     // Konverterer vertikale posisjonen til noten i pentatonisk skala

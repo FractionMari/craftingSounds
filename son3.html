@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(211, 28, 4);
+            background-color: rgb(70, 211, 4);
         }
         #video-container {
             position: relative;
@@ -156,6 +156,12 @@
         let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
         let pentatonicScale2 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
         let pentatonicScale3 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+        let drone = new Tone.PulseOscillator(50, 0.4).toDestination();
+        let droneNote = 'A1';
+        let droneNote2 = 'A#1';
+        let droneNote3 = 'B2';
+        let currentNote = droneNote;
+
         let currentScale = pentatonicScale;
 
         const gridContainer = document.getElementById('grid');
@@ -194,6 +200,14 @@
                 secondGlider();
             }
         });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'd') {
+                drone.triggerAttack(currentNote, gain);
+            }
+        });
+
+        
 
         function drawGlider(i, j) {
             for (let i = 0; i < rows; i++) {
@@ -323,6 +337,7 @@
             const gain = ((j / cols) / 2);
 
             synth.triggerAttackRelease(note, '16n', undefined, gain);
+            
 
             synth.cellX = i;
             synth.cellY = j;

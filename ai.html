@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(255, 0, 0, 0.829);
+            background-color: rgba(255, 72, 0, 0.829);
         }
 
         p {
@@ -188,6 +188,9 @@
         const pingPong = new Tone.PingPongDelay().connect(gainNode);
         const phaser = new Tone.Phaser().connect(gainNode);
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
+        const vibrato = new Tone.Vibrato().connect(gainNode);
+        const freeverb = new Tone.Freeverb().connect(gainNode);
+
 
         gainNode.gain.value = 0.2;
 
@@ -215,7 +218,7 @@
                 sustain: 1.0,
                 release: 0.8
             }
-        }).connect(gainNode);
+        }).connect(freeverb);
 
 
         const gridContainer = document.getElementById('grid');
@@ -457,6 +460,7 @@
 
     if (previousLabel !== label) {
         console.log("play Sound");
+        synth3.triggerAttackRelease("C3", "4n" );
     }
     console.log(label);
 

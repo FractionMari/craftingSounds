@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(8, 65, 223, 0.829);
+            background-color: rgba(141, 169, 243, 0.829);
         }
         #video-container {
             position: relative;
@@ -30,7 +30,7 @@
             width: 640px;
             height: 480px;
         }
-        label {
+        #label {
             font-size: 32px;
             color:rgba(248, 248, 248, 0.829);
         }
@@ -78,7 +78,6 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
-    <div>Teachable Machine Image Model - p5.js and ml5.js</div>
 <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/p5.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/addons/p5.dom.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
@@ -386,17 +385,17 @@
     classifyVideo();
   }
 
-  function draw() {
-    background(0);
+  //function draw() {
+ //   background(0);
     // Draw the video
    // image(video, 0, 0);
 
     // Draw the label
-    fill(255);
-    textSize(16);
-    textAlign(CENTER);
-    text(label, width / 2, height - 4);
-  }
+ //   fill(255);
+ //   textSize(16);
+ //   textAlign(CENTER);
+ //   text(label, width / 2, height - 4);
+ // }
 
   // Get a prediction for the current video frame
   function classifyVideo() {

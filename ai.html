@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(223, 91, 86, 0.829);
+            background-color: rgba(223, 86, 212, 0.829);
         }
 
         p {
@@ -178,7 +178,7 @@
         let drone = new Tone.Synth().toDestination();
         let droneNote = 'A2';
         let droneNote2 = 'A#2';
-        let droneNote3 = 'B3';
+        let droneNote3 = 'B2';
         let currentNote = droneNote;
 
         let currentScale = pentatonicScale;
@@ -200,7 +200,7 @@
                 sustain: 1.0,
                 release: 0.8
             }
-        }).connect(gainNode);
+        }).connect(phaser);
         const synth3 = new Tone.MonoSynth({
             oscillator: {
                 type: "sine"
@@ -253,7 +253,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'd') {
-                drone.triggerAttack(currentNote);
+                synth2.triggerAttack(currentNote);
             }
         });
 
@@ -364,6 +364,8 @@
 
             grid = newGrid;
 
+            phaser.frequency.value = activeCellCount;
+
             if (activeCellCount > 15) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
@@ -376,7 +378,7 @@
                 currentNote = droneNote;
             }
 
-            drone.frequency.value = currentNote;
+            synth2.frequency.value = currentNote;
         }
 
         function playNote(i, j) {

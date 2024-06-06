@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(129, 8, 228);
+            background-color: rgb(228, 96, 8);
         }
         #video-container {
             position: relative;
@@ -391,7 +391,12 @@
     textSize(16);
     textAlign(CENTER);
     text(label, width / 2, height - 4);
-    console.log(label);
+    if (label == "strek") {
+        console.log("det var strek");
+    }
+    else {console.log("ikke strek");
+}
+        ;
   }
 
   // Get a prediction for the current video frame

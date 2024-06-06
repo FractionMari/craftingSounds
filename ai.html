@@ -363,7 +363,14 @@
   let flippedVideo;
   // To store the classification
   let label = "";
+   // er det strek eller ikke strek?
+   if (label == "strek") {
+        console.log("det var strek");
+    }
+    else {console.log("ikke strek");
+}
 
+console.log(result);
   // Load the model first
   function preload() {
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
@@ -414,12 +421,7 @@
     // console.log(results[0]);
     label = results[0].label;
 
-    // er det strek eller ikke strek?
-    if (label == "strek") {
-        console.log("det var strek");
-    }
-    else {console.log("ikke strek");
-}
+ 
     // Classifiy again!
     classifyVideo();
   }

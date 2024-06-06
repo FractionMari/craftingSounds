@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(223, 86, 212, 0.829);
+            background-color: rgba(223, 180, 86, 0.829);
         }
 
         p {
@@ -189,6 +189,8 @@
         const phaser = new Tone.Phaser().connect(gainNode);
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
 
+        gainNode.gain.value = 0.2;
+
 
         const synth2 = new Tone.MonoSynth({
             oscillator: {
@@ -201,6 +203,8 @@
                 release: 0.8
             }
         }).connect(phaser);
+
+
         const synth3 = new Tone.MonoSynth({
             oscillator: {
                 type: "sine"

@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(224, 221, 3);
+            background-color: rgb(214, 213, 126);
         }
         #video-container {
             position: relative;
@@ -98,11 +98,10 @@
      }
    
      function setup() {
-     //  createCanvas(320, 260);
        // Create the video
-       //video = createCapture(VIDEO);
-       //video.size(320, 240);
-       //video.hide();
+       video = createCapture(VIDEO);
+       video.size(640, 640);
+       video.hide();
    
 
        // Start classifying
@@ -112,7 +111,7 @@
      function draw() {
        background(0);
        // Draw the video
-      // image(video, 0, 0);
+       image(video, 50, 0, 640, 640);
    
        // Draw the label
        fill(255);
@@ -124,8 +123,8 @@
      // Get a prediction for the current video frame
      function classifyVideo() {
 
-       classifier.classify(videoElement, gotResult);
-       videoElement.remove();
+       classifier.classify(video, gotResult);
+       video.remove();
    
      }
    
@@ -159,8 +158,8 @@
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
-            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+            const offsetX = (videoWidth - videoHeight) / 2;
+            context.drawImage(video, offsetX, 0, videoHeight, videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
             for (let y = 0; y < 20; y++) {

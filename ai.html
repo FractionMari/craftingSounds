@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(228, 96, 8);
+            background-color: rgb(230, 201, 182);
         }
         #video-container {
             position: relative;
@@ -391,14 +391,14 @@
     textSize(16);
     textAlign(CENTER);
     text(label, width / 2, height - 4);
-    if (label == "strek") {
+
+        ;
+  }
+  if (label == "strek") {
         console.log("det var strek");
     }
     else {console.log("ikke strek");
 }
-        ;
-  }
-
   // Get a prediction for the current video frame
   function classifyVideo() {
     flippedVideo = ml5.flipImage(video)

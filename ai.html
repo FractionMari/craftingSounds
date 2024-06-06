@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(139, 107, 86);
+            background-color: rgba(158, 223, 8, 0.829);
         }
         #video-container {
             position: relative;
@@ -411,11 +411,16 @@
     // The results are in an array ordered by confidence.
     // console.log(results[0]);
     label = results[0].label;
+    document.getElementById("demo").innerHTML = label;
+
     // Classifiy again!
     classifyVideo();
   }
     </script>
 
+
+
+<p id="demo"></p>
 
 
 </body>

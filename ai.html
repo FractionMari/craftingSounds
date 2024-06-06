@@ -6,40 +6,45 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(198, 3, 224);
+            background-color: rgb(3, 135, 224);
         }
         #video-container {
             position: relative;
             top: 0;
             left: 50px;
-            width: 640px; /* Justert til gridets størrelse */
-            height: 640px; /* Justert til gridets størrelse */
-            overflow: hidden; /* Hindrer at videoen overskrider containeren */
+            width: 1000px;
+            height: 700px;
+        }
+        #controls {
+            position: static;
+            width: 400px;
+            height: 400px;
         }
         #pixel-grid {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%; /* Full bredde av containeren */
-            height: 100%; /* Full høyde av containeren */
+            left: 50px;
+            display: grid;
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
+            width: 640px;
+            height: 480px;
         }
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%; /* Full bredde av containeren */
-            height: 100%; /* Full høyde av containeren */
-            display: none; /* Skjuler canvasen */
+        .pixel {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #000;
+            border-radius: 50px;
         }
         #grid {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%; /* Full bredde av containeren */
-            height: 100%; /* Full høyde av containeren */
+            left: 50px;
+            width: 640px;
+            height: 640px;
             display: grid;
             grid-template-columns: repeat(20, 32px);
-            grid-template-rows: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
         }
         .cell {
             width: 32px;
@@ -92,7 +97,7 @@
        classifier = ml5.imageClassifier(imageModelURL + 'model.json');
      }
    
-     function setup() {
+     //function setup() {
      //  createCanvas(320, 260);
        // Create the video
        //video = createCapture(VIDEO);
@@ -101,8 +106,8 @@
    
 
        // Start classifying
-       classifyVideo();
-     }
+      // classifyVideo();
+     //}
    
      function draw() {
        background(0);
@@ -137,7 +142,7 @@
        // Classifiy again!
        classifyVideo();
      }
-     
+
         const pixelSize = 32;
         const threshold = 155;
         const threshold2 = 156;
@@ -209,7 +214,7 @@
                 console.error('An error occurred: ', err);
             });
 
-        const rows = 20; // Endret fra 15 til 20 for å matche videoens proporsjoner
+        const rows = 15;
         const cols = 20;
         let interval = 100;
         let isPlaying = false;

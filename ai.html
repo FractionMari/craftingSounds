@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(226, 194, 226);
+            background-color: rgb(153, 43, 153);
         }
         #video-container {
             position: relative;
@@ -158,8 +158,8 @@
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
-            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+            const offsetX = (video.videoWidth - video.videoHeight) / 2;
+            context.drawImage(video, offsetX, 0, video.videoHeight, video.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
             for (let y = 0; y < 20; y++) {
@@ -190,17 +190,17 @@
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
         };
 
-        const videoElement = document.createElement('video');
-        videoElement.autoplay = true;
+        const video = document.createElement('video');
+        video.autoplay = true;
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
-                videoElement.srcObject = stream;
-                videoElement.play();
-                videoElement.onloadedmetadata = () => {
+                video.srcObject = stream;
+                video.play();
+                video.onloadedmetadata = () => {
                     const pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');
-                    const { videoWidth, videoHeight } = videoElement;
+                    const { videoWidth, videoHeight } = video;
 
                     pixelGridCanvas.width = videoWidth;
                     pixelGridCanvas.height = videoHeight;

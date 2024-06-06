@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(190, 166, 29);
+            background-color: rgb(190, 48, 29);
         }
         #video-container {
             position: relative;
@@ -97,7 +97,7 @@
   function setup() {
     createCanvas(300, 240);
     // Create the video
-    video = createCapture(VIDEO);
+    video = videoElement;
     video.size(640, 480);
     video.hide();
 

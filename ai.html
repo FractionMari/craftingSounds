@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(230, 201, 182);
+            background-color: rgb(185, 182, 230);
         }
         #video-container {
             position: relative;
@@ -394,11 +394,7 @@
 
         ;
   }
-  if (label == "strek") {
-        console.log("det var strek");
-    }
-    else {console.log("ikke strek");
-}
+
   // Get a prediction for the current video frame
   function classifyVideo() {
     flippedVideo = ml5.flipImage(video)
@@ -417,6 +413,13 @@
     // The results are in an array ordered by confidence.
     // console.log(results[0]);
     label = results[0].label;
+
+    // er det strek eller ikke strek?
+    if (label == "strek") {
+        console.log("det var strek");
+    }
+    else {console.log("ikke strek");
+}
     // Classifiy again!
     classifyVideo();
   }

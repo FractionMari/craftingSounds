@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(224, 221, 3);
+            background-color: rgb(102, 224, 3);
         }
         #video-container {
             position: relative;
@@ -351,10 +351,12 @@
             synth.cellY = j;
             activeSynths.push(synth);
         }
-    </script>
 
-   <script type="text/javascript">
-     // Classifier Variable
+
+
+        // AI kode
+
+             // Classifier Variable
      let classifier;
      // Model URL
      let imageModelURL = 'https://teachablemachine.withgoogle.com/models/UsGnRu7Ed/';
@@ -371,11 +373,11 @@
      }
    
      function setup() {
-       createCanvas(320, 260);
+     //  createCanvas(320, 260);
        // Create the video
-       video = createCapture(VIDEO);
-       video.size(320, 240);
-       video.hide();
+       //video = createCapture(VIDEO);
+       //video.size(320, 240);
+       //video.hide();
    
 
        // Start classifying
@@ -385,7 +387,7 @@
      function draw() {
        background(0);
        // Draw the video
-       image(video, 0, 0);
+      // image(video, 0, 0);
    
        // Draw the label
        fill(255);
@@ -397,8 +399,8 @@
      // Get a prediction for the current video frame
      function classifyVideo() {
 
-       classifier.classify(video, gotResult);
-       video.remove();
+       classifier.classify(videoElement, gotResult);
+       videoElement.remove();
    
      }
    
@@ -415,6 +417,10 @@
        // Classifiy again!
        classifyVideo();
      }
+    </script>
+
+   <script type="text/javascript">
+
    </script>
     
 

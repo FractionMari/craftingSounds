@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(211, 163, 4);
+            background-color: rgb(160, 151, 121);
         }
         #video-container {
             position: relative;
@@ -360,7 +360,7 @@
   
   // Video
   let video;
-  let flippedVideo;
+
   // To store the classification
   let label = "";
 
@@ -376,7 +376,7 @@
     video.size(320, 240);
     video.hide();
 
-    flippedVideo = ml5.flipImage(video);
+
     // Start classifying
     classifyVideo();
   }
@@ -384,7 +384,7 @@
   function draw() {
     background(0);
     // Draw the video
-    image(flippedVideo, 0, 0);
+    image(video, 0, 0);
 
     // Draw the label
     fill(255);
@@ -395,9 +395,9 @@
 
   // Get a prediction for the current video frame
   function classifyVideo() {
-    flippedVideo = ml5.flipImage(video)
-    classifier.classify(flippedVideo, gotResult);
-    flippedVideo.remove();
+
+    classifier.classify(video, gotResult);
+    video.remove();
 
   }
 

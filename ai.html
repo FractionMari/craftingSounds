@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(158, 223, 8, 0.829);
+            background-color: rgba(8, 65, 223, 0.829);
         }
         #video-container {
             position: relative;
@@ -29,6 +29,10 @@
             grid-template-rows: repeat(15, 32px);
             width: 640px;
             height: 480px;
+        }
+        label {
+            font-size: 32px;
+            color:rgba(248, 248, 248, 0.829);
         }
         .pixel {
             width: 32px;
@@ -70,6 +74,7 @@
         <button id="clear">Clear</button>
         <button id="glider">Draw glider</button>
         <button id="glider2">Draw glider 2</button>
+        <p id="label"></p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
@@ -411,7 +416,7 @@
     // The results are in an array ordered by confidence.
     // console.log(results[0]);
     label = results[0].label;
-    document.getElementById("demo").innerHTML = label;
+    document.getElementById("label").innerHTML = label;
 
     // Classifiy again!
     classifyVideo();
@@ -420,7 +425,6 @@
 
 
 
-<p id="demo"></p>
 
 
 </body>

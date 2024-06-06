@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(255, 72, 0, 0.829);
+            background-color: rgba(0, 255, 98, 0.829);
         }
 
         p {
@@ -373,11 +373,11 @@
 
             phaser.frequency.value = activeCellCount;
 
-            if (activeCellCount > 15) {
+            if (activeCellCount > 30) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
             } 
-            if (activeCellCount > 30) {
+            if (activeCellCount > 50) {
                 currentScale = pentatonicScale3;
                 currentNote = droneNote3;
             } else {
@@ -460,7 +460,8 @@
 
     if (previousLabel !== label) {
         console.log("play Sound");
-        synth3.triggerAttackRelease("C3", "4n" );
+        drawGlider();
+       // synth3.triggerAttackRelease("C3", "4n" );
     }
     console.log(label);
 

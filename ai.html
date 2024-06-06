@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(185, 182, 230);
+            background-color: rgb(37, 24, 212);
         }
         #video-container {
             position: relative;
@@ -370,7 +370,7 @@
     else {console.log("ikke strek");
 }
 
-console.log(result);
+console.log(results);
   // Load the model first
   function preload() {
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
@@ -418,7 +418,7 @@ console.log(result);
       return;
     }
     // The results are in an array ordered by confidence.
-    // console.log(results[0]);
+    console.log(results[0]);
     label = results[0].label;
 
  

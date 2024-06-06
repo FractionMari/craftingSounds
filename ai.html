@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(86, 116, 223, 0.829);
+            background-color: rgba(223, 91, 86, 0.829);
         }
 
         p {
@@ -375,6 +375,8 @@
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
             }
+
+            drone.frequency.value = currentNote;
         }
 
         function playNote(i, j) {

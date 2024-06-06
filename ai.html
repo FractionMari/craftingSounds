@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(63, 7, 51);
+            background-color: rgb(224, 17, 180);
         }
         #video-container {
             position: relative;
@@ -98,11 +98,11 @@
      }
    
      function setup() {
-     //  createCanvas(320, 260);
+      createCanvas(640, 480);
        // Create the video
-       //video = createCapture(VIDEO);
-       //video.size(320, 240);
-       //video.hide();
+       video = createCapture(VIDEO);
+       video.size(640, 480);
+       video.hide();
    
 
        // Start classifying

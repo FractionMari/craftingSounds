@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(119, 168, 5);
+            background-color: rgb(224, 221, 3);
         }
         #video-container {
             position: relative;
@@ -59,6 +59,7 @@
     </style>
 </head>
 <body>
+
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
         <canvas id="canvas" width="640" height="640"></canvas>
@@ -73,10 +74,75 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ml5/0.10.1/ml5.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/p5.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/p5@latest/lib/addons/p5.dom.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
+
     <script>
+
+
+     // Classifier Variable
+     let classifier;
+     // Model URL
+     let imageModelURL = 'https://teachablemachine.withgoogle.com/models/UsGnRu7Ed/';
+     
+     // Video
+     let video;
+
+     // To store the classification
+     let label = "";
+   
+     // Load the model first
+     function preload() {
+       classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+     }
+   
+     function setup() {
+     //  createCanvas(320, 260);
+       // Create the video
+       //video = createCapture(VIDEO);
+       //video.size(320, 240);
+       //video.hide();
+   
+
+       // Start classifying
+       classifyVideo();
+     }
+   
+     function draw() {
+       background(0);
+       // Draw the video
+      // image(video, 0, 0);
+   
+       // Draw the label
+       fill(255);
+       textSize(16);
+       textAlign(CENTER);
+       text(label, width / 2, height - 4);
+     }
+   
+     // Get a prediction for the current video frame
+     function classifyVideo() {
+
+       classifier.classify(videoElement, gotResult);
+       videoElement.remove();
+   
+     }
+   
+     // When we get a result
+     function gotResult(error, results) {
+       // If there is an error
+       if (error) {
+         console.error(error);
+         return;
+       }
+       // The results are in an array ordered by confidence.
+       console.log(results[0]);
+       label = results[0].label;
+       // Classifiy again!
+       classifyVideo();
+     }
+     
         const pixelSize = 32;
         const threshold = 155;
         const threshold2 = 156;
@@ -209,6 +275,8 @@
                 drone.triggerAttack(currentNote, "+0.5", 0.5);
             }
         });
+
+        
 
         function drawGlider(i, j) {
             for (let i = 0; i < rows; i++) {
@@ -348,64 +416,8 @@
             activeSynths.push(synth);
         }
 
-        // Classifier Variable
-        let classifier;
-        // Model URL
-        let imageModelURL = 'https://teachablemachine.withgoogle.com/models/UsGnRu7Ed/';
-        
-        // To store the classification
-        let label = "";
-        
-        // Load the model first
-        function preload() {
-            classifier = ml5.imageClassifier(imageModelURL + 'model.json');
-        }
-        
-        function setup() {
-            // Create the video
-            video = createCapture(VIDEO);
-            video.size(640, 480);
-            video.hide();
-        
-            // Start classifying
-            classifyVideo();
-        }
-        
-        function draw() {
-            background(0);
-            // Draw the video
-            image(video, 0, 0);
-        
-            // Draw the label
-            fill(255);
-            textSize(16);
-            textAlign(CENTER);
-            text(label, width / 2, height - 4);
-        }
-        
-        // Get a prediction for the current video frame
-        function classifyVideo() {
-            classifier.classify(videoElement, gotResult);
-        }
-        
-        // When we get a result
-        function gotResult(error, results) {
-            // If there is an error
-            if (error) {
-                console.error(error);
-                return;
-            }
-            // The results are in an array ordered by confidence.
-            console.log(results[0]);
-            label = results[0].label;
-            // Classifiy again!
-            classifyVideo();
-        }
+   </script>
+    
 
-        // Add p5.js preload, setup, and draw functions
-        window.preload = preload;
-        window.setup = setup;
-        window.draw = draw;
-    </script>
 </body>
 </html>

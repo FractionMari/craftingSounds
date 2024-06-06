@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(132, 111, 172, 0.829);
+            background-color: rgba(172, 120, 111, 0.829);
         }
 
         p {
@@ -464,6 +464,7 @@
     // The results are in an array ordered by confidence.
     // console.log(results[0]);
     label = results[0].label;
+    console.log(label);
     document.getElementById("label").innerHTML = label;
 
     // Classifiy again!

@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(102, 224, 3);
+            background-color: rgb(43, 3, 224);
         }
         #video-container {
             position: relative;
@@ -18,7 +18,7 @@
         #controls {
             position: static;
             width: 400px;
-            height: 400px;
+            height: 100px;
         }
         #pixel-grid {
             position: absolute;
@@ -362,7 +362,7 @@
      let imageModelURL = 'https://teachablemachine.withgoogle.com/models/UsGnRu7Ed/';
      
      // Video
-     let video;
+     //let video;
 
      // To store the classification
      let label = "";
@@ -385,12 +385,12 @@
      }
    
      function draw() {
-       background(0);
+      // background(0);
        // Draw the video
       // image(video, 0, 0);
    
        // Draw the label
-       fill(255);
+       //fill(255);
        textSize(16);
        textAlign(CENTER);
        text(label, width / 2, height - 4);
@@ -400,7 +400,7 @@
      function classifyVideo() {
 
        classifier.classify(videoElement, gotResult);
-       videoElement.remove();
+      // videoElement.remove();
    
      }
    

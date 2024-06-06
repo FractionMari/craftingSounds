@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(3, 224, 21);
+            background-color: rgb(3, 54, 224);
         }
         #video-container {
             position: relative;
@@ -87,7 +87,7 @@
      let imageModelURL = 'https://teachablemachine.withgoogle.com/models/UsGnRu7Ed/';
      
      // Video
-     let video;
+     //let video;
 
      // To store the classification
      let label = "";
@@ -97,7 +97,7 @@
        classifier = ml5.imageClassifier(imageModelURL + 'model.json');
      }
    
-     //function setup() {
+     function setup() {
      //  createCanvas(320, 260);
        // Create the video
        //video = createCapture(VIDEO);
@@ -106,8 +106,8 @@
    
 
        // Start classifying
-      // classifyVideo();
-     //}
+       classifyVideo();
+     }
    
      function draw() {
        //background(0);

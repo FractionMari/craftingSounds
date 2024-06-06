@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(116, 139, 86);
+            background-color: rgb(139, 107, 86);
         }
         #video-container {
             position: relative;
@@ -370,9 +370,9 @@
   }
 
   function setup() {
-    createCanvas(320, 320);
+    createCanvas(320, 320); // canvvas 320 * 320 for å få bra proposjoner på hovedvinduet
     // Create the video
-    video = videoElement;
+    video = createCapture(VIDEO);
     video.size(640, 480);
     video.hide();
 
@@ -384,7 +384,7 @@
   function draw() {
     background(0);
     // Draw the video
-    image(video, 0, 0);
+   // image(video, 0, 0);
 
     // Draw the label
     fill(255);

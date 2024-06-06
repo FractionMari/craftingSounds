@@ -6,45 +6,40 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(214, 213, 126);
+            background-color: rgb(198, 3, 224);
         }
         #video-container {
             position: relative;
             top: 0;
             left: 50px;
-            width: 1000px;
-            height: 700px;
-        }
-        #controls {
-            position: static;
-            width: 400px;
-            height: 400px;
+            width: 640px; /* Justert til gridets størrelse */
+            height: 640px; /* Justert til gridets størrelse */
+            overflow: hidden; /* Hindrer at videoen overskrider containeren */
         }
         #pixel-grid {
             position: absolute;
             top: 0;
-            left: 50px;
-            display: grid;
-            grid-template-columns: repeat(20, 32px);
-            grid-template-rows: repeat(15, 32px);
-            width: 640px;
-            height: 480px;
+            left: 0;
+            width: 100%; /* Full bredde av containeren */
+            height: 100%; /* Full høyde av containeren */
         }
-        .pixel {
-            width: 32px;
-            height: 32px;
-            border: 1px solid #000;
-            border-radius: 50px;
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Full bredde av containeren */
+            height: 100%; /* Full høyde av containeren */
+            display: none; /* Skjuler canvasen */
         }
         #grid {
             position: absolute;
             top: 0;
-            left: 50px;
-            width: 640px;
-            height: 640px;
+            left: 0;
+            width: 100%; /* Full bredde av containeren */
+            height: 100%; /* Full høyde av containeren */
             display: grid;
             grid-template-columns: repeat(20, 32px);
-            grid-template-rows: repeat(15, 32px);
+            grid-template-rows: repeat(20, 32px);
         }
         .cell {
             width: 32px;
@@ -98,10 +93,11 @@
      }
    
      function setup() {
+     //  createCanvas(320, 260);
        // Create the video
-       video = createCapture(VIDEO);
-       video.size(640, 640);
-       video.hide();
+       //video = createCapture(VIDEO);
+       //video.size(320, 240);
+       //video.hide();
    
 
        // Start classifying
@@ -111,7 +107,7 @@
      function draw() {
        background(0);
        // Draw the video
-       image(video, 50, 0, 640, 640);
+      // image(video, 0, 0);
    
        // Draw the label
        fill(255);
@@ -123,8 +119,8 @@
      // Get a prediction for the current video frame
      function classifyVideo() {
 
-       classifier.classify(video, gotResult);
-       video.remove();
+       classifier.classify(videoElement, gotResult);
+       videoElement.remove();
    
      }
    
@@ -158,8 +154,8 @@
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
-            const offsetX = (videoWidth - videoHeight) / 2;
-            context.drawImage(video, offsetX, 0, videoHeight, videoHeight, 0, 0, canvas.width, canvas.height);
+            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
             for (let y = 0; y < 20; y++) {
@@ -213,7 +209,7 @@
                 console.error('An error occurred: ', err);
             });
 
-        const rows = 15;
+        const rows = 20; // Endret fra 15 til 20 for å matche videoens proporsjoner
         const cols = 20;
         let interval = 100;
         let isPlaying = false;

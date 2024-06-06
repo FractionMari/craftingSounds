@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgb(14, 11, 1);
+            background-color: rgb(211, 163, 4);
         }
         #video-container {
             position: relative;
@@ -41,7 +41,7 @@
             top: 0;
             left: 50px;
             width: 640px;
-            height: 480px;
+            height: 640px;
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
@@ -370,10 +370,10 @@
   }
 
   function setup() {
-    createCanvas(640, 480);
+    createCanvas(320, 260);
     // Create the video
     video = createCapture(VIDEO);
-    video.size(640, 480);
+    video.size(320, 240);
     video.hide();
 
     flippedVideo = ml5.flipImage(video);

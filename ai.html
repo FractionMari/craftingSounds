@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(255, 102, 0, 0.829);
+            background-color: rgba(251, 255, 0, 0.829);
         }
 
         p {
@@ -175,6 +175,7 @@
         let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
         let pentatonicScale2 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
         let pentatonicScale3 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+        let pentatonicScale4 = ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'];
         let drone = new Tone.Synth().toDestination();
         let droneNote = 'A2';
         let droneNote2 = 'A#2';
@@ -373,13 +374,17 @@
 
             phaser.frequency.value = activeCellCount;
 
-            if ((activeCellCount > 30) && (activeCellCount < 50)) {
+            if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
             } 
-            if (activeCellCount > 50) {
+            if ((activeCellCount > 20) && (activeCellCount < 30))  {
                 currentScale = pentatonicScale3;
                 currentNote = droneNote3;
+
+                if ((activeCellCount > 30) && (activeCellCount < 40))  {
+                currentScale = pentatonicScale4;
+                currentNote = droneNote4;
             } else {
                 currentScale = pentatonicScale;
                 currentNote = droneNote;

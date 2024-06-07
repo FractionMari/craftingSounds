@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(0, 255, 98, 0.829);
+            background-color: rgba(255, 102, 0, 0.829);
         }
 
         p {
@@ -373,7 +373,7 @@
 
             phaser.frequency.value = activeCellCount;
 
-            if (activeCellCount > 30) {
+            if ((activeCellCount > 30) && (activeCellCount < 50)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
             } 

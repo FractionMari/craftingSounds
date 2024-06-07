@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(251, 255, 0, 0.829);
+            background-color: rgba(0, 162, 255, 0.829);
         }
 
         p {
@@ -180,6 +180,7 @@
         let droneNote = 'A2';
         let droneNote2 = 'A#2';
         let droneNote3 = 'B2';
+        let droneNote4 = 'C2';
         let currentNote = droneNote;
 
         let currentScale = pentatonicScale;
@@ -378,14 +379,16 @@
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
             } 
-            if ((activeCellCount > 20) && (activeCellCount < 30))  {
+            if ((activeCellCount > 20) && (activeCellCount < 30)) {
                 currentScale = pentatonicScale3;
                 currentNote = droneNote3;
+            } 
 
-                if ((activeCellCount > 30) && (activeCellCount < 40))  {
+            if ((activeCellCount > 30) && (activeCellCount < 50)) {
                 currentScale = pentatonicScale4;
                 currentNote = droneNote4;
-            } else {
+            } 
+            else {
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
             }
@@ -476,6 +479,7 @@
     // Classifiy again!
     classifyVideo();
   }
+
     </script>
 
 

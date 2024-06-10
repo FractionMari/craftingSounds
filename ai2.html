@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(255, 0, 0, 0.829);
+            background-color: rgba(0, 132, 255, 0.829);
         }
 
         p {
@@ -378,6 +378,7 @@
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
+                synth2.triggerAttack(currentNote);
             } 
             if ((activeCellCount > 20) && (activeCellCount < 30)) {
                 currentScale = pentatonicScale3;
@@ -389,11 +390,12 @@
                 currentNote = droneNote4;
             } 
             if (activeCellCount < 1) {
-                synth2.triggerRelease(0.5);
+                synth2.triggerRelease(2);
             } 
             else {
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
+                synth2.triggerAttack(currentNote);
             }
 
             synth2.frequency.value = currentNote;

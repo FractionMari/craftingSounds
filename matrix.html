@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finne ut initial triggers</title>
+    <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(255, 0, 43, 0.829);
+            background-color: rgba(17, 0, 255, 0.829);
         }
 
         p {
@@ -166,7 +166,7 @@
 
         const rows = 15;
         const cols = 20;
-        let interval = 400;
+        let interval = 100;
         let isPlaying = false;
         let timerId;
         let activeSynths = [];
@@ -374,11 +374,12 @@
             grid = newGrid;
 
             phaser.frequency.value = activeCellCount;
+            // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
+console.log("gain: ", activelCellCount);
 
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
-                synth2.triggerAttack(currentNote);
             } 
             if ((activeCellCount > 20) && (activeCellCount < 30)) {
                 currentScale = pentatonicScale3;
@@ -389,13 +390,9 @@
                 currentScale = pentatonicScale4;
                 currentNote = droneNote4;
             } 
-            if (activeCellCount < 1) {
-                synth2.triggerRelease(2);
-            } 
             else {
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
-                synth2.triggerAttack(currentNote);
             }
 
             synth2.frequency.value = currentNote;

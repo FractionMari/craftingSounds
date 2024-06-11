@@ -413,7 +413,7 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                synth = new Tone.Synth().toDestination();
+                synth = new Tone.Synth().connect(gainNode);
             }
 
             const noteIndex = (i) % currentScale.length;
@@ -422,9 +422,9 @@
             //gain skal være basert på antall aktive celler
 
             
-            console.log(nyGain);
+          //  console.log(nyGain);
 
-            synth.triggerAttackRelease(note, '16n', undefined, nyGain);
+            synth.triggerAttackRelease(note, '16n');
             
 
             synth.cellX = i;

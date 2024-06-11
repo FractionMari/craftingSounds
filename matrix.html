@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(43, 255, 0, 0.829);
+            background-color: rgba(255, 17, 0, 0.829);
         }
 
         p {
@@ -375,7 +375,7 @@
 
             phaser.frequency.value = activeCellCount;
             // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
-            console.log("gain: ", (activeCellCount / 100));
+            console.log("gain: ", ((activeCellCount / 100) * -1));
 
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;

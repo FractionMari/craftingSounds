@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(68, 0, 255, 0.829);
+            background-color: rgba(255, 0, 212, 0.829);
         }
 
         p {
@@ -362,6 +362,9 @@
                         newGrid[i][j] = grid[i][j];
                     }
 // ++ etter en variabel betyr +1. 
+                    console.log("i er: ", i);
+                    console.log("j er: ", j);
+                    console.log("newGrid[i][j] er: ", i);
 
                     if (newGrid[i][j] === 1) {
                         activeCellCount++;
@@ -385,7 +388,7 @@
 
             grid = newGrid;
 
-            phaser.frequency.value = activeCellCount;
+            //phaser.frequency.value = activeCellCount;
             // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
 
             
@@ -396,9 +399,11 @@
             gainNode.gain.value = nyGain;
             console.log("faktisk gain nå: ", gainNode.gain.value);
 
+            //her viser det faktisk antall cells count og ikke teller fra 1-4
+            //console.log("activeCellCount: ", activeCellCount);
 
             // skala basert på antall aktive celler
-            console.log("activeCellCount: ", activeCellCount);
+
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;

@@ -414,6 +414,13 @@
                     } else {
                         cells[i * cols + j].classList.remove('alive');
                     }
+
+                             //   if ((grid[i] < 7) && (grid[j] < 9)) {console.log("A0")} 
+         //   else {console.log("alt annet")}
+
+            console.log("grid: ", grid);
+            console.log("grid[i]: ", grid[i]);
+            console.log("grid[j]: ", grid[j]);
                 });
             });
 
@@ -432,8 +439,8 @@
 
             //her viser det faktisk antall cells count og ikke teller fra 1-4
             //console.log("activeCellCount: ", activeCellCount);
-            console.log("activeCellA0 ", activeCellA0);
-            console.log("activeCellB0 ", activeCellB0);
+            //console.log("activeCellA0 ", activeCellA0);
+            //console.log("activeCellB0 ", activeCellB0);
 
             // skala basert på antall aktive celler
 
@@ -459,9 +466,9 @@
 
             //her er området for å se hvilke steder i griden som er aktive
 
-            console.log("grid: ", grid);
-            console.log("grid[i]: ", grid[i]);
-            console.log("grid[j]: ", grid[j]);
+           
+
+
 
     
             synth2.frequency.value = currentNote;

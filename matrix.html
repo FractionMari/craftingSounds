@@ -383,9 +383,9 @@
            
 
             
-            nyGain = ((((activeCellCount / 100) * -1)) + 0.7);
-            if (nyGain < 0.01) 
-                {nyGain = 0.01}
+            nyGain = ((((activeCellCount / 100) * -1)) + 0.9);
+           if (nyGain < 0.1) 
+              {nyGain = 0.1}
 
             gainNode.gain.value = nyGain;
             console.log("faktisk gain nå: ", gainNode.gain.value);

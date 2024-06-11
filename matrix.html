@@ -375,7 +375,8 @@
 
             phaser.frequency.value = activeCellCount;
             // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
-            console.log("gain: ", (((activeCellCount / 150) * -1)) + 1);
+            console.log("gain to: ", (((activeCellCount / 100) * -1)) + 0.8);
+            console.log("faktisk gain nå: ", gainNode.gain.value);
 
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;

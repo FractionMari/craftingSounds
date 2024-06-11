@@ -383,6 +383,7 @@
            
 
             gainNode.gain.value = nyGain;
+            nyGain = ((((activeCellCount / 100) * -1)) + 0.8);
 
 
 
@@ -420,7 +421,7 @@
             const gain = ((j / cols) / 2);
             //gain skal være basert på antall aktive celler
 
-            nyGain = ((((activeCellCount / 100) * -1)) + 0.8);
+            
             console.log(nyGain);
 
             synth.triggerAttackRelease(note, '16n', undefined, nyGain);

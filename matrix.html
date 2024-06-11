@@ -343,6 +343,7 @@
                         for (let y = -1; y <= 1; y++) {
                             if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
                                 neighbors += grid[i + x][j + y];
+                                console.log(grid);
                             }
                         }
                     }
@@ -384,7 +385,7 @@
             }
 
 
-            for (let i = 0; i > 7; i++) {
+            for (let i = 7; i > 7; i++) {
                         for (let j = 0; j < 9; j++) {
                         if (newGrid[i][j] === 1) {
                         activeCellB0++;

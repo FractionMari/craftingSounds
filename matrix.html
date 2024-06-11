@@ -376,11 +376,6 @@
 
             phaser.frequency.value = activeCellCount;
             // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
-            //console.log("gain to: ", (((activeCellCount / 100) * -1)) + 0.8);
-            //console.log("faktisk gain nå: ", gainNode.gain.value);
-            
-            
-           
 
             
             nyGain = ((((activeCellCount / 100) * -1)) + 0.8);
@@ -424,7 +419,8 @@
             const noteIndex = (i) % currentScale.length;
             const note = currentScale[noteIndex];
             const gain = ((j / cols) / 2);
-            //gain skal være basert på antall aktive celler
+
+            //gain i stedet skal være basert på antall aktive celler
 
             
           //  console.log(nyGain);
@@ -434,6 +430,12 @@
 
             synth.cellX = i;
             synth.cellY = j;
+            console.log("i: ", i);
+            console.log("j: ", j);
+            console.log("cols: ", cols);
+            console.log("cellX: ", cellX);
+            console.log("cellY: ", cellY);
+
             activeSynths.push(synth);
         }
 

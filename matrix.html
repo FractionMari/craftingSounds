@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(255, 0, 149, 0.829);
+            background-color: rgba(255, 51, 0, 0.829);
         }
 
         p {
@@ -361,11 +361,13 @@
                     } else {
                         newGrid[i][j] = grid[i][j];
                     }
+// ++ etter en variabel betyr +1. 
 
                     if (newGrid[i][j] === 1) {
                         activeCellCount++;
-                        console.log("activeCellCount: ", activeCellCount);
+                        
                     }
+                    console.log("activeCellCount: ", activeCellCount);
                 }
             }
 

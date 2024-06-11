@@ -169,6 +169,7 @@
         let interval = 100;
         let isPlaying = false;
         let timerId;
+        let nyGain;
         let activeSynths = [];
         let availableSynths = [];
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
@@ -375,11 +376,11 @@
 
             phaser.frequency.value = activeCellCount;
             // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
-            console.log("gain to: ", (((activeCellCount / 100) * -1)) + 0.8);
-            console.log("faktisk gain nå: ", gainNode.gain.value);
-            let nyGain;
+            //console.log("gain to: ", (((activeCellCount / 100) * -1)) + 0.8);
+            //console.log("faktisk gain nå: ", gainNode.gain.value);
             
-            nyGain = ((((activeCellCount / 100) * -1)) + 0.8);
+            
+           
 
             gainNode.gain.value = nyGain;
 
@@ -417,6 +418,10 @@
             const noteIndex = (i) % currentScale.length;
             const note = currentScale[noteIndex];
             const gain = ((j / cols) / 2);
+            //gain skal være basert på antall aktive celler
+
+            nyGain = ((((activeCellCount / 100) * -1)) + 0.8);
+            console.log(nyGain);
 
             synth.triggerAttackRelease(note, '16n', undefined, nyGain);
             

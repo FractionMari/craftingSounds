@@ -329,6 +329,13 @@
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
 
+            //dele opp rutenettet i fire: A0, A1, B0 og B1
+            let activeCellA0 = 0;
+            let activeCellA1 = 0;
+            let activeCellB0 = 0;
+            let activeCellB1 = 0;
+
+
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {
                     let neighbors = 0;
@@ -357,6 +364,7 @@
 
                     if (newGrid[i][j] === 1) {
                         activeCellCount++;
+                        console.log("activeCellCount: ", activeCellCount);
                     }
                 }
             }
@@ -386,7 +394,7 @@
             console.log("faktisk gain nå: ", gainNode.gain.value);
 
 
-
+            // skala basert på antall aktive celler
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
@@ -405,6 +413,9 @@
                 currentNote = droneNote;
             }
 
+            // skala basert på område i griden mest celler aktive
+
+    
             synth2.frequency.value = currentNote;
         }
 

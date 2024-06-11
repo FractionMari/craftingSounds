@@ -349,7 +349,7 @@
                     }
                     neighbors -= grid[i][j];
 
-                    console.log(grid);
+                    
 
                     if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
                         newGrid[i][j] = 0;
@@ -456,6 +456,8 @@
             }
 
             // skala basert på område i griden mest celler aktive
+
+            console.log("grid: ", grid);
 
     
             synth2.frequency.value = currentNote;

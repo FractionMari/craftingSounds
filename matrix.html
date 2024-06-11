@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(255, 51, 0, 0.829);
+            background-color: rgba(68, 0, 255, 0.829);
         }
 
         p {
@@ -365,9 +365,10 @@
 
                     if (newGrid[i][j] === 1) {
                         activeCellCount++;
+                        //inni her teller den hele tiden opp til antallet det er 
                         
                     }
-                    console.log("activeCellCount: ", activeCellCount);
+                    
                 }
             }
 
@@ -397,6 +398,7 @@
 
 
             // skala basert på antall aktive celler
+            console.log("activeCellCount: ", activeCellCount);
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;

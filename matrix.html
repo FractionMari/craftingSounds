@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(255, 196, 0, 0.829);
+            background-color: rgba(255, 102, 0, 0.829);
         }
 
         p {
@@ -384,7 +384,9 @@
 
             
             nyGain = ((((activeCellCount / 100) * -1)) + 0.5);
-            if (nyGain < 0) { nyGain === 0};
+            if (nyGain < 0.01) 
+                { nyGain === 0.01}
+
             gainNode.gain.value = nyGain;
             console.log("faktisk gain nå: ", gainNode.gain.value);
 

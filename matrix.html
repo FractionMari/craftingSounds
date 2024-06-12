@@ -376,26 +376,7 @@
                     }
 
 
-                    for (let i = 0; i < 7; i++) {
-                        for (let j = 0; j < 9; j++) {
-                        if (newGrid[i][j] === 1) {
-                        activeCellA0++;
-                        //console.log("activeCellA0 ", activeCellA0);
-                        //inni her teller den hele tiden opp til antallet det er    
-                    }  
-                }
-            }
 
-
-            for (let i = 7; i > 7; i++) {
-                        for (let j = 0; j < 9; j++) {
-                        if (newGrid[i][j] === 1) {
-                        activeCellB0++;
-                        //console.log("activeCellA0 ", activeCellA0);
-                        //inni her teller den hele tiden opp til antallet det er    
-                    }  
-                }
-            }
 
 
 
@@ -465,13 +446,15 @@
          //   else {console.log("alt annet")}
 
          for (let i = 0; i < 7; i++) {
-            console.log("grid[i] de 7 første: ", grid[i]);
+            for (let j = 0; j < 9; j++) {
+                let content = grid[i][j];
+                activeCellA0 += content;
+            }
                     }
 
-            console.log("grid[0][1]: ", grid[0][1]);
-            console.log("grid[1][0]: ", grid[1][0]);
-          //  console.log("grid[0]: ", grid[0]);
-          //  console.log("grid[1]: ", grid[1]);
+            console.log("activeCellA0 ", activeCellA0);
+          //  console.log("grid[1][0]: ", grid[1][0]);
+
 
     
             synth2.frequency.value = currentNote;

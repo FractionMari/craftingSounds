@@ -474,10 +474,22 @@
                 activeCellA0 += content;
                 }
             } 
-            console.log("activeCellA0 ", activeCellA0);
-            console.log("activeCellB0 ", activeCellB0);
-            console.log("activeCellB1 ", activeCellB1);
-            console.log("activeCellA1 ", activeCellA1);
+
+// Finn den høyeste verdien og hvilken activeCell den tilhører
+let maxValue = Math.max(activeCellA0, activeCellA1, activeCellB0, activeCellB1);
+let highestCell;
+
+if (maxValue === activeCellA0) {
+    highestCell = 'activeCellA0';
+} else if (maxValue === activeCellA1) {
+    highestCell = 'activeCellA1';
+} else if (maxValue === activeCellB0) {
+    highestCell = 'activeCellB0';
+} else if (maxValue === activeCellB1) {
+    highestCell = 'activeCellB1';
+}
+
+console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValue}`);
           //  console.log("grid[1][0]: ", grid[1][0]);
 
 

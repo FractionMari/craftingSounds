@@ -375,17 +375,10 @@
                         
                     }
 
-
-
-
-
-
                     
                 }
             }
 
-
-           
 
             const cells = document.querySelectorAll('.cell');
             newGrid.forEach((row, i) => {
@@ -417,6 +410,7 @@
             //console.log("activeCellB0 ", activeCellB0);
 
             // skala basert på antall aktive celler
+            /*
 
             if ((activeCellCount > 10) && (activeCellCount < 20)) {
                 currentScale = pentatonicScale2;
@@ -434,13 +428,11 @@
             else {
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
-            }
+            } */
 
             // skala basert på område i griden mest celler aktive
 
             //her er området for å se hvilke steder i griden som er aktive
-
-           
 
          //   if ((grid[i] < 7) && (grid[j] < 9)) {console.log("A0")} 
          //   else {console.log("alt annet")}
@@ -481,12 +473,16 @@ let highestCell;
 
 if (maxValue === activeCellA0) {
     highestCell = 'activeCellA0';
+    currentScale = pentatonicScale;
 } else if (maxValue === activeCellA1) {
     highestCell = 'activeCellA1';
+    currentScale = pentatonicScale2;
 } else if (maxValue === activeCellB0) {
     highestCell = 'activeCellB0';
+    currentScale = pentatonicScale3;
 } else if (maxValue === activeCellB1) {
     highestCell = 'activeCellB1';
+    currentScale = pentatonicScale4;
 }
 
 console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValue}`);
@@ -510,18 +506,13 @@ console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValu
             const gain = ((j / cols) / 2);
 
             //gain i stedet skal være basert på antall aktive celler
-
             
           //  console.log(nyGain);
 
             synth.triggerAttackRelease(note, '16n');
             
-
             synth.cellX = i;
             synth.cellY = j;
-            //console.log("i: ", i);
-            //console.log("j: ", j);
-            //console.log("cols: ", cols);
 
 
             activeSynths.push(synth);

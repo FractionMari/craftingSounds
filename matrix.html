@@ -453,10 +453,31 @@
             for (let j = 0; j < 9; j++) {
                 let content = grid[i][j];
                 activeCellA0 += content;
-            }
-                    } 
+                }
+            } 
+        for (let i = 7; i < 15; i++) {
+            for (let j = 0; j < 9; j++) {
+                let content = grid[i][j];
+                activeCellB0 += content;
+                }
+            } 
+        for (let i = 0; i < 7; i++) {
+            for (let j = 9; j < 20; j++) {
+                let content = grid[i][j];
+                activeCellA1 += content;
+                }
+            } 
 
+        for (let i = 7; i < 15; i++) {
+            for (let j = 9; j < 20; j++) {
+                let content = grid[i][j];
+                activeCellA0 += content;
+                }
+            } 
             console.log("activeCellA0 ", activeCellA0);
+            console.log("activeCellB0 ", activeCellB0);
+            console.log("activeCellB1 ", activeCellB1);
+            console.log("activeCellA1 ", activeCellA1);
           //  console.log("grid[1][0]: ", grid[1][0]);
 
 

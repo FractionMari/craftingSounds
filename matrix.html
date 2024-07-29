@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(255, 38, 0, 0.829);
+            background-color: rgba(0, 255, 98, 0.829);
         }
 
         p {
@@ -84,6 +84,10 @@
         <button id="clear">Clear</button>
         <button id="glider">Draw glider</button>
         <button id="glider2">Draw glider 2</button>
+        <div class="slidecontainer">
+            <input type="range" min="50" max="200" value="100" class="slider" id="myRange">
+            <p>Value: <span id="demo"></span></p>
+          </div>
         
     </div>
 
@@ -93,6 +97,17 @@
 <script src="https://cdn.jsdelivr.net/npm/ml5@latest/dist/ml5.min.js"></script>
 
     <script>
+
+        // slider 
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+        }
+
         const pixelSize = 32;
         const threshold = 155;
         const threshold2 = 156;
@@ -158,7 +173,7 @@
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
-                    console.log(videoElement);
+                    console.log(pixelGridCanvas);
                 };
             })
             .catch(err => {
@@ -167,7 +182,7 @@
 
         const rows = 15;
         const cols = 20;
-        let interval = 200;
+        let interval = slider.value;
         let isPlaying = false;
         let timerId;
         let nyGain;

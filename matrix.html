@@ -452,16 +452,7 @@
          // som avdekker hvilken kvadrant som har flest aktive celler, og da velger vi skala utifra den som har
          // mest celler.
 
-         // slider 
-         var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value;
 
-        slider.oninput = function() {
-    output.innerHTML = this.value;
-    
-        }
-        let interval = slider.value; 
          for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 9; j++) {
                 let content = grid[i][j];
@@ -509,7 +500,16 @@ if (maxValue === activeCellA0) {
 console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValue}`);
           //  console.log("grid[1][0]: ", grid[1][0]);
 
+         // slider 
+         var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
 
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+    
+        }
+        let interval = slider.value; 
     
             synth2.frequency.value = currentNote;
         }

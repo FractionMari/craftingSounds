@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(166, 255, 0, 0.829);
+            background-color: rgba(255, 136, 0, 0.829);
         }
 
         p {
@@ -174,7 +174,7 @@
 
         const rows = 15;
         const cols = 20;
-       let interval = 50;
+       let interval = 100;
         let isPlaying = false;
         let timerId;
         let nyGain;
@@ -326,8 +326,7 @@
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
-                        // slider 
-
+                    
 
         timerId = setInterval(updateGrid, interval); //interval
             } else {
@@ -338,15 +337,6 @@
 
         function updateGrid() {
 
-            var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value;
-
-        slider.oninput = function() {
-    output.innerHTML = this.value;
-    
-        }
-        let interval = slider.value; 
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
 
@@ -462,6 +452,16 @@
          // som avdekker hvilken kvadrant som har flest aktive celler, og da velger vi skala utifra den som har
          // mest celler.
 
+         // slider 
+         var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+    
+        }
+        let interval = slider.value; 
          for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 9; j++) {
                 let content = grid[i][j];

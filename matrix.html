@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(0, 255, 255, 0.829);
+            background-color: rgba(166, 255, 0, 0.829);
         }
 
         p {
@@ -174,7 +174,7 @@
 
         const rows = 15;
         const cols = 20;
-       // let interval = slider.value;
+       let interval = 50;
         let isPlaying = false;
         let timerId;
         let nyGain;
@@ -328,7 +328,17 @@
                 playPauseButton.textContent = 'Pause';
                         // slider 
 
-        var slider = document.getElementById("myRange");
+
+        timerId = setInterval(updateGrid, interval); //interval
+            } else {
+                playPauseButton.textContent = 'Play';
+                clearInterval(timerId);
+            }
+        }
+
+        function updateGrid() {
+
+            var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
         output.innerHTML = slider.value;
 
@@ -337,14 +347,6 @@
     
         }
         let interval = slider.value; 
-        timerId = setInterval(updateGrid, slider.value); //interval
-            } else {
-                playPauseButton.textContent = 'Play';
-                clearInterval(timerId);
-            }
-        }
-
-        function updateGrid() {
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
 

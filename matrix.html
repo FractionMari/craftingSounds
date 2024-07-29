@@ -336,8 +336,8 @@
     output.innerHTML = this.value;
     
         }
-        let interval = slider.value;
-        timerId = setInterval(updateGrid, interval);
+        let interval = slider.value; 
+        timerId = setInterval(updateGrid, slider.value); //interval
             } else {
                 playPauseButton.textContent = 'Play';
                 clearInterval(timerId);

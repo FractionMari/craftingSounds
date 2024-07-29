@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(0, 255, 98, 0.829);
+            background-color: rgba(247, 0, 255, 0.829);
         }
 
         p {
@@ -98,15 +98,7 @@
 
     <script>
 
-        // slider 
 
-        var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value;
-
-        slider.oninput = function() {
-    output.innerHTML = this.value;
-        }
 
         const pixelSize = 32;
         const threshold = 155;
@@ -182,7 +174,7 @@
 
         const rows = 15;
         const cols = 20;
-        let interval = slider.value;
+       // let interval = slider.value;
         let isPlaying = false;
         let timerId;
         let nyGain;
@@ -334,6 +326,16 @@
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
+                        // slider 
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+    let interval = slider.value;
+        }
                 timerId = setInterval(updateGrid, interval);
             } else {
                 playPauseButton.textContent = 'Play';

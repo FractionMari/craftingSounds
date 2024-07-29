@@ -204,7 +204,7 @@
         const freeverb = new Tone.Freeverb().connect(gainNode);
 
 
-        gainNode.gain.value = 0.2;
+        gainNode.gain.value = 0.1;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -327,14 +327,14 @@
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
-                synth2.connect(phaser);
+                synth2.connect(autoWah);
                     
 
         timerId = setInterval(updateGrid, interval); //interval
             } else {
                 playPauseButton.textContent = 'Play';
                 clearInterval(timerId);
-                synth2.disconnect(phaser);
+                synth2.disconnect(autoWah);
             }
         }
 
@@ -431,7 +431,8 @@
               {nyGain = 0.1}
 
             gainNode.gain.value = nyGain;
-            //console.log("faktisk gain nå: ", gainNode.gain.value);
+
+            console.log("faktisk gain nå: ", gainNode.gain.value);
 
             //her viser det faktisk antall cells count og ikke teller fra 1-4
             //console.log("activeCellCount: ", activeCellCount);
@@ -542,7 +543,7 @@ console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValu
             
           //  console.log(nyGain);
 
-            synth.triggerAttackRelease(note, '16n');
+            synth.triggerAttackRelease(note, '8n');
             
             synth.cellX = i;
             synth.cellY = j;

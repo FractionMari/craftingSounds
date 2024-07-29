@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(255, 136, 0, 0.829);
+            background-color: rgba(231, 156, 69, 0.829);
         }
 
         p {
@@ -34,6 +34,7 @@
             grid-template-rows: repeat(15, 32px);
             width: 640px;
             height: 480px;
+            border-radius: 50px;
         }
         #label {
             position: absolute;
@@ -174,7 +175,7 @@
 
         const rows = 15;
         const cols = 20;
-       let interval = 100;
+       let interval = 200;
         let isPlaying = false;
         let timerId;
         let nyGain;
@@ -357,7 +358,7 @@
                                 //console.log(grid);
 
 
-         // slider 
+     /*    // slider Spørsmål til Thomas: hvor plasserer jeg denne?
          var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
         output.innerHTML = slider.value;
@@ -367,7 +368,10 @@
     
         }
         let interval = slider.value; 
+         */
+        
                             }
+                           
                         }
                     }
                     neighbors -= grid[i][j];
@@ -498,15 +502,19 @@ let highestCell;
 if (maxValue === activeCellA0) {
     highestCell = 'activeCellA0';
     currentScale = pentatonicScale;
+    currentNote = droneNote;
 } else if (maxValue === activeCellA1) {
     highestCell = 'activeCellA1';
     currentScale = pentatonicScale2;
+    currentNote = droneNote2;
 } else if (maxValue === activeCellB0) {
     highestCell = 'activeCellB0';
     currentScale = pentatonicScale3;
+    currentNote = droneNote3;
 } else if (maxValue === activeCellB1) {
     highestCell = 'activeCellB1';
     currentScale = pentatonicScale4;
+    currentNote = droneNote4;
 }
 
 console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValue}`);

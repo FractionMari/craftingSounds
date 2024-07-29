@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(231, 156, 69, 0.829);
+            background-color: rgba(69, 231, 123, 0.829);
         }
 
         p {
@@ -327,12 +327,14 @@
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
+                synth2.connect(phaser);
                     
 
         timerId = setInterval(updateGrid, interval); //interval
             } else {
                 playPauseButton.textContent = 'Play';
                 clearInterval(timerId);
+                synth2.disconnect(phaser);
             }
         }
 

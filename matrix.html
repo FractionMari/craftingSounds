@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(69, 231, 123, 0.829);
+            background-color: rgba(69, 112, 231, 0.829);
         }
 
         p {
@@ -34,7 +34,7 @@
             grid-template-rows: repeat(15, 32px);
             width: 640px;
             height: 480px;
-            border-radius: 50px;
+
         }
         #label {
             position: absolute;
@@ -58,7 +58,7 @@
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
-            border-radius: 50px;
+          
         }
         .cell {
             width: 32px;
@@ -204,7 +204,7 @@
         const freeverb = new Tone.Freeverb().connect(gainNode);
 
 
-       // gainNode.gain.value = 0.2;
+        gainNode.gain.value = 0.2;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -217,7 +217,7 @@
                 sustain: 1.0,
                 release: 0.8
             }
-        }).connect(phaser);
+        }).connect(autoWah);
 
 
         const synth3 = new Tone.MonoSynth({

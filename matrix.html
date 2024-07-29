@@ -355,6 +355,18 @@
                             if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
                                 neighbors += grid[i + x][j + y];
                                 //console.log(grid);
+
+
+         // slider 
+         var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+    
+        }
+        let interval = slider.value; 
                             }
                         }
                     }
@@ -500,16 +512,6 @@ if (maxValue === activeCellA0) {
 console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValue}`);
           //  console.log("grid[1][0]: ", grid[1][0]);
 
-         // slider 
-         var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value;
-
-        slider.oninput = function() {
-    output.innerHTML = this.value;
-    
-        }
-        let interval = slider.value; 
     
             synth2.frequency.value = currentNote;
         }

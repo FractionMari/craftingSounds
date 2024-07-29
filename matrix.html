@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(247, 0, 255, 0.829);
+            background-color: rgba(0, 255, 255, 0.829);
         }
 
         p {
@@ -334,9 +334,10 @@
 
         slider.oninput = function() {
     output.innerHTML = this.value;
-    let interval = slider.value;
+    
         }
-                timerId = setInterval(updateGrid, interval);
+        let interval = slider.value;
+        timerId = setInterval(updateGrid, interval);
             } else {
                 playPauseButton.textContent = 'Play';
                 clearInterval(timerId);

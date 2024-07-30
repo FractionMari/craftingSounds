@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(69, 112, 231, 0.829);
+            background-color: rgba(231, 134, 69, 0.829);
         }
 
         p {
@@ -183,13 +183,16 @@
         let availableSynths = [];
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
         let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
-        let pentatonicScale2 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
-        let pentatonicScale3 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+        let pentatonicScale2 = ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',];
+        let pentatonicScale3 = ['E2', 'G2', 'A2', 'B2', 'D3', 'E3', 'G3', 'A3', 'B3', 'D4', 'E4', 'G4', 'A4', 'B4', 'D5', 'E5',];
         let pentatonicScale4 = ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'];
+       // let pentatonicScale2 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
+       // let pentatonicScale3 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+       // let pentatonicScale4 = ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'];
         let drone = new Tone.Synth().toDestination();
         let droneNote = 'A2';
-        let droneNote2 = 'A#2';
-        let droneNote3 = 'B2';
+        let droneNote2 = 'D2';
+        let droneNote3 = 'E2';
         let droneNote4 = 'C2';
         let currentNote = droneNote;
 

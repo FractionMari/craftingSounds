@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(231, 134, 69, 0.829);
+            background-color: rgba(72, 69, 231, 0.829);
         }
 
         p {
@@ -99,6 +99,7 @@
 
     <script>
 
+// gjøre dronen bedre
 
 
         const pixelSize = 32;
@@ -218,7 +219,7 @@
                 attack: 0.5,
                 decay: 0.2,
                 sustain: 1.0,
-                release: 0.8
+                release: 0.9
             }
         }).connect(autoWah);
 
@@ -535,7 +536,17 @@ console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValu
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                synth = new Tone.Synth().connect(gainNode);
+                synth = new Tone.MonoSynth({
+            oscillator: {
+                type: "square"
+            },
+            envelope: {
+                attack: 0.5,
+                decay: 0.2,
+                sustain: 1.0,
+                release: 0.9
+            }
+        }).connect(autoWah);
             }
 
             const noteIndex = (i) % currentScale.length;

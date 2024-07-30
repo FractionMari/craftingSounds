@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(72, 69, 231, 0.829);
+            background-color: rgba(130, 182, 8, 0.829);
         }
 
         p {
@@ -201,7 +201,8 @@
 
         // Tone.js parameters:
         const gainNode = new Tone.Gain().toDestination();
-        const pingPong = new Tone.PingPongDelay().connect(gainNode);
+        const gainNode2 = new Tone.Gain().toDestination();
+        const pingPong = new Tone.PingPongDelay().connect(gainNode2);
         const phaser = new Tone.Phaser().connect(gainNode);
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
         const vibrato = new Tone.Vibrato().connect(gainNode);
@@ -209,6 +210,7 @@
 
 
         gainNode.gain.value = 0.1;
+        gainNode2.gain.value = 0.1;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -221,7 +223,7 @@
                 sustain: 1.0,
                 release: 0.9
             }
-        }).connect(autoWah);
+        }).connect(pingPong);
 
 
         const synth3 = new Tone.MonoSynth({
@@ -331,14 +333,14 @@
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
-                synth2.connect(autoWah);
+                synth2.connect(pingPong);
                     
 
         timerId = setInterval(updateGrid, interval); //interval
             } else {
                 playPauseButton.textContent = 'Play';
                 clearInterval(timerId);
-                synth2.disconnect(autoWah);
+                synth2.disconnect(pingPong);
             }
         }
 

@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(182, 14, 8, 0.829);
+            background-color: rgba(182, 141, 8, 0.829);
         }
 
         p {
@@ -100,6 +100,7 @@
     <script>
 
 // gjøre dronen bedre
+// fikse gain-algoritmen
 
 
         const pixelSize = 32;
@@ -436,7 +437,8 @@
            if (nyGain < 0.1) 
               {nyGain = 0.1}
 
-            gainNode.gain.value = nyGain;
+           // gainNode.gain.value = nyGain;
+            gainNode.gain.value = 0.3;
 
             console.log("faktisk gain nå: ", gainNode.gain.value);
 

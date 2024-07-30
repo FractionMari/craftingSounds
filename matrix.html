@@ -6,7 +6,7 @@
     <title>Dele opp griden i fire ruter og dele opp etter tonalitet. Mengde = Gain</title>
     <style>
         body {
-            background-color: rgba(130, 182, 8, 0.829);
+            background-color: rgba(182, 14, 8, 0.829);
         }
 
         p {
@@ -210,7 +210,7 @@
 
 
         gainNode.gain.value = 0.1;
-        gainNode2.gain.value = 0.1;
+        gainNode2.gain.value = 0.5;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -432,7 +432,7 @@
             // i stedet for tonalitet er basert på activeCellCount, skal gain være det. skala er i stedet bestemt av fire forskjellige områder i en matrise.
 
             
-            nyGain = ((((activeCellCount / 100) * -1)) + 0.8);
+            nyGain = ((((activeCellCount / 100) * -1)) + 0.7);
            if (nyGain < 0.1) 
               {nyGain = 0.1}
 
@@ -540,15 +540,15 @@ console.log(`Den høyeste verdien er i ${highestCell} med en verdi på ${maxValu
             } else {
                 synth = new Tone.MonoSynth({
             oscillator: {
-                type: "square"
+                type: "sine"
             },
             envelope: {
-                attack: 0.5,
+                attack: 0.1,
                 decay: 0.2,
                 sustain: 1.0,
-                release: 0.9
+                release: 0.2
             }
-        }).connect(autoWah);
+        }).connect(freeverb);
             }
 
             const noteIndex = (i) % currentScale.length;

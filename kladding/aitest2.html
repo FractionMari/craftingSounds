@@ -296,6 +296,13 @@ async function predict() {
             }
         });
 
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'i') {
+                init();
+            }
+        });
+
         const gliderButton = document.getElementById('glider');
         gliderButton.addEventListener('click', drawGlider);
 

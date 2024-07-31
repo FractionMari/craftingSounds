@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(255, 72, 0, 0.829);
+            background-color: rgba(0, 26, 255, 0.829);
         }
 
         p {
@@ -152,13 +152,7 @@
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
         };
 
-        const videoElement = document.createElement('video');
-        videoElement.autoplay = true;
-
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                videoElement.srcObject = stream;
-                ///////
+                        ///////
 
             // Load the image model and setup the webcam
             async function init() {
@@ -203,6 +197,15 @@ async function predict() {
 }
 
                 //////
+                
+
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+
                 videoElement.onloadedmetadata = () => {
                     const pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');

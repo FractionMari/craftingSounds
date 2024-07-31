@@ -502,11 +502,7 @@
 
     let model, webcam, labelContainer, maxPredictions;
 
-    let isIos = false; 
-    // fix when running demo in ios, video will be frozen;
-    if (window.navigator.userAgent.indexOf('iPhone') > -1 || window.navigator.userAgent.indexOf('iPad') > -1) {
-      isIos = true;
-    }
+
     // Load the image model and setup the webcam
     async function init() {
         const modelURL = URL + 'model.json';

@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(0, 26, 255, 0.829);
+            background-color: rgba(255, 145, 0, 0.829);
         }
 
         p {
@@ -168,9 +168,35 @@
             labelContainer = document.getElementById('label-container');
             for (let i = 0; i < maxPredictions; i++) { // and class labels
                 labelContainer.appendChild(document.createElement('div'));
-            }                
+            }       
+            
+            const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
 
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
                 videoElement.play();
+
+                videoElement.onloadedmetadata = () => {
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const context = pixelGridCanvas.getContext('2d');
+                    const { videoWidth, videoHeight } = videoElement;
+
+                    pixelGridCanvas.width = videoWidth;
+                    pixelGridCanvas.height = videoHeight;
+
+                    initPixelGrid();
+
+                    init();
+                    drawFrame(context, videoWidth, videoHeight);
+                };
+            })
+            .catch(err => {
+                console.error('An error occurred: ', err);
+            });
+
+                
 
 
                 window.requestAnimationFrame(loop);
@@ -199,30 +225,7 @@ async function predict() {
                 //////
                 
 
-        const videoElement = document.createElement('video');
-        videoElement.autoplay = true;
-
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                videoElement.srcObject = stream;
-
-                videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('pixel-grid');
-                    const context = pixelGridCanvas.getContext('2d');
-                    const { videoWidth, videoHeight } = videoElement;
-
-                    pixelGridCanvas.width = videoWidth;
-                    pixelGridCanvas.height = videoHeight;
-
-                    initPixelGrid();
-
-                    init();
-                    drawFrame(context, videoWidth, videoHeight);
-                };
-            })
-            .catch(err => {
-                console.error('An error occurred: ', err);
-            });
+        
 
         const rows = 15;
         const cols = 20;

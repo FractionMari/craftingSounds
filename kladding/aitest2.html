@@ -6,7 +6,7 @@
     <title>Finne ut initial triggers</title>
     <style>
         body {
-            background-color: rgba(255, 136, 0, 0.829);
+            background-color: rgba(0, 4, 255, 0.829);
         }
 
         p {
@@ -72,6 +72,10 @@
     </style>
 </head>
 <body>
+    <div>Teachable Machine Image Model</div>
+<button type='button' onclick='init()'>Start</button>
+<div id='webcam-container'></div>
+<div id='label-container'></div>
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
         <canvas id="canvas" width="640" height="640"></canvas>
@@ -84,7 +88,7 @@
         <button id="clear">Clear</button>
         <button id="glider">Draw glider</button>
         <button id="glider2">Draw glider 2</button>
-        <button type='button' onclick='init()'>Start</button>
+        
         
     </div>
 

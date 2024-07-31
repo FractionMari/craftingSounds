@@ -532,6 +532,7 @@ init();
             webCamVideo.muted = "true";
             webCamVideo.style.width = width + 'px';
             webCamVideo.style.height = height + 'px';
+            webCamVideo.hide();
         } else {
             document.getElementById("webcam-container").appendChild(webcam.canvas);
         }
@@ -542,13 +543,14 @@ init();
         }
         webcam.play();
         window.requestAnimationFrame(loop);
-        webcam.remove();
+        
     }
 
     async function loop() {
         webcam.update(); // update the webcam frame
         await predict();
         window.requestAnimationFrame(loop);
+    
     }
 
     // run the webcam image through the image model

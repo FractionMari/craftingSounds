@@ -97,6 +97,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
 
     <script>
+
+        // the link to your model provided by Teachable Machine export panel
+        const URL = 'https://teachablemachine.withgoogle.com/models/MRj0P0XeR/';
+
+        let model, labelContainer, maxPredictions;
+
+
         const pixelSize = 32;
         const threshold = 155;
         const threshold2 = 156;
@@ -151,7 +158,51 @@
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 videoElement.srcObject = stream;
+                ///////
+
+            // Load the image model and setup the webcam
+            async function init() {
+            const modelURL = URL + 'model.json';
+            const metadataURL = URL + 'metadata.json';
+
+            // load the model and metadata
+
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            // append elements to the DOM
+            labelContainer = document.getElementById('label-container');
+            for (let i = 0; i < maxPredictions; i++) { // and class labels
+                labelContainer.appendChild(document.createElement('div'));
+            }                
+
                 videoElement.play();
+
+
+                window.requestAnimationFrame(loop);
+        }
+
+async function loop() {
+    videoElement.update(); // update the webcam frame
+    await predict();
+    window.requestAnimationFrame(loop);
+}
+
+// run the webcam image through the image model
+async function predict() {
+    // predict can take in an image, video or canvas html element
+    let prediction;
+
+    prediction = await model.predict(videoElement.canvas);
+
+    for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction =
+            prediction[i].className + ': ' + prediction[i].probability.toFixed(2);
+        labelContainer.childNodes[i].innerHTML = classPrediction;
+    }
+}
+
+                //////
                 videoElement.onloadedmetadata = () => {
                     const pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');
@@ -484,14 +535,14 @@
     // Classifiy again!
     classifyVideo();
   }
-///////// Classifier Variable   ////////// */
+///////// Classifier Variable   ////////// 
 
 
 
 
 
 
-//////// Github AI model ////////////
+//////// Github AI model //////////// 
 
 
     // More API functions here:
@@ -551,8 +602,9 @@
                 prediction[i].className + ': ' + prediction[i].probability.toFixed(2);
             labelContainer.childNodes[i].innerHTML = classPrediction;
         }
-    }
-//////// end githob classifyier model /////// 
+    } 
+//////// end githob classifyier model /////// */
+
     </script>
 
 

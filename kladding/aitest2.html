@@ -155,7 +155,7 @@
                         ///////
 
             // Load the image model and setup the webcam
-            
+        function init() {
             const modelURL = URL + 'model.json';
             const metadataURL = URL + 'metadata.json';
 
@@ -200,7 +200,7 @@
 
 
                 window.requestAnimationFrame(loop);
-        
+        }
 
 function loop() {
     videoElement.update(); // update the webcam frame

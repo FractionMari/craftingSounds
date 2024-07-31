@@ -212,6 +212,8 @@ async function predict() {
                     pixelGridCanvas.height = videoHeight;
 
                     initPixelGrid();
+
+                    init();
                     drawFrame(context, videoWidth, videoHeight);
                 };
             })

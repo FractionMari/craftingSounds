@@ -97,23 +97,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
 
     <script>
-
-        // the link to your model provided by Teachable Machine export panel
-        const URL = 'https://teachablemachine.withgoogle.com/models/MRj0P0XeR/';
-
-let model, labelContainer, maxPredictions;
-
-
-// Load the image model and setup the webcam
-
-const modelURL = URL + 'model.json';
-const metadataURL = URL + 'metadata.json';
-
-// load the model and metadata
-// Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-// or files from your local hard drive
-model = tmImage.load(modelURL, metadataURL);
-maxPredictions = model.getTotalClasses();
         const pixelSize = 32;
         const threshold = 155;
         const threshold2 = 156;
@@ -179,7 +162,22 @@ maxPredictions = model.getTotalClasses();
     // More API functions here:
     // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
-            
+            // the link to your model provided by Teachable Machine export panel
+            const URL = 'https://teachablemachine.withgoogle.com/models/MRj0P0XeR/';
+
+            let model, labelContainer, maxPredictions;
+
+
+            // Load the image model and setup the webcam
+
+            const modelURL = URL + 'model.json';
+            const metadataURL = URL + 'metadata.json';
+
+            // load the model and metadata
+            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+            // or files from your local hard drive
+            model = tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
 // webcam = videoElement
 /*
             // Convenience function to setup a webcam

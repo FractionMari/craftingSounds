@@ -190,7 +190,7 @@
         const phaser = new Tone.Phaser().connect(gainNode);
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
         const vibrato = new Tone.Vibrato().connect(gainNode);
-        const freeverb = new Tone.Freeverb().connect(gainNode);
+       // const freeverb = new Tone.Freeverb().connect(gainNode);
 
 
         gainNode.gain.value = 0.2;
@@ -484,7 +484,7 @@
 
 
 
-
+/*
 
 
 //////// Github AI model ////////////
@@ -558,7 +558,7 @@ async function predict() {
         labelContainer.childNodes[i].innerHTML = classPrediction;
     }
 }
-//////// end githob classifyier model ///////
+//////// end githob classifyier model /////// */
     </script>
 
 

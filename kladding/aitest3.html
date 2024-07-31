@@ -542,7 +542,7 @@ init();
         }
         webcam.play();
         window.requestAnimationFrame(loop);
-        webcam.hide();
+        webcam.remove();
     }
 
     async function loop() {

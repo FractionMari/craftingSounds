@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(211, 156, 4);
+            background-color: rgb(211, 4, 107);
         }
         #video-container {
             position: relative;
@@ -361,6 +361,7 @@
         slider.oninput = function() {
     output.innerHTML = this.value;
     let interval = this.value; 
+    clearInterval(timerId);
     timerId = setInterval(updateGrid, interval);
 
     

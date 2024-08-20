@@ -161,6 +161,15 @@
         let pentatonicScale3 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
         let pentatonicScale4 = ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'];
        
+        // third set of pentatonic scales
+        let pentatonicScale5 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+        let pentatonicScale6 = ['C#3', 'E3', 'F#3', 'G#3', 'B3', 'C#4', 'E4', 'F#4', 'G#4', 'B4', 'C#5', 'E5', 'F#5', 'G#5', 'B5'];
+ 
+        // fourth set of pentatonic scales
+        let pentatonicScale7 = ['C2', 'D#2', 'F2', 'G2', 'A#2', 'C3', 'D#3', 'F3', 'G3', 'A#3', 'C4', 'D#4', 'F4', 'G4', 'A#4'];
+        let pentatonicScale8 = ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',];
+
+
         let drone = new Tone.Synth().toDestination();
 
         //first set of drone notes
@@ -170,6 +179,14 @@
         //second set of drone notes
         let droneNote3 = 'A#2';
         let droneNote4 = 'C2';
+
+        //third set of drone notes
+        let droneNote5 = 'B2';
+        let droneNote6 = 'C#2';
+
+        //fourth set of drone notes
+        let droneNote7 = 'C2';
+        let droneNote8 = 'D2';
 
         let currentNote = droneNote;
 
@@ -221,10 +238,46 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'q') {
 
+                pentatonicScale2 = pentatonicScale2;
+                droneNote2 = droneNote2;
+                pentatonicScale = pentatonicScale;
+                droneNote = droneNote;
+
+                
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'w') {
+
                 pentatonicScale2 = pentatonicScale4;
                 droneNote2 = droneNote4;
                 pentatonicScale = pentatonicScale3;
                 droneNote = droneNote3;
+
+                
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'e') {
+
+                pentatonicScale2 = pentatonicScale6;
+                droneNote2 = droneNote6;
+                pentatonicScale = pentatonicScale5;
+                droneNote = droneNote5;
+
+                
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'r') {
+
+                pentatonicScale2 = pentatonicScale8;
+                droneNote2 = droneNote8;
+                pentatonicScale = pentatonicScale7;
+                droneNote = droneNote7;
 
                 
             }

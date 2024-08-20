@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(66, 4, 211);
+            background-color: rgb(122, 75, 233);
         }
         #video-container {
             position: relative;
@@ -256,11 +256,21 @@
             }
         });
 
+
+
+
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'd') {
-                const noteIndex = random.currentScale;
-                const note = currentScale[noteIndex];
-                synth2.triggerAttackRelease(note, 0.5);
+
+                // Velg en tilfeldig indeks
+                let randomIndex = Math.floor(Math.random() * currentScale.length);
+
+                // Hent den tilfeldige verdien fra listen
+                let randomValue = currentScale[randomIndex];
+                console.log(randomValue);
+
+
+                synth2.triggerAttack(randomValue, 0.5);
             }
         });
 

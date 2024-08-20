@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(211, 4, 176);
+            background-color: rgb(4, 197, 211);
         }
         #video-container {
             position: relative;
@@ -170,7 +170,29 @@
         let pentatonicScale8 = ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',];
 
 
+        // Tone.js parameters:
+        const gainNode = new Tone.Gain().toDestination();
+        const gainNode2 = new Tone.Gain().toDestination();
+        const pingPong = new Tone.PingPongDelay().connect(gainNode2);
+        const phaser = new Tone.Phaser().connect(gainNode);
+        const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
+        const vibrato = new Tone.Vibrato().connect(gainNode);
+        const freeverb = new Tone.Freeverb().connect(gainNode);
+        gainNode.gain.value = 0.1;
+
         let drone = new Tone.Synth().toDestination();
+
+        const synth2 = new Tone.MonoSynth({
+            oscillator: {
+                type: "square"
+            },
+            envelope: {
+                attack: 0.5,
+                decay: 0.2,
+                sustain: 1.0,
+                release: 0.9
+            }
+        }).connect(gainNode);
 
         //first set of drone notes
         let droneNote = 'A2';
@@ -231,7 +253,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'd') {
-                drone.triggerAttack(currentNote);
+                synth2.triggerAttack(currentNote);
             }
         });
 

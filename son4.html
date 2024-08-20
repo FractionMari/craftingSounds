@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(211, 80, 4);
+            background-color: rgb(211, 156, 4);
         }
         #video-container {
             position: relative;
@@ -147,11 +147,11 @@
 
         const rows = 15;
         const cols = 20;
-        let interval = 100;
+        let interval = 500;
         let isPlaying = false;
         let timerId;
         let activeSynths = [];
-        let availableSynths = [];
+        let availableSynths = []
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
         // first set of pentatonic scales
         let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
@@ -187,7 +187,7 @@
                 type: "square"
             },
             envelope: {
-                attack: 0.5,
+                attack: 0,
                 decay: 0.7,
                 sustain: 1.0,
                 release: 0.9

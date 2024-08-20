@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(122, 75, 233);
+            background-color: rgb(12, 4, 31);
         }
         #video-container {
             position: relative;
@@ -191,11 +191,25 @@
             oscillator: {
                 type: "square"
             },
-            envelope: {
-                attack: 0.1,
-                decay: 0.2,
-                sustain: 0.8,
-                release: 0.8
+            filter : {
+            Q : 6 ,
+            type : lowpass ,
+            rolloff : -24
+            } ,
+            envelope : {
+            attack : 0.005 ,
+            decay : 0.1 ,
+            sustain : 0.9 ,
+            release : 1
+            } ,
+            filterEnvelope : {
+            attack : 0.06 ,
+            decay : 0.2 ,
+            sustain : 0.5 ,
+            release : 2 ,
+            baseFrequency : 200 ,
+            octaves : 7 ,
+            exponent : 2
             }
         }).connect(gainNode);
 
@@ -276,12 +290,12 @@
                 let octave = parseInt(randomValue.slice(-1));  // Henter siste tegnet og gjør det om til et tall
 
                 // Reduser oktaven med 1
-                let lowerOctaveValue = note + (octave - 1);
+                let lowerOctaveValue = note + (octave - 2);
 
                 console.log(lowerOctaveValue);
 
 
-                synth2.triggerAttack(lowerOctaveValue);
+                synth2.triggerAttackRelease(lowerOctaveValue);
             }
         });
 

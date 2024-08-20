@@ -189,28 +189,7 @@
 
         const synth2 = new Tone.MonoSynth({
             
-            oscillator: {
-                type: "square"
-            },
-            filter : {
-            Q : 6 ,
-            rolloff : -24
-            } ,
-            envelope : {
-            attack : 0.005 ,
-            decay : 0.1 ,
-            sustain : 0.9 ,
-            release : 1
-            } ,
-            filterEnvelope : {
-            attack : 0.06 ,
-            decay : 0.2 ,
-            sustain : 0.5 ,
-            release : 2 ,
-            baseFrequency : 200 ,
-            octaves : 7 ,
-            exponent : 2
-            }
+
         }).connect(gainNode2);
 
         //first set of drone notes
@@ -569,16 +548,8 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                synth = new Tone.MonoSynth({
-            oscillator: {
-                type: "sine"
-            },
-            envelope: {
-                attack: 0.1,
-                decay: 0.1,
-                sustain: 0.1,
-                release: 0.1
-            }
+                synth = new Tone.Synth({
+
         }).connect(gainNode);
             }
 

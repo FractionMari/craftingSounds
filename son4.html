@@ -258,6 +258,8 @@
 
 
 
+// drone:
+
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'd') {
@@ -267,10 +269,19 @@
 
                 // Hent den tilfeldige verdien fra listen
                 let randomValue = currentScale[randomIndex];
-                console.log(randomValue);
 
 
-                synth2.triggerAttack(randomValue, 0.5);
+                // Splitt noteverdien i bokstavdelen og oktavnummeret
+                let note = randomValue.slice(0, -1);  // Henter alt unntatt det siste tegnet
+                let octave = parseInt(randomValue.slice(-1));  // Henter siste tegnet og gjør det om til et tall
+
+                // Reduser oktaven med 1
+                let lowerOctaveValue = note + (octave - 1);
+
+                console.log(lowerOctaveValue);
+
+
+                synth2.triggerAttack(lowerOctaveValue);
             }
         });
 

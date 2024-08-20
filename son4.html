@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(121, 211, 4);
+            background-color: rgb(211, 4, 4);
         }
         #video-container {
             position: relative;
@@ -195,7 +195,7 @@
                 attack: 0,
                 decay: 0.7,
                 sustain: 1.0,
-                release: 0.9
+                release: 2
             }
         }).connect(gainNode);
 
@@ -529,7 +529,17 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                synth = new Tone.Synth().toDestination();
+                synth = new Tone.MonoSynth({
+            oscillator: {
+                type: "sine"
+            },
+            envelope: {
+                attack: 0.1,
+                decay: 0.2,
+                sustain: 0.5,
+                release: 0.2
+            }
+        }).connect(gainNode);
             }
 
             const noteIndex = (i) % currentScale.length;

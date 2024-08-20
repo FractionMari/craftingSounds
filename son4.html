@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(211, 156, 4);
+            background-color: rgb(211, 4, 32);
         }
         #video-container {
             position: relative;
@@ -70,10 +70,15 @@
         <button id="clear">Clear</button>
         <button id="glider">Draw glider</button>
         <button id="glider2">Draw glider 2</button>
+        <div class="slidecontainer">
+            <input type="range" min="50" max="200" value="100" class="slider" id="myRange">
+            <p>Value: <span id="demo"></span></p>
+          </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
     <script>
+
         const pixelSize = 32;
         const threshold = 55;
         const threshold2 = 56;
@@ -260,10 +265,10 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'q') {
 
-                pentatonicScale2 = pentatonicScale2;
-                droneNote2 = droneNote2;
-                pentatonicScale = pentatonicScale;
-                droneNote = droneNote;
+                pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
+                pentatonicScale2 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+                let droneNote = 'A2';
+                let droneNote2 = 'B3';
             }
         });
 
@@ -346,14 +351,33 @@
             cells.forEach(cell => cell.classList.remove('alive'));
         }
 
+
+        // forsøk på slider
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+    let interval = this.value; 
+    timerId = setInterval(updateGrid, interval);
+
+    
+        }
+        
+
+
+        ///
+
         function togglePlay() {
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
-                timerId = setInterval(updateGrid, interval);
+               // timerId = setInterval(updateGrid, interval);
             } else {
                 playPauseButton.textContent = 'Play';
-                clearInterval(timerId);
+              //  clearInterval(timerId);
             }
         }
 

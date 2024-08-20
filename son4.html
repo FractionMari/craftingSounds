@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(211, 4, 32);
+            background-color: rgb(211, 156, 4);
         }
         #video-container {
             position: relative;
@@ -374,10 +374,10 @@
             isPlaying = !isPlaying;
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
-               //timerId = setInterval(updateGrid, interval);
+               timerId = setInterval(updateGrid, interval);
             } else {
                 playPauseButton.textContent = 'Play';
-              //  clearInterval(timerId);
+                clearInterval(timerId);
             }
         }
 

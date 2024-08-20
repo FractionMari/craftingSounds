@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(66, 4, 211);
+            background-color: rgb(21, 4, 59);
         }
         #video-container {
             position: relative;
@@ -256,11 +256,12 @@
             }
         });
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key.toLowerCase() === 'd') {
-                synth2.triggerAttackRelease(currentNote, 0.5);
-            }
-        });
+
+
+
+        const noteIndex = (i) % currentScale.length;
+            const note = currentScale[noteIndex];
+
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'q') {
@@ -552,6 +553,14 @@
             synth.cellX = i;
             synth.cellY = j;
             activeSynths.push(synth);
+
+            document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'd') {
+                const noteIndex = (i) % currentScale.length;
+                const note = currentScale[noteIndex];
+                synth2.triggerAttack(note, 0.5);
+            }
+        });
         }
     </script>
 </body>

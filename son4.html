@@ -178,9 +178,8 @@
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
         const vibrato = new Tone.Vibrato().connect(gainNode);
         const freeverb = new Tone.Freeverb().connect(gainNode);
-        gainNode.gain.value = 0.0;
+        gainNode.gain.value = 0.1;
 
-        let drone = new Tone.Synth().toDestination();
 
         const synth2 = new Tone.MonoSynth({
             
@@ -189,7 +188,7 @@
             },
             envelope: {
                 attack: 0.5,
-                decay: 0.2,
+                decay: 0.7,
                 sustain: 1.0,
                 release: 0.9
             }
@@ -254,7 +253,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'd') {
-                gainNode.gain.value = 0.1;;
+                synth2.triggerAttackRelease(currentNote);
             }
         });
 
@@ -414,7 +413,7 @@
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
             }
-            synth2.triggerAttack(currentNote);
+            
         }
 
         function playNote(i, j) {

@@ -183,7 +183,8 @@
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
         const vibrato = new Tone.Vibrato().connect(gainNode);
         const freeverb = new Tone.Freeverb().connect(gainNode);
-        gainNode.gain.value = 0.1;
+        gainNode.gain.value = 0.3;
+        gainNode2.gain.value = 0.001;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -210,7 +211,7 @@
             octaves : 7 ,
             exponent : 2
             }
-        }).connect(gainNode);
+        }).connect(gainNode2);
 
         //first set of drone notes
         let droneNote = 'A2';

@@ -184,7 +184,7 @@
         const vibrato = new Tone.Vibrato().connect(gainNode);
         const freeverb = new Tone.Freeverb().connect(gainNode);
         gainNode.gain.value = 0.3;
-        gainNode2.gain.value = 0.001;
+        gainNode2.gain.value = 0.1;
 
 
         const synth2 = new Tone.MonoSynth({

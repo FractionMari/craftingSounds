@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(163, 4, 211);
+            background-color: rgb(121, 211, 4);
         }
         #video-container {
             position: relative;
@@ -381,6 +381,73 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
+            let interval = 100; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '3') {
+            let interval = 150; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '4') {
+            let interval = 200; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '5') {
+            let interval = 250; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '6') {
+            let interval = 300; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '7') {
+            let interval = 350; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '8') {
+            let interval = 400; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '9') {
+            let interval = 450; 
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '0') {
             let interval = 500; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);

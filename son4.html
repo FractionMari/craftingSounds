@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(211, 4, 107);
+            background-color: rgb(156, 211, 4);
         }
         #video-container {
             position: relative;
@@ -376,6 +376,7 @@
             let interval = 50; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
+            synth.envelope.release = 0.1;
             }
         });
 
@@ -451,7 +452,7 @@
             let interval = 500; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
-            synth.envelope.release = 0.9;
+            synth.envelope.release = 2;
             }
         });
 

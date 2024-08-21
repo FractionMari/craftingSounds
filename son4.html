@@ -112,6 +112,8 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
+                    console.log(averageBrightness)
+
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
@@ -392,7 +394,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
-            let interval = 50; 
+            let interval = 1000; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -400,7 +402,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
-            let interval = 100; 
+            let interval = 500; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -409,7 +411,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '3') {
-            let interval = 150; 
+            let interval = 250; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -417,7 +419,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '4') {
-            let interval = 200; 
+            let interval = 167; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -426,7 +428,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '5') {
-            let interval = 250; 
+            let interval = 31; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -434,7 +436,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '6') {
-            let interval = 300; 
+            let interval = 63; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -443,7 +445,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '7') {
-            let interval = 350; 
+            let interval = 125; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -451,7 +453,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '8') {
-            let interval = 400; 
+            let interval = 167; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -459,7 +461,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '9') {
-            let interval = 450; 
+            let interval = 250; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }

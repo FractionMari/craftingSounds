@@ -49,11 +49,17 @@
         .cell {
             width: 32px;
             height: 32px;
-            border: 2px solid rgb(243, 227, 4);
+            border: 2px solid rgb(10, 10, 0);
             border-radius: 50px;
         }
         .alive {
             background-color: rgb(240, 3, 15);
+            border-radius: 50px;
+        }
+
+
+        .alive2 {
+            background-color: rgb(38, 3, 240);
             border-radius: 50px;
         }
     </style>
@@ -627,9 +633,9 @@ const cells = document.querySelectorAll('.cell');
 newGrid.forEach((row, i) => {
     row.forEach((cell, j) => {
         if (cell === 1) {
-            cells[i * cols + j].classList.add('alive');
+            cells[i * cols + j].classList.add('alive2');
         } else {
-            cells[i * cols + j].classList.remove('alive');
+            cells[i * cols + j].classList.remove('alive2');
         }
     });
 });
@@ -660,7 +666,7 @@ const noteIndex = (i) % currentScale.length;
 const note = currentScale[noteIndex];
 const gain = ((j / cols) / 2);
 
-synth.triggerAttackRelease(note, '16n', undefined, gain);
+synth.triggerAttackRelease(note, '8n', undefined, gain);
 
 
 synth.cellX = i;

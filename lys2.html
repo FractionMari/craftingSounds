@@ -124,114 +124,6 @@
 
                     //console.log(averageBrightness)
 
-                    function updateGrid2() {
-
-
-let newGrid = new Array(rows2).fill(null).map(() => new Array(cols2).fill(0));
-let activeCellCount = 0;
-
-for (let i = 0; i < rows2; i++) {
-    for (let j = 0; j < cols2; j++) {
-        let neighbors = 0;
-        for (let x = -1; x <= 1; x++) {
-            for (let y = -1; y <= 1; y++) {
-                if (i + x >= 0 && i + x < rows2 && j + y >= 0 && j + y < cols2) {
-                    neighbors += grid2[i + x][j + y];
-                }
-            }
-        }
-        neighbors -= grid2[i][j];
-
-        if (grid2[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
-            newGrid[i][j] = 0;
-            const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
-            if (synthIndex !== -1) {
-                const synth = activeSynths.splice(synthIndex, 1)[0];
-                availableSynths.push(synth);
-            }
-        } else if (grid2[i][j] === 0 && neighbors === 3) {
-            newGrid[i][j] = 1;
-            playNote(i, j);
-        } else {
-            newGrid[i][j] = grid[i][j];
-        }
-
-        if (newGrid[i][j] === 1) {
-            activeCellCount++;
-        }
-    }
-}
-
-const cells = document.querySelectorAll('.cell');
-newGrid.forEach((row, i) => {
-    row.forEach((cell, j) => {
-        if (cell === 1) {
-            cells[i * cols2 + j].classList.add('alive2');
-        } else {
-            cells[i * cols2 + j].classList.remove('alive2');
-        }
-    });
-});
-
-grid2 = newGrid;
-
-if (activeCellCount > 30) {
-    currentScale = pentatonicScale2;
-    currentNote = droneNote2;
-} else {
-    currentScale = pentatonicScale;
-    currentNote = droneNote;
-}
-
-}
-
-function playNote(i, j) {
-let synth;
-if (availableSynths.length > 0) {
-    synth = availableSynths.pop();
-} else {
-    synth = new Tone.Synth({
-
-}).connect(gainNode);
-}
-
-const noteIndex = (i) % currentScale.length;
-const note = currentScale[noteIndex];
-const gain = ((j / cols) / 2);
-
-
-
-console.log(averageBrightness)
-if (averageBrightness > 100) {
-
-// Velg en tilfeldig indeks
-let randomIndex = Math.floor(Math.random() * currentScale.length);
-
-// Hent den tilfeldige verdien fra listen
-let randomValue = currentScale[randomIndex];
-
-
-// Splitt noteverdien i bokstavdelen og oktavnummeret
-let note = randomValue.slice(0, -1);  // Henter alt unntatt det siste tegnet
-let octave = parseInt(randomValue.slice(-1));  // Henter siste tegnet og gjør det om til et tall
-
-// Reduser oktaven med 1
-let lowerOctaveValue = note + (octave - 2);
-
-console.log(lowerOctaveValue);
-
-
-synth.triggerAttackRelease(lowerOctaveValue, 0.5);
-}
-
-
-
-
-synth.cellX = i;
-synth.cellY = j;
-activeSynths.push(synth);
-}
-
 
                     
 
@@ -278,6 +170,7 @@ activeSynths.push(synth);
         const cols = 20;
         const rows2 = 30;
         const cols2 = 40;
+        let averageBrightness;
         let interval = 500;
         let interval2 = 1000;
         let isPlaying = false;
@@ -702,7 +595,113 @@ activeSynths.push(synth);
         }
 
 
-       
+        function updateGrid2() {
+
+
+let newGrid = new Array(rows2).fill(null).map(() => new Array(cols2).fill(0));
+let activeCellCount = 0;
+
+for (let i = 0; i < rows2; i++) {
+    for (let j = 0; j < cols2; j++) {
+        let neighbors = 0;
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (i + x >= 0 && i + x < rows2 && j + y >= 0 && j + y < cols2) {
+                    neighbors += grid2[i + x][j + y];
+                }
+            }
+        }
+        neighbors -= grid2[i][j];
+
+        if (grid2[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
+            newGrid[i][j] = 0;
+            const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+            if (synthIndex !== -1) {
+                const synth = activeSynths.splice(synthIndex, 1)[0];
+                availableSynths.push(synth);
+            }
+        } else if (grid2[i][j] === 0 && neighbors === 3) {
+            newGrid[i][j] = 1;
+            playNote(i, j);
+        } else {
+            newGrid[i][j] = grid[i][j];
+        }
+
+        if (newGrid[i][j] === 1) {
+            activeCellCount++;
+        }
+    }
+}
+
+const cells = document.querySelectorAll('.cell');
+newGrid.forEach((row, i) => {
+    row.forEach((cell, j) => {
+        if (cell === 1) {
+            cells[i * cols2 + j].classList.add('alive2');
+        } else {
+            cells[i * cols2 + j].classList.remove('alive2');
+        }
+    });
+});
+
+grid2 = newGrid;
+
+if (activeCellCount > 30) {
+    currentScale = pentatonicScale2;
+    currentNote = droneNote2;
+} else {
+    currentScale = pentatonicScale;
+    currentNote = droneNote;
+}
+
+}
+
+function playNote(i, j) {
+let synth;
+if (availableSynths.length > 0) {
+    synth = availableSynths.pop();
+} else {
+    synth = new Tone.Synth({
+
+}).connect(gainNode);
+}
+
+const noteIndex = (i) % currentScale.length;
+const note = currentScale[noteIndex];
+const gain = ((j / cols) / 2);
+
+
+
+console.log(averageBrightness)
+if (averageBrightness > 100) {
+
+// Velg en tilfeldig indeks
+let randomIndex = Math.floor(Math.random() * currentScale.length);
+
+// Hent den tilfeldige verdien fra listen
+let randomValue = currentScale[randomIndex];
+
+
+// Splitt noteverdien i bokstavdelen og oktavnummeret
+let note = randomValue.slice(0, -1);  // Henter alt unntatt det siste tegnet
+let octave = parseInt(randomValue.slice(-1));  // Henter siste tegnet og gjør det om til et tall
+
+// Reduser oktaven med 1
+let lowerOctaveValue = note + (octave - 2);
+
+console.log(lowerOctaveValue);
+
+
+synth.triggerAttackRelease(lowerOctaveValue, 0.5);
+}
+
+
+
+
+synth.cellX = i;
+synth.cellY = j;
+activeSynths.push(synth);
+}
     </script>
 </body>
 </html>

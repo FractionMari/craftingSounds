@@ -496,27 +496,7 @@
 
         function updateGrid() {
 
-            if (averageBrightness > 100) {
 
-// Velg en tilfeldig indeks
-let randomIndex = Math.floor(Math.random() * currentScale.length);
-
-// Hent den tilfeldige verdien fra listen
-let randomValue = currentScale[randomIndex];
-
-
-// Splitt noteverdien i bokstavdelen og oktavnummeret
-let note = randomValue.slice(0, -1);  // Henter alt unntatt det siste tegnet
-let octave = parseInt(randomValue.slice(-1));  // Henter siste tegnet og gjør det om til et tall
-
-// Reduser oktaven med 1
-let lowerOctaveValue = note + (octave - 2);
-
-console.log(lowerOctaveValue);
-
-
-synth2.triggerAttackRelease(lowerOctaveValue, 0.5);
-}
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
 

@@ -107,18 +107,27 @@
                     for (let i = 0; i < pixelSize; i++) {
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+
+                            
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+
+                            const r = imageData[index];
+                            const g = imageData[index + 1];
+                            const b = imageData[index + 2];
+
+                    console.log("rød: ", r);
+                    console.log("grønn: ", g);
+                    console.log("blå: ", b);
+
                         }
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
+
+
+
                     console.log(averageBrightness)
-                    const r = imageData[i];
-                    const g = imageData[i + 1];
-                    const b = imageData[i + 2];
-                    console.log("rød: ", r);
-                    console.log("grønn: ", g);
-                    console.log("blå: ", b);
+
 
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {

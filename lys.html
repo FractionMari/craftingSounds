@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Note Trigger</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #282c34;
+    color: white;
+    margin: 0;
+    height: 100vh;
+    justify-content: center;
+}
+
+video, canvas {
+    display: none;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Webcam Note Trigger</h1>
+    <video id="video" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <script>const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        const notes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4'];
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillators = [];
+        const gains = [];
+        
+        function setupAudio() {
+            notes.forEach((note, index) => {
+                const osc = audioContext.createOscillator();
+                osc.frequency.value = getFrequency(note);
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = 0;
+        
+                osc.connect(gainNode).connect(audioContext.destination);
+                osc.start();
+        
+                oscillators.push(osc);
+                gains.push(gainNode);
+            });
+        }
+        
+        function getFrequency(note) {
+            const notesMap = {
+                'C4': 261.63,
+                'D4': 293.66,
+                'E4': 329.63,
+                'F4': 349.23,
+                'G4': 392.00,
+                'A4': 440.00
+            };
+            return notesMap[note];
+        }
+        
+        function startVideo() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(err => {
+                    console.error("Error accessing webcam: ", err);
+                });
+        }
+        
+        function analyzeFrame() {
+            const width = video.videoWidth;
+            const height = video.videoHeight;
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(video, 0, 0, width, height);
+        
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const sectionWidth = width / 3;
+            const sectionHeight = height / 2;
+        
+            for (let i = 0; i < 6; i++) {
+                const x = (i % 3) * sectionWidth;
+                const y = Math.floor(i / 3) * sectionHeight;
+                const sectionData = ctx.getImageData(x, y, sectionWidth, sectionHeight);
+                const whitePixelCount = countWhitePixels(sectionData);
+                const gainValue = whitePixelCount / (sectionWidth * sectionHeight);
+        
+                gains[i].gain.value = gainValue;
+            }
+        
+            requestAnimationFrame(analyzeFrame);
+        }
+        
+        function countWhitePixels(imageData) {
+            const data = imageData.data;
+            let count = 0;
+        
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const brightness = (r + g + b) / 3;
+                if (brightness > 200) {
+                    count++;
+                }
+            }
+        
+            return count;
+        }
+        
+        startVideo();
+        setupAudio();
+        video.addEventListener('play', analyzeFrame);
+        </script>
+</body>
+</html>

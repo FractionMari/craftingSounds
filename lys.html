@@ -83,6 +83,8 @@
         const threshold = 100;
         const threshold2 = 101;
 
+        let lysVerdi;
+
         let pixelGrid = [];
 
         const initPixelGrid = () => {
@@ -100,11 +102,11 @@
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
             //dele opp rutenettet i fire: A0, A1, B0 og B1
-            
+            /*
             let activeCellA0 = 0;
             let activeCellA1 = 0;
             let activeCellB0 = 0;
-            let activeCellB1 = 0;
+            let activeCellB1 = 0; */
 
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
@@ -121,7 +123,9 @@
 
                     console.log(averageBrightness)
 
-                    console.log(grid[y][x]);
+                    lysVerdi = averageBrightness;
+
+                    
 
                     
 
@@ -531,6 +535,7 @@
         function updateGrid() {
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
+            console.log(lysVerdi);
 
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {

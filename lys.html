@@ -119,11 +119,24 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    console.log(averageBrightness)
+                    
+
+                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
+                        if (!pixelGrid[y][x]) {
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[y][x] = 1;
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
+                    }
 
                     // her skal jeg ha noe
 
-                                for (let i = 0; i < 7; i++) {
+                    console.log(averageBrightness)
+/*
+                    for (let i = 0; i < 7; i++) {
                         for (let j = 0; j < 9; j++) {
                             let content = grid[i][j];
                             activeCellA0 += content;
@@ -148,18 +161,7 @@
                             let content = grid[i][j];
                             activeCellA0 += content;
                             }
-                        } 
-
-                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
-                        if (!pixelGrid[y][x]) {
-                            pixelGrid[y][x] = true;
-                            context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            grid[y][x] = 1;
-                        }
-                    } else {
-                        pixelGrid[y][x] = false;
-                    }
+                        } */
                 }
             }
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));

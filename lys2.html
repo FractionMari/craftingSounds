@@ -49,11 +49,11 @@
         .cell {
             width: 32px;
             height: 32px;
-            border: 2px solid rgb(0, 0, 0);
+            border: 2px solid rgb(243, 227, 4);
             border-radius: 50px;
         }
         .alive {
-            background-color: rgb(20, 2, 3);
+            background-color: rgb(240, 3, 15);
             border-radius: 50px;
         }
     </style>
@@ -163,8 +163,10 @@
         const rows = 15;
         const cols = 20;
         let interval = 500;
+        let interval2 = 1000;
         let isPlaying = false;
         let timerId;
+        let timerId2;
         let activeSynths = [];
         let availableSynths = []
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
@@ -403,8 +405,11 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
             let interval = 1000; 
+            let interval2 = 2000; 
             clearInterval(timerId);
+            clearInterval(timerId2);
             timerId = setInterval(updateGrid, interval);
+            timerId2 = setInterval(updateGrid2, interval2);
             }
         });
 
@@ -488,9 +493,11 @@
             if (isPlaying) {
                 playPauseButton.textContent = 'Pause';
                timerId = setInterval(updateGrid, interval);
+               timerId2 = setInterval(updateGrid2, interval2);
             } else {
                 playPauseButton.textContent = 'Play';
                 clearInterval(timerId);
+                clearInterval(timerId2);
             }
         }
 
@@ -576,6 +583,90 @@
             synth.cellY = j;
             activeSynths.push(synth);
         }
+
+
+        function updateGrid2() {
+
+
+let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+let activeCellCount = 0;
+
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+        let neighbors = 0;
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
+                    neighbors += grid[i + x][j + y];
+                }
+            }
+        }
+        neighbors -= grid[i][j];
+
+        if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
+            newGrid[i][j] = 0;
+            const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+            if (synthIndex !== -1) {
+                const synth = activeSynths.splice(synthIndex, 1)[0];
+                availableSynths.push(synth);
+            }
+        } else if (grid[i][j] === 0 && neighbors === 3) {
+            newGrid[i][j] = 1;
+            playNote(i, j);
+        } else {
+            newGrid[i][j] = grid[i][j];
+        }
+
+        if (newGrid[i][j] === 1) {
+            activeCellCount++;
+        }
+    }
+}
+
+const cells = document.querySelectorAll('.cell');
+newGrid.forEach((row, i) => {
+    row.forEach((cell, j) => {
+        if (cell === 1) {
+            cells[i * cols + j].classList.add('alive');
+        } else {
+            cells[i * cols + j].classList.remove('alive');
+        }
+    });
+});
+
+grid = newGrid;
+
+if (activeCellCount > 30) {
+    currentScale = pentatonicScale2;
+    currentNote = droneNote2;
+} else {
+    currentScale = pentatonicScale;
+    currentNote = droneNote;
+}
+
+}
+
+function playNote(i, j) {
+let synth;
+if (availableSynths.length > 0) {
+    synth = availableSynths.pop();
+} else {
+    synth = new Tone.Synth({
+
+}).connect(gainNode);
+}
+
+const noteIndex = (i) % currentScale.length;
+const note = currentScale[noteIndex];
+const gain = ((j / cols) / 2);
+
+synth.triggerAttackRelease(note, '16n', undefined, gain);
+
+
+synth.cellX = i;
+synth.cellY = j;
+activeSynths.push(synth);
+}
     </script>
 </body>
 </html>

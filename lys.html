@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webcam Note Trigger</title>
     <style>
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -17,19 +18,25 @@ body {
     justify-content: center;
 }
 
-video, canvas {
-    border: 1px solid #ffffff;
-    margin-top: 20px;
-}
-
 video {
     display: block;
+    margin-top: 20px;
+    border: 1px solid #ffffff;
 }
 
 canvas {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+#startButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
 }
 
 
@@ -37,12 +44,15 @@ canvas {
 </head>
 <body>
     <h1>Webcam Note Trigger</h1>
+    <button id="startButton">Start</button>
     <video id="video" autoplay></video>
     <canvas id="canvas"></canvas>
     <script>
-    const video = document.getElementById('video');
+
+const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const startButton = document.getElementById('startButton');
 
 const notes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4'];
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -132,9 +142,14 @@ function countWhitePixels(imageData) {
     return count;
 }
 
-startVideo();
-setupAudio();
-video.addEventListener('play', analyzeFrame);
+startButton.addEventListener('click', () => {
+    audioContext.resume().then(() => {
+        startVideo();
+        setupAudio();
+        analyzeFrame();
+        startButton.style.display = 'none';
+    });
+});
 
 
         </script>

@@ -543,6 +543,7 @@
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
           //  console.log(lysVerdi);
+          drawFrame(context, videoWidth, videoHeight);
 ////
             calculateValueAsync().then(result => {
             console.log(result); // vil logge 42

@@ -119,6 +119,11 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
+                    console.log(averageBrightness)
+                    console.log(grid[i][j]);
+                    console.log(pixelGrid[i][j]);
+                    console.log(pixelGrid[y][x]);
+
                     
 
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
@@ -134,8 +139,7 @@
 
                     // her skal jeg ha noe
 
-                    console.log(averageBrightness)
-                    console.log(grid[i][j]);
+
 /*
                     for (let i = 0; i < 7; i++) {
                         for (let j = 0; j < 9; j++) {

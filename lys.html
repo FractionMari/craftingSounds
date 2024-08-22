@@ -83,7 +83,7 @@
         const threshold = 100;
         const threshold2 = 101;
 
-        let lysVerdi;
+      
 
         let pixelGrid = [];
 
@@ -122,8 +122,15 @@
                     averageBrightness /= (pixelSize * pixelSize);
 
                   //  console.log(averageBrightness)
+                  function calculateValueAsync() {
+                  return new Promise((resolve, reject) => {
+                    let value = averageBrightness;
+                    resolve(value); // send verdien til resolve-funksjonen
+                     });
 
-                    lysVerdi = averageBrightness;
+                    }
+
+                    
 
                     
 
@@ -536,6 +543,10 @@
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
             console.log(lysVerdi);
+////
+            calculateValueAsync().then(result => {
+            console.log(result); // vil logge 42
+            });
 
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {

@@ -96,10 +96,7 @@
         };
 // synth som kan styres med averageBrightness
 
-const lysSynth = new Tone.MonoSynth({
-            
 
-        }).connect(gainNode2);
 
         const drawFrame = (context, videoWidth, videoHeight) => {
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
@@ -245,6 +242,7 @@ const lysSynth = new Tone.MonoSynth({
             
 
         }).connect(gainNode2);
+        const lysSynth = new Tone.MonoSynth().connect(gainNode2);
 
         //first set of drone notes
         let droneNote = 'A2';

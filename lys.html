@@ -83,6 +83,7 @@
         const threshold = 100;
         const threshold2 = 101;
         let lysNote;
+        const averageBrightness = 0;
         
 
         let pixelGrid = [];
@@ -110,7 +111,7 @@
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
-                    let averageBrightness = 0;
+                    
 
                     for (let i = 0; i < pixelSize; i++) {
                         for (let j = 0; j < pixelSize; j++) {

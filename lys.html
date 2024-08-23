@@ -99,7 +99,7 @@
 
 
 
-        const drawFrame = (context, videoWidth, videoHeight, lysNote) => {
+        const drawFrame = (context, videoWidth, videoHeight) => {
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
@@ -124,10 +124,8 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    //console.log(averageBrightness)
+                    console.log(averageBrightness)
 
-
-                    lysNote = averageBrightness;
 
                     
 
@@ -165,9 +163,7 @@
                     pixelGridCanvas.height = videoHeight;
 
                     initPixelGrid();
-                    drawFrame(context, videoWidth, videoHeight, lysNote);
-                    lysSynth.triggerAttack(lysNote);
-                    console.log(lysNote);
+                    drawFrame(context, videoWidth, videoHeight);
                 };
             })
             .catch(err => {
@@ -215,8 +211,7 @@
             
 
         }).connect(gainNode2);
-
-        const lysSynth = new Tone.MonoSynth().connect(gainNode);
+        const lysSynth = new Tone.MonoSynth().connect(gainNode2);
 
         //first set of drone notes
         let droneNote = 'A2';
@@ -254,9 +249,6 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'p') {
                 togglePlay();
-                lysSynth.triggerAttack(lysNote);
-
-                
             }
         });
 

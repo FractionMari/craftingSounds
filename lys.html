@@ -104,12 +104,7 @@
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
-            //dele opp rutenettet i fire: A0, A1, B0 og B1
-            /*
-            let activeCellA0 = 0;
-            let activeCellA1 = 0;
-            let activeCellB0 = 0;
-            let activeCellB1 = 0; */
+
             let lysSynth = new Tone.MonoSynth().toDestination();
 
             for (let y = 0; y < 20; y++) {
@@ -128,7 +123,7 @@
                     console.log(averageBrightness)
                     
                     
-                    lysSynth.triggerAttackRelease(averageBrightness);
+                    lysSynth.triggerAttack(averageBrightness);
 
 
 

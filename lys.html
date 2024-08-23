@@ -124,7 +124,7 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    console.log(averageBrightness)
+                    //console.log(averageBrightness)
 
 
                     lysNote = averageBrightness;
@@ -167,6 +167,7 @@
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight, lysNote);
                     lysSynth.triggerAttack(lysNote);
+                    console.log(lysNote);
                 };
             })
             .catch(err => {

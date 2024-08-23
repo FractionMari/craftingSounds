@@ -83,6 +83,7 @@
         const threshold = 100;
         const threshold2 = 101;
         let lysNote;
+        let lysSynth = new Tone.MonoSynth().toDestination();
         var averageBrightness = 0;
         
 
@@ -106,7 +107,7 @@
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
 
-            let lysSynth = new Tone.MonoSynth().toDestination();
+            
 
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
@@ -122,7 +123,7 @@
                     averageBrightness /= (pixelSize * pixelSize);
 
                 
-                        console.log(averageBrightness)
+                    console.log(averageBrightness);
                
 
 

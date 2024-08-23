@@ -110,6 +110,7 @@
             let activeCellA1 = 0;
             let activeCellB0 = 0;
             let activeCellB1 = 0; */
+            let lysSynth = new Tone.MonoSynth().toDestination();
 
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
@@ -126,8 +127,8 @@
 
                     console.log(averageBrightness)
                     
-                    const lysSynth = new Tone.MonoSynth().toDestination();
-                    synth.triggerAttackRelease(averageBrightness);
+                    
+                    lysSynth.triggerAttackRelease(averageBrightness);
 
 
 

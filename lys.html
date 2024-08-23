@@ -98,86 +98,7 @@
 
 
 
-        const drawFrame = (context, videoWidth, videoHeight) => {
-            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
-            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
-            //dele opp rutenettet i fire: A0, A1, B0 og B1
-            /*
-            let activeCellA0 = 0;
-            let activeCellA1 = 0;
-            let activeCellB0 = 0;
-            let activeCellB1 = 0; */
-
-            for (let y = 0; y < 20; y++) {
-                for (let x = 0; x < 20; x++) {
-                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
-                    let averageBrightness = 0;
-
-                    for (let i = 0; i < pixelSize; i++) {
-                        for (let j = 0; j < pixelSize; j++) {
-                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
-                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                        }
-                    }
-                    averageBrightness /= (pixelSize * pixelSize);
-
-                    console.log(averageBrightness)
-
-                    // lyssynth
-
-                    
-                    
-
-                    
-
-                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
-                        if (!pixelGrid[y][x]) {
-                            pixelGrid[y][x] = true;
-                            context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            grid[y][x] = 1;
-                        }
-                    } else {
-                        pixelGrid[y][x] = false;
-                    }
-
-                    // her skal jeg ha noe
-
-
-/*
-                    for (let i = 0; i < 7; i++) {
-                        for (let j = 0; j < 9; j++) {
-                            let content = grid[i][j];
-                            activeCellA0 += content;
-                            console.log(activeCellA0)
-                            }
-                        } 
-                    for (let i = 7; i < 15; i++) {
-                        for (let j = 0; j < 9; j++) {
-                            let content = grid[i][j];
-                            activeCellB0 += content;
-                            }
-                        } 
-                    for (let i = 0; i < 7; i++) {
-                        for (let j = 9; j < 20; j++) {
-                            let content = grid[i][j];
-                            activeCellA1 += content;
-                            }
-                        } 
-
-                    for (let i = 7; i < 15; i++) {
-                        for (let j = 9; j < 20; j++) {
-                            let content = grid[i][j];
-                            activeCellA0 += content;
-                            }
-                        }  */
-                }
-                lysSynth.triggerAttackRelease(averageBrightness);
-            }
-            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
-        };
 
         const videoElement = document.createElement('video');
         videoElement.autoplay = true;
@@ -244,6 +165,61 @@
 
         }).connect(gainNode2);
         const lysSynth = new Tone.MonoSynth().connect(gainNode2);
+
+
+
+        const drawFrame = (context, videoWidth, videoHeight) => {
+            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
+
+            //dele opp rutenettet i fire: A0, A1, B0 og B1
+            /*
+            let activeCellA0 = 0;
+            let activeCellA1 = 0;
+            let activeCellB0 = 0;
+            let activeCellB1 = 0; */
+
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
+
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                        }
+                    }
+                    averageBrightness /= (pixelSize * pixelSize);
+
+                    console.log(averageBrightness)
+
+                    // lyssynth
+
+                    lysSynth.triggerAttackRelease(averageBrightness);
+                    
+
+                    
+
+                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
+                        if (!pixelGrid[y][x]) {
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[y][x] = 1;
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
+                    }
+
+                    // her skal jeg ha noe
+
+                }
+            }
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+        };
+        
 
         //first set of drone notes
         let droneNote = 'A2';

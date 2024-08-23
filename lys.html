@@ -253,6 +253,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === 'p') {
                 togglePlay();
+                lysSynth.triggerAttack(lysNote);
 
                 
             }

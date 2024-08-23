@@ -82,8 +82,7 @@
         const pixelSize = 32;
         const threshold = 100;
         const threshold2 = 101;
-
-      
+        
 
         let pixelGrid = [];
 
@@ -95,6 +94,12 @@
                 }
             }
         };
+// synth som kan styres med averageBrightness
+
+const lysSynth = new Tone.MonoSynth({
+            
+
+        }).connect(gainNode2);
 
         const drawFrame = (context, videoWidth, videoHeight) => {
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
@@ -121,17 +126,11 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                  //  console.log(averageBrightness)
-                  function calculateValueAsync() {
-                  return new Promise((resolve, reject) => {
-                    let value = averageBrightness;
-                    resolve(value); // send verdien til resolve-funksjonen
-                     });
+                    console.log(averageBrightness)
 
-                    }
+                    // lyssynth
 
-                    
-
+                    lysSynth.triggerAttackRelease(averageBrightness, '16n', undefined, gain);
                     
 
                     
@@ -542,12 +541,6 @@
         function updateGrid() {
             let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
             let activeCellCount = 0;
-          //  console.log(lysVerdi);
-          drawFrame(context, videoWidth, videoHeight);
-////
-            calculateValueAsync().then(result => {
-            console.log(result); // vil logge 42
-            });
 
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {

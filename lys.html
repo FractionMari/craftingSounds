@@ -122,8 +122,8 @@
 
                     console.log(averageBrightness)
                     
-                    if (x % 10 === 0) {
-                    lysSynth.triggerAttack(averageBrightness);
+                    if (x === 0 && y % 10 === 0) {
+                        lysSynth.triggerAttack(averageBrightness);
                     }
 
 

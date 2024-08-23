@@ -120,9 +120,10 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    console.log(averageBrightness)
+                    
                     
                     if (x === 0 && y % 10 === 0) {
+                        console.log(averageBrightness)
                         lysSynth.triggerAttack(averageBrightness);
                     }
 

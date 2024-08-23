@@ -99,7 +99,7 @@
 
 
 
-        const drawFrame = (context, videoWidth, videoHeight) => {
+        const drawFrame = (context, videoWidth, videoHeight, lysNote) => {
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
@@ -165,7 +165,8 @@
                     pixelGridCanvas.height = videoHeight;
 
                     initPixelGrid();
-                    drawFrame(context, videoWidth, videoHeight);
+                    drawFrame(context, videoWidth, videoHeight, lysNote);
+                    lysSynth.triggerAttack(lysNote);
                 };
             })
             .catch(err => {
@@ -253,7 +254,7 @@
             if (event.key.toLowerCase() === 'p') {
                 togglePlay();
 
-                lysSynth.triggerAttack(lysNote);
+                
             }
         });
 

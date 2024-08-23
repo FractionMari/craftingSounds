@@ -113,7 +113,7 @@
                 for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     
-                    if (averageBrightness.isNaN()) {
+                    if (isNaN(averageBrightness)) {
                         continue
                     }
 
@@ -121,7 +121,7 @@
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                            if (averageBrightness.isNaN()) {
+                            if (isNaN(averageBrightness)) {
                                 console.log("became NaN in for loop");
                             }
                             
@@ -129,7 +129,7 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    if (averageBrightness.isNaN()) {
+                    if (isNaN(averageBrightness)) {
                                 console.log("became NaN afrer division");
                             }
                

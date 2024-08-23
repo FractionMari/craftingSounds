@@ -125,6 +125,10 @@
                     averageBrightness /= (pixelSize * pixelSize);
 
                     console.log(averageBrightness)
+                    
+                    const lysSynth = new Tone.MonoSynth().toDestination();
+                    synth.triggerAttackRelease(averageBrightness);
+
 
 
                     
@@ -211,7 +215,7 @@
             
 
         }).connect(gainNode2);
-        const lysSynth = new Tone.MonoSynth().connect(gainNode2);
+        
 
         //first set of drone notes
         let droneNote = 'A2';

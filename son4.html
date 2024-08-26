@@ -546,13 +546,14 @@
 
                                 envelope : {
                                     attack : 0.01 ,
-                                    decay : 0.01 ,
+                                    decay : 0.5 ,
                                     sustain : 1 ,
                                     release : 0.5
                                     }
                                 }).connect(gainNode);
 
                     }
+                    console.log(key1pressed);
                 }
 
             const noteIndex = (i) % currentScale.length;

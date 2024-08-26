@@ -397,8 +397,9 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
             let interval = 1000; 
-            key1pressed = true;
+            
             clearInterval(timerId);
+            key1pressed = true;
             timerId = setInterval(updateGrid, interval);
             }
         });
@@ -406,8 +407,9 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
             let interval = 500; 
-            key1pressed = false;
+            
             clearInterval(timerId);
+            key1pressed = false;
             timerId = setInterval(updateGrid, interval) ;
             }
         });

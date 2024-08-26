@@ -534,12 +534,12 @@
             
         }
 
-        function playNote(i, j) {
+        function playNote(i, j, timerId) {
             let synth;
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                if (interval < 1000 ) {
+                if (interval < 1000) {
                 synth = new Tone.Synth().connect(gainNode);
                 } else {
                     synth = new Tone.AMSynth({

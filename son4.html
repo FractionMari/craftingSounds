@@ -80,8 +80,8 @@
     <script>
 
         const pixelSize = 32;
-        const threshold = 50;
-        const threshold2 = 51;
+        const threshold = 40;
+        const threshold2 = 50;
 
         let pixelGrid = [];
         
@@ -113,7 +113,7 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    //console.log(averageBrightness)
+                    console.log(pixelSize);
 
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {
@@ -535,7 +535,7 @@
             
             
         }
-
+// spørre thomas om dette
         function playNote(i, j) {
             let synth;
             if (availableSynths.length > 0) {

@@ -539,7 +539,7 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                if (key1pressed = false ) {
+                if (interval < 1000 ) {
                 synth = new Tone.Synth().connect(gainNode);
                 } else {
                     synth = new Tone.AMSynth({
@@ -553,7 +553,7 @@
                                 }).connect(gainNode);
 
                     }
-                    console.log(key1pressed);
+                    console.log(interval);
                 }
 
             const noteIndex = (i) % currentScale.length;

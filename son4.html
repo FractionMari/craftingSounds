@@ -84,6 +84,7 @@
         const threshold2 = 101;
 
         let pixelGrid = [];
+        
 
         const initPixelGrid = () => {
             for (let i = 0; i < 20; i++) {
@@ -154,6 +155,7 @@
 
         const rows = 15;
         const cols = 20;
+        let key1pressed = false;
         let interval = 500;
         let isPlaying = false;
         let timerId;
@@ -395,6 +397,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
             let interval = 1000; 
+            let key1pressed = true;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -403,6 +406,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
             let interval = 500; 
+            key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -412,6 +416,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '3') {
             let interval = 250; 
+            key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -420,6 +425,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '4') {
             let interval = 167; 
+            key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -429,6 +435,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '5') {
             let interval = 125; 
+            key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -437,6 +444,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '6') {
             let interval = 63; 
+            key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -446,6 +454,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '7') {
             let interval = 31; 
+            key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -520,6 +529,8 @@
                 currentScale = pentatonicScale;
                 currentNote = droneNote;
             }
+
+            
             
         }
 
@@ -528,10 +539,36 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                synth = new Tone.Synth({
+                if (key1pressed = true) { 
+                synth = new Tone.AMSynth({
+harmonicity : 3 ,
+detune : 0 ,
+oscillator : {
+type : sine
+} ,
+envelope : {
+attack : 0.01 ,
+decay : 0.01 ,
+sustain : 1 ,
+release : 0.5
+} ,
+modulation : {
+type : square
+} ,
+modulationEnvelope : {
+attack : 0.5 ,
+decay : 0 ,
+sustain : 1 ,
+release : 0.5
+}
 
         }).connect(gainNode);
-            }
+    }
+            else 
+                synth = new Tone.Synth({
+
+                }).connect(gainNode);
+             }
 
             const noteIndex = (i) % currentScale.length;
             const note = currentScale[noteIndex];

@@ -399,7 +399,7 @@
             let interval = 1000; 
             key1pressed = true;
             clearInterval(timerId);
-            timerId = setInterval(updateGrid, interval);
+            timerId = setInterval(updateGrid, interval, playNote);
             }
         });
 
@@ -408,7 +408,7 @@
             let interval = 500; 
             key1pressed = false;
             clearInterval(timerId);
-            timerId = setInterval(updateGrid, interval);
+            timerId = setInterval(updateGrid, interval), playNote;
             }
         });
 

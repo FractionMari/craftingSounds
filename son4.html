@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(47, 2, 245);
+            background-color: rgb(245, 30, 2);
         }
         #video-container {
             position: relative;
@@ -428,7 +428,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '5') {
-            let interval = 31; 
+            let interval = 125; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -445,35 +445,13 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '7') {
-            let interval = 125; 
+            let interval = 31; 
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
         });
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key.toLowerCase() === '8') {
-            let interval = 167; 
-            clearInterval(timerId);
-            timerId = setInterval(updateGrid, interval);
-            }
-        });
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key.toLowerCase() === '9') {
-            let interval = 250; 
-            clearInterval(timerId);
-            timerId = setInterval(updateGrid, interval);
-            }
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key.toLowerCase() === '0') {
-            let interval = 500; 
-            clearInterval(timerId);
-            timerId = setInterval(updateGrid, interval);
-            }
-        });
 
         function togglePlay() {
             isPlaying = !isPlaying;

@@ -397,7 +397,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
             let interval = 1000; 
-            let key1pressed = true;
+            key1pressed = true;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -539,23 +539,21 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                if (key1pressed = true) { 
-                synth = new Tone.AMSynth({
+                if (key1pressed = false ) {
+                synth = new Tone.Synth().connect(gainNode);
+                } else {
+                    synth = new Tone.AMSynth({
 
-                    envelope : {
-                    attack : 0.01 ,
-                    decay : 0.01 ,
-                    sustain : 1 ,
-                    release : 0.5
+                                envelope : {
+                                    attack : 0.01 ,
+                                    decay : 0.01 ,
+                                    sustain : 1 ,
+                                    release : 0.5
+                                    }
+                                }).connect(gainNode);
+
                     }
-
-        }).connect(gainNode);
-    }
-            else 
-                synth = new Tone.Synth({
-
-                }).connect(gainNode);
-             }
+                }
 
             const noteIndex = (i) % currentScale.length;
             const note = currentScale[noteIndex];

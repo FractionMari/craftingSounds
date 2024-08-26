@@ -155,7 +155,7 @@
 
         const rows = 15;
         const cols = 20;
-        let key1pressed = false;
+        var key1pressed = false;
         let interval = 500;
         let isPlaying = false;
         let timerId;
@@ -539,13 +539,9 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-
-                document.addEventListener('keydown', (event) => {
-                if (event.key.toLowerCase() === '1') {
-                    synth = new Tone.Synth().connect(gainNode); 
-                }
-            
-                else {
+                if (key1pressed = false) {
+                synth = new Tone.Synth().connect(gainNode);
+                } else {
                     synth = new Tone.AMSynth({
 
                                 envelope : {
@@ -557,8 +553,7 @@
                                 }).connect(gainNode);
 
                     }
-
-                });
+                    console.log(key1pressed);
                 }
 
             const noteIndex = (i) % currentScale.length;

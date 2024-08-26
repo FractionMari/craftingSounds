@@ -80,8 +80,8 @@
     <script>
 
         const pixelSize = 32;
-        const threshold = 100;
-        const threshold2 = 101;
+        const threshold = 50;
+        const threshold2 = 51;
 
         let pixelGrid = [];
         
@@ -187,8 +187,8 @@
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
         const vibrato = new Tone.Vibrato().connect(gainNode);
         const freeverb = new Tone.Freeverb().connect(gainNode);
-        gainNode.gain.value = 0.3;
-        gainNode2.gain.value = 0.1;
+        gainNode.gain.value = 0.4;
+        gainNode2.gain.value = 0.4;
 
 
         const synth2 = new Tone.MonoSynth({

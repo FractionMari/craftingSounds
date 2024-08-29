@@ -113,8 +113,6 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    console.log(pixelSize);
-
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
@@ -547,10 +545,10 @@
                     synth = new Tone.AMSynth({
 
                                 envelope : {
-                                    attack : 0.01 ,
+                                    attack : 0.2 ,
                                     decay : 0.5 ,
-                                    sustain : 1 ,
-                                    release : 0.5
+                                    sustain : 0.8 ,
+                                    release : 0.8
                                     }
                                 }).connect(gainNode);
 

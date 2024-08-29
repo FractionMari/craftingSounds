@@ -546,8 +546,8 @@
 
                                 envelope : {
                                     attack : 0.2 ,
-                                    decay : 2 ,
-                                    sustain : 2 ,
+                                    decay : 0.9 ,
+                                    sustain : 0.8 ,
                                     release : 0.8
                                     }
                                 }).connect(gainNode);
@@ -560,7 +560,7 @@
             const note = currentScale[noteIndex];
             const gain = ((j / cols) / 2);
 
-            synth.triggerAttackRelease(note, '16n', undefined, gain);
+            synth.triggerAttackRelease(note, '4n', undefined, gain);
             
 
             synth.cellX = i;

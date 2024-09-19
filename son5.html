@@ -84,8 +84,15 @@
         const threshold2 = 50;
 
         let pixelGrid = [];
+        
+
         const initPixelGrid = () => {
-            pixelGrid = Array.from({ length: 20 }, () => Array(20).fill(false));
+            for (let i = 0; i < 20; i++) {
+                pixelGrid[i] = [];
+                for (let j = 0; j < 20; j++) {
+                    pixelGrid[i][j] = false;
+                }
+            }
         };
 
         const drawFrame = (context, videoWidth, videoHeight) => {
@@ -106,7 +113,7 @@
                     }
                     averageBrightness /= (pixelSize * pixelSize);
 
-                    if (averageBrightness > threshold && averageBrightness < threshold2) {
+                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#000';
@@ -140,31 +147,44 @@
                     drawFrame(context, videoWidth, videoHeight);
                 };
             })
-            .catch(err => console.error('An error occurred: ', err));
+            .catch(err => {
+                console.error('An error occurred: ', err);
+            });
 
         const rows = 15;
         const cols = 20;
-        let key1pressed = false;
+        var key1pressed = false;
         let interval = 500;
         let isPlaying = false;
         let timerId;
         let activeSynths = [];
-        let availableSynths = [];
-        let grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+        let availableSynths = []
+        let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
 
-        // Tonalitet og dronenoter arrays
-        const scales = [
-            ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'],
-            ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'],
-            ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'],
-            ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'],
-            ['C#3', 'E3', 'F#3', 'G#3', 'B3', 'C#4', 'E4', 'F#4', 'G#4', 'B4', 'C#5', 'E5', 'F#5', 'G#5', 'B5'],
-            ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5']
-        ];
-        const drones = ['A2', 'B3', 'A#2', 'C3', 'B2', 'C#3', 'C2', 'D2'];
+        
+     
 
-        let currentScale = scales[0];
-        let currentDrone = drones[0];
+        // Tone.js parameters:
+        const gainNode = new Tone.Gain().toDestination();
+        const gainNode2 = new Tone.Gain().toDestination();
+        const pingPong = new Tone.PingPongDelay().connect(gainNode2);
+        const phaser = new Tone.Phaser().connect(gainNode);
+        const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
+        const vibrato = new Tone.Vibrato().connect(gainNode);
+        const freeverb = new Tone.Freeverb().connect(gainNode);
+        gainNode.gain.value = 0.4;
+        gainNode2.gain.value = 0.4;
+
+
+        const synth2 = new Tone.MonoSynth({
+            
+
+        }).connect(gainNode2);
+
+
+
+
+
 
         const gridContainer = document.getElementById('grid');
         for (let i = 0; i < rows; i++) {
@@ -176,126 +196,333 @@
             }
         }
 
-        // Spill/pause-knapp:
         const playPauseButton = document.getElementById('playPause');
-        playPauseButton.addEventListener('click', () => {
-            if (isPlaying) {
-                pauseGame();
-            } else {
-                playGame();
+        playPauseButton.addEventListener('click', togglePlay);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'p') {
+                togglePlay();
             }
         });
 
-        // Funksjon for å spille/pausere spillet
-        function playGame() {
-            isPlaying = true;
-            timerId = setInterval(() => {
-                updateGrid();
-            }, interval);
+        const gliderButton = document.getElementById('glider');
+        gliderButton.addEventListener('click', drawGlider);
+
+        const gliderButton2 = document.getElementById('glider2');
+        gliderButton2.addEventListener('click', secondGlider);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'g') {
+                drawGlider();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'h') {
+                secondGlider();
+            }
+        });
+
+
+
+// drone:
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'd') {
+
+                // Velg en tilfeldig indeks
+                let randomIndex = Math.floor(Math.random() * currentScale.length);
+
+                // Hent den tilfeldige verdien fra listen
+                let randomValue = currentScale[randomIndex];
+
+
+                // Splitt noteverdien i bokstavdelen og oktavnummeret
+                let note = randomValue.slice(0, -1);  // Henter alt unntatt det siste tegnet
+                let octave = parseInt(randomValue.slice(-1));  // Henter siste tegnet og gjør det om til et tall
+
+                // Reduser oktaven med 1
+                let lowerOctaveValue = note + (octave - 2);
+
+                console.log(lowerOctaveValue);
+
+
+                synth2.triggerAttackRelease(lowerOctaveValue, 0.5);
+            }
+        });
+
+ 
+ 
+        const scales = {
+            set1: { pentatonicScale: ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'], pentatonicScale2: ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'], droneNote: 'A2', droneNote2: 'B2'},
+            set2: { pentatonicScale: ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'], pentatonicScale2: ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'], droneNote: 'A#2', droneNote2: 'C2' },
+            set3: { pentatonicScale: ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'], pentatonicScale2: ['C#3', 'E3', 'F#3', 'G#3', 'B3', 'C#4', 'E4', 'F#4', 'G#4', 'B4', 'C#5', 'E5', 'F#5', 'G#5', 'B5'], droneNote: 'B3', droneNote2: 'C#3' },
+            set4: { pentatonicScale: ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'], pentatonicScale2: ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',], droneNote: 'C3', droneNote2: 'D2' }
+        };
+
+
+        let currentNote = droneNote;
+
+        let currentScale = pentatonicScale;
+
+
+        let currentSet = scales.set1;
+
+        document.addEventListener('keydown', (event) => {
+            const keyMap = {
+                'q': 'set1',
+                'w': 'set2',
+                'e': 'set3',
+                'r': 'set4'
+            };
+            if (keyMap[event.key]) {
+                currentSet = scales[keyMap[event.key]];
+            }
+        });
+
+
+
+        function drawGlider(i, j) {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 0) || (i == 2 && j == 1)){
+                        const cell = gridContainer.children[i * cols + j];
+                        cell.classList.toggle('alive');
+                        grid[i][j] = 1;
+                    }
+                }
+            }
         }
 
-        function pauseGame() {
-            isPlaying = false;
-            clearInterval(timerId);
+        function secondGlider(i, j) {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    if ((i == 0 && j == 19) || (i == 1 && j == 18) || (i == 1 && j == 17) || (i == 2 && j == 19) || (i == 2 && j == 18)){
+                        const cell = gridContainer.children[i * cols + j];
+                        cell.classList.toggle('alive');
+                        grid[i][j] = 1;
+                    }
+                }
+            }
         }
 
         const clearButton = document.getElementById('clear');
         clearButton.addEventListener('click', clearGrid);
 
-        function clearGrid() {
-            grid = Array.from({ length: rows }, () => Array(cols).fill(0));
-            renderGrid();
-        }
-
-        function toggleCell(row, col) {
-            grid[row][col] = grid[row][col] === 0 ? 1 : 0;
-            renderGrid();
-        }
-
-        // Endre skalaer med tastetrykk
         document.addEventListener('keydown', (event) => {
-            const keyMap = {
-                'q': 0,
-                'w': 1,
-                'e': 2,
-                'r': 3
-            };
-            if (keyMap[event.key] !== undefined) {
-                currentScale = scales[keyMap[event.key]];
-                currentDrone = drones[keyMap[event.key]];
+            if (event.key.toLowerCase() === 'c') {
+                clearGrid();
             }
         });
 
-        // Funksjon for å oppdatere gridet og spille toner
-        function updateGrid() {
-            let activeCellCount = 0;
-
-            grid.forEach((row, i) => {
-                row.forEach((cell, j) => {
-                    const neighbors = getNeighborCount(i, j);
-
-                    if (cell === 1 && (neighbors < 2 || neighbors > 3)) {
-                        grid[i][j] = 0;
-                        stopNoteAt(i, j);
-                    } else if (cell === 0 && neighbors === 3) {
-                        grid[i][j] = 1;
-                        playNoteAt(i, j);
-                    }
-
-                    if (grid[i][j] === 1) activeCellCount++;
-                });
-            });
-
-            adjustScale(activeCellCount);
-            renderGrid();
+        function toggleCell(i, j) {
+            grid[i][j] = grid[i][j] ? 0 : 1;
+            const cell = gridContainer.children[i * cols + j];
+            cell.classList.toggle('alive');
         }
 
-        function getNeighborCount(i, j) {
-            let neighbors = 0;
-            for (let x = -1; x <= 1; x++) {
-                for (let y = -1; y <= 1; y++) {
-                    if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
-                        neighbors += grid[i + x][j + y];
+        function clearGrid() {
+            grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => cell.classList.remove('alive'));
+        }
+
+
+        // forsøk på slider
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+    output.innerHTML = this.value;
+    let interval = this.value; 
+    clearInterval(timerId);
+    timerId = setInterval(updateGrid, interval);
+
+    
+        }
+        
+
+
+        ///
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '1') {
+            let interval = 1000; 
+            
+            clearInterval(timerId);
+            key1pressed = true;
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '2') {
+            let interval = 500; 
+            
+            clearInterval(timerId);
+            key1pressed = false;
+            timerId = setInterval(updateGrid, interval) ;
+            }
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '3') {
+            let interval = 250; 
+            key1pressed = false;
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '4') {
+            let interval = 167; 
+            key1pressed = false;
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '5') {
+            let interval = 125; 
+            key1pressed = false;
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '6') {
+            let interval = 63; 
+            key1pressed = false;
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === '7') {
+            let interval = 31; 
+            key1pressed = false;
+            clearInterval(timerId);
+            timerId = setInterval(updateGrid, interval);
+            }
+        });
+
+
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playPauseButton.textContent = 'Pause';
+               timerId = setInterval(updateGrid, interval);
+            } else {
+                playPauseButton.textContent = 'Play';
+                clearInterval(timerId);
+            }
+        }
+
+        function updateGrid() {
+            let newGrid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+            let activeCellCount = 0;
+
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    let neighbors = 0;
+                    for (let x = -1; x <= 1; x++) {
+                        for (let y = -1; y <= 1; y++) {
+                            if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
+                                neighbors += grid[i + x][j + y];
+                            }
+                        }
+                    }
+                    neighbors -= grid[i][j];
+
+                    if (grid[i][j] === 1 && (neighbors < 2 || neighbors > 3)) {
+                        newGrid[i][j] = 0;
+                        const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+                        if (synthIndex !== -1) {
+                            const synth = activeSynths.splice(synthIndex, 1)[0];
+                            availableSynths.push(synth);
+                        }
+                    } else if (grid[i][j] === 0 && neighbors === 3) {
+                        newGrid[i][j] = 1;
+                        playNote(i, j);
+                    } else {
+                        newGrid[i][j] = grid[i][j];
+                    }
+
+                    if (newGrid[i][j] === 1) {
+                        activeCellCount++;
                     }
                 }
             }
-            return neighbors - grid[i][j];
-        }
 
-        function adjustScale(activeCellCount) {
-            // Logikk for å justere skala basert på antall aktive celler
-        }
-
-        function playNoteAt(i, j) {
-            let synth = availableSynths.pop() || new Tone.Synth().connect(gainNode);
-            let note = currentScale[i % currentScale.length];
-            synth.triggerAttackRelease(note, '8n');
-            activeSynths.push({ synth, cellX: i, cellY: j });
-        }
-
-        function stopNoteAt(i, j) {
-            const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
-            if (synthIndex !== -1) {
-                const synth = activeSynths.splice(synthIndex, 1)[0];
-                availableSynths.push(synth);
-            }
-        }
-
-        // Tegne gridet i nettleseren
-        function renderGrid() {
             const cells = document.querySelectorAll('.cell');
-            grid.forEach((row, i) => {
+            newGrid.forEach((row, i) => {
                 row.forEach((cell, j) => {
-                    const cellElement = cells[i * cols + j];
                     if (cell === 1) {
-                        cellElement.classList.add('alive');
+                        cells[i * cols + j].classList.add('alive');
                     } else {
-                        cellElement.classList.remove('alive');
+                        cells[i * cols + j].classList.remove('alive');
                     }
                 });
             });
-        }
 
+            grid = newGrid;
+
+            if (activeCellCount > 30) {
+                currentScale = pentatonicScale2;
+                currentNote = droneNote2;
+            } else {
+                currentScale = pentatonicScale;
+                currentNote = droneNote;
+            }
+
+            
+            
+        }
+// spørre thomas om dette
+        function playNote(i, j) {
+            let synth;
+            if (availableSynths.length > 0) {
+                synth = availableSynths.pop();
+            } else {
+                if (key1pressed = false) {
+                synth = new Tone.Synth().connect(gainNode);
+                } else {
+                    synth = new Tone.AMSynth({
+
+                                envelope : {
+                                    attack : 0.2 ,
+                                    decay : 0.9 ,
+                                    sustain : 0.8 ,
+                                    release : 0.8
+                                    }
+                                }).connect(gainNode);
+
+                    }
+                    console.log(key1pressed);
+                }
+
+            const noteIndex = (i) % currentScale.length;
+            const note = currentScale[noteIndex];
+            const gain = ((j / cols) / 2);
+
+            synth.triggerAttackRelease(note, '4n', undefined, gain);
+            
+
+            synth.cellX = i;
+            synth.cellY = j;
+            activeSynths.push(synth);
+        }
     </script>
 </body>
 </html>

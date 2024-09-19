@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knapper for å bytte tonalitet</title>
+    <style>
+        body {
+            background-color: rgb(245, 30, 2);
+        }
+        #video-container {
+            position: relative;
+            top: 0;
+            left: 50px;
+            width: 1000px;
+            height: 700px;
+        }
+        #controls {
+            position: static;
+            width: 400px;
+            height: 400px;
+        }
+        #pixel-grid {
+            position: absolute;
+            top: 0;
+            left: 50px;
+            display: grid;
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
+            width: 640px;
+            height: 480px;
+        }
+        .pixel {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #000;
+            border-radius: 50px;
+        }
+        #grid {
+            position: absolute;
+            top: 0;
+            left: 50px;
+            width: 640px;
+            height: 640px;
+            display: grid;
+            grid-template-columns: repeat(20, 32px);
+            grid-template-rows: repeat(15, 32px);
+        }
+        .cell {
+            width: 32px;
+            height: 32px;
+            border: 2px solid rgb(0, 0, 0);
+            border-radius: 50px;
+        }
+        .alive {
+            background-color: rgb(20, 2, 3);
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <canvas id="pixel-grid"></canvas>
+        <canvas id="canvas" width="640" height="640"></canvas>
+        <div id="grid"></div>
+    </div>
+
+    <div id="controls">
+        <button id="playPause">Play / Pause</button>
+        <button id="clear">Clear</button>
+        <button id="glider">Draw glider</button>
+        <button id="glider2">Draw glider 2</button>
+        <div class="slidecontainer">
+            <input type="range" min="200" max="1000" value="500" class="slider" id="myRange">
+            <p>Value: <span id="demo"></span></p>
+          </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
+    <script>
+
+        const pixelSize = 32;
+        const threshold = 40;
+        const threshold2 = 50;
+
+        let pixelGrid = [];
+        const initPixelGrid = () => {
+            pixelGrid = Array.from({ length: 20 }, () => Array(20).fill(false));
+        };
+
+        const drawFrame = (context, videoWidth, videoHeight) => {
+            const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+            context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
+
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
+
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                        }
+                    }
+                    averageBrightness /= (pixelSize * pixelSize);
+
+                    if (averageBrightness > threshold && averageBrightness < threshold2) {
+                        if (!pixelGrid[y][x]) {
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[y][x] = 1;
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
+                    }
+                }
+            }
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+        };
+
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+                videoElement.play();
+                videoElement.onloadedmetadata = () => {
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const context = pixelGridCanvas.getContext('2d');
+                    const { videoWidth, videoHeight } = videoElement;
+
+                    pixelGridCanvas.width = videoWidth;
+                    pixelGridCanvas.height = videoHeight;
+
+                    initPixelGrid();
+                    drawFrame(context, videoWidth, videoHeight);
+                };
+            })
+            .catch(err => console.error('An error occurred: ', err));
+
+        const rows = 15;
+        const cols = 20;
+        let key1pressed = false;
+        let interval = 500;
+        let isPlaying = false;
+        let timerId;
+        let activeSynths = [];
+        let availableSynths = [];
+        let grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+        // Tonalitet og dronenoter arrays
+        const scales = [
+            ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'],
+            ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'],
+            ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'],
+            ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'],
+            ['C#3', 'E3', 'F#3', 'G#3', 'B3', 'C#4', 'E4', 'F#4', 'G#4', 'B4', 'C#5', 'E5', 'F#5', 'G#5', 'B5'],
+            ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5']
+        ];
+        const drones = ['A2', 'B3', 'A#2', 'C3', 'B2', 'C#3', 'C2', 'D2'];
+
+        let currentScale = scales[0];
+        let currentDrone = drones[0];
+
+        const gridContainer = document.getElementById('grid');
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.addEventListener('click', () => toggleCell(i, j));
+                gridContainer.appendChild(cell);
+            }
+        }
+
+        // Spill/pause-knapp:
+        const playPauseButton = document.getElementById('playPause');
+        playPauseButton.addEventListener('click', () => {
+            if (isPlaying) {
+                pauseGame();
+            } else {
+                playGame();
+            }
+        });
+
+        // Funksjon for å spille/pausere spillet
+        function playGame() {
+            isPlaying = true;
+            timerId = setInterval(() => {
+                updateGrid();
+            }, interval);
+        }
+
+        function pauseGame() {
+            isPlaying = false;
+            clearInterval(timerId);
+        }
+
+        const clearButton = document.getElementById('clear');
+        clearButton.addEventListener('click', clearGrid);
+
+        function clearGrid() {
+            grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+            renderGrid();
+        }
+
+        function toggleCell(row, col) {
+            grid[row][col] = grid[row][col] === 0 ? 1 : 0;
+            renderGrid();
+        }
+
+        // Endre skalaer med tastetrykk
+        document.addEventListener('keydown', (event) => {
+            const keyMap = {
+                'q': 0,
+                'w': 1,
+                'e': 2,
+                'r': 3
+            };
+            if (keyMap[event.key] !== undefined) {
+                currentScale = scales[keyMap[event.key]];
+                currentDrone = drones[keyMap[event.key]];
+            }
+        });
+
+        // Funksjon for å oppdatere gridet og spille toner
+        function updateGrid() {
+            let activeCellCount = 0;
+
+            grid.forEach((row, i) => {
+                row.forEach((cell, j) => {
+                    const neighbors = getNeighborCount(i, j);
+
+                    if (cell === 1 && (neighbors < 2 || neighbors > 3)) {
+                        grid[i][j] = 0;
+                        stopNoteAt(i, j);
+                    } else if (cell === 0 && neighbors === 3) {
+                        grid[i][j] = 1;
+                        playNoteAt(i, j);
+                    }
+
+                    if (grid[i][j] === 1) activeCellCount++;
+                });
+            });
+
+            adjustScale(activeCellCount);
+            renderGrid();
+        }
+
+        function getNeighborCount(i, j) {
+            let neighbors = 0;
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    if (i + x >= 0 && i + x < rows && j + y >= 0 && j + y < cols) {
+                        neighbors += grid[i + x][j + y];
+                    }
+                }
+            }
+            return neighbors - grid[i][j];
+        }
+
+        function adjustScale(activeCellCount) {
+            // Logikk for å justere skala basert på antall aktive celler
+        }
+
+        function playNoteAt(i, j) {
+            let synth = availableSynths.pop() || new Tone.Synth().connect(gainNode);
+            let note = currentScale[i % currentScale.length];
+            synth.triggerAttackRelease(note, '8n');
+            activeSynths.push({ synth, cellX: i, cellY: j });
+        }
+
+        function stopNoteAt(i, j) {
+            const synthIndex = activeSynths.findIndex(s => s.cellX === i && s.cellY === j);
+            if (synthIndex !== -1) {
+                const synth = activeSynths.splice(synthIndex, 1)[0];
+                availableSynths.push(synth);
+            }
+        }
+
+        // Tegne gridet i nettleseren
+        function renderGrid() {
+            const cells = document.querySelectorAll('.cell');
+            grid.forEach((row, i) => {
+                row.forEach((cell, j) => {
+                    const cellElement = cells[i * cols + j];
+                    if (cell === 1) {
+                        cellElement.classList.add('alive');
+                    } else {
+                        cellElement.classList.remove('alive');
+                    }
+                });
+            });
+        }
+
+    </script>
+</body>
+</html>

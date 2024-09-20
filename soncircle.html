@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 221, 2);
+            background-color: rgb(38, 245, 2);
         }
         #video-container {
             position: relative;
@@ -672,7 +672,10 @@
       const canvasHeight = canvas.height;
       
       // Draw video frame onto the canvas
-     canvasContext.drawImage(videoElement, 0, 0, canvasWidth, canvasHeight);
+
+      const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+    canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+
      // bytter video med videoElement som vi har fra før. Beholder canvasContext
       
       const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);

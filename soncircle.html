@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 99, 2);
+            background-color: rgb(245, 2, 152);
         }
         #video-container {
             position: relative;
@@ -85,10 +85,6 @@
 
         let pixelGrid = [];
         
-         
-
-
-    ////
 
         const initPixelGrid = () => {
             for (let i = 0; i < 20; i++) {
@@ -103,128 +99,6 @@
             const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
-
-
-             // putter inn greiene her
-
-
-             // Canvas setup for visualization
-             // bytter ut canvas med pixelGridCanvas , og  canvasContext med context
-  //  const canvas = document.getElementById('pixel-grid');
- //   const canvasContext = canvas.getContext('2d');
-    //canvas.width = canvas.offsetWidth;
-    //canvas.height = canvas.offsetHeight;
-
-    
-    // To store the previous frame and position
-    let previousFrame = null;
-    let lastCenterX = null;
-    let lastCenterY = null;
-    
-    // Function to find the dark object in the video frame
-    function findDarkCircle() {
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
-      
-      // Draw video frame onto the canvas
-
- //     const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
- //   context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
-
-     // bytter video med videoElement som vi har fra før. Beholder canvasContext
-      
-      const frame = context.getImageData(0, 0, videoWidth, videoHeight);
-      const length = frame.data.length;
-      
-      let totalX = 0, totalY = 0, count = 0;
-    
-      if (previousFrame) {
-        // Loop through every pixel and check for dark areas with movement
-        for (let i = 0; i < length; i += 4) {
-          const r = frame.data[i];
-          const g = frame.data[i + 1];
-          const b = frame.data[i + 2];
-          
-          // Convert to grayscale and check if it's dark (adjust threshold as needed)
-          const brightness = (r + g + b) / 3;
-          if (brightness < 50) {  // If pixel is dark
-            const pixelIndex = i / 4;
-            const x = pixelIndex % canvasWidth;
-            const y = Math.floor(pixelIndex / canvasWidth);
-            
-            // Compare with previous frame to detect movement
-            const prevR = previousFrame.data[i];
-            const prevG = previousFrame.data[i + 1];
-            const prevB = previousFrame.data[i + 2];
-            const prevBrightness = (prevR + prevG + prevB) / 3;
-    
-            // If the brightness has changed significantly (indicating movement)
-            if (Math.abs(brightness - prevBrightness) > 20) {
-              totalX += x;
-              totalY += y;
-              count++;
-            }
-          }
-        }
-      }
-    
-      if (count > 0) {
-        // Calculate the center of the dark area
-        const centerX = totalX / count;
-        
-        const centerY = totalY / count;
-        console.log(centerX, centerY);
-    
-        // Map the coordinates to synth parameters
-        const freq1 = 20 + (centerX / canvasWidth) * 990;
-        const freq2 = 20 + (centerY / canvasHeight);
-    
-        // Update oscillator frequencies
-        if (osc1 && osc2) {
-          gainNode3.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime);
-          osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
-          osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
-          gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
-        }
- 
-    
-        // Update last center position
-        lastCenterX = centerX;
-        lastCenterY = centerY;
-      }
-    
-      // Store the current frame for comparison in the next iteration
-      previousFrame = frame;
-    }
-    
-    // Event listener for key press ('O' to start/stop synth)
-    document.addEventListener('keydown', async (event) => {
-      if (event.key === 'o' || event.key === 'O') {
-        // Resume the audio context if it's suspended
-        if (audioCtx.state === 'suspended') {
-          await audioCtx.resume();  // Ensure the AudioContext is running
-        }
-    
-        // Optionally allow manual control of sound
-        if (isSoundActive) {
-          stopSynth();
-        } else {
-          startSynth();
-        }
-      }
-    });
-    
-    // Continuously process video frames
-    function update() {
-      findDarkCircle();
-      requestAnimationFrame(update);
-    }
-    
-    update();
-
-
-
-////
 
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
@@ -271,12 +145,6 @@
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
-
-
-                   
-
-
-
                 };
             })
             .catch(err => {
@@ -786,7 +654,119 @@
       }
     }
     
-  
+    // Canvas setup for visualization
+    const canvas = document.getElementById('pixel-grid');
+    const canvasContext = canvas.getContext('2d');
+    //canvas.width = canvas.offsetWidth;
+    //canvas.height = canvas.offsetHeight;
+
+    
+    // To store the previous frame and position
+    let previousFrame = null;
+    let lastCenterX = null;
+    let lastCenterY = null;
+    
+    // Function to find the dark object in the video frame
+    function findDarkCircle() {
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      
+      // Draw video frame onto the canvas
+
+      const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+    canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+
+     // bytter video med videoElement som vi har fra før. Beholder canvasContext
+      
+      const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
+      const length = frame.data.length;
+      
+      let totalX = 0, totalY = 0, count = 0;
+    
+      if (previousFrame) {
+        // Loop through every pixel and check for dark areas with movement
+        for (let i = 0; i < length; i += 4) {
+          const r = frame.data[i];
+          const g = frame.data[i + 1];
+          const b = frame.data[i + 2];
+          
+          // Convert to grayscale and check if it's dark (adjust threshold as needed)
+          const brightness = (r + g + b) / 3;
+          if (brightness < 50) {  // If pixel is dark
+            const pixelIndex = i / 4;
+            const x = pixelIndex % canvasWidth;
+            const y = Math.floor(pixelIndex / canvasWidth);
+            
+            // Compare with previous frame to detect movement
+            const prevR = previousFrame.data[i];
+            const prevG = previousFrame.data[i + 1];
+            const prevB = previousFrame.data[i + 2];
+            const prevBrightness = (prevR + prevG + prevB) / 3;
+    
+            // If the brightness has changed significantly (indicating movement)
+            if (Math.abs(brightness - prevBrightness) > 20) {
+              totalX += x;
+              totalY += y;
+              count++;
+            }
+          }
+        }
+      }
+    
+      if (count > 0) {
+        // Calculate the center of the dark area
+        const centerX = totalX / count;
+        
+        const centerY = totalY / count;
+        console.log(centerX, centerY);
+    
+        // Map the coordinates to synth parameters
+        const freq1 = 20 + (centerX / canvasWidth) * 990;
+        const freq2 = 20 + (centerY / canvasHeight);
+    
+        // Update oscillator frequencies
+        if (osc1 && osc2) {
+          gainNode3.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime);
+          osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
+          osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
+          gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
+        }
+ 
+    
+        // Update last center position
+        lastCenterX = centerX;
+        lastCenterY = centerY;
+      }
+    
+      // Store the current frame for comparison in the next iteration
+      previousFrame = frame;
+    }
+    
+    // Event listener for key press ('O' to start/stop synth)
+    document.addEventListener('keydown', async (event) => {
+      if (event.key === 'o' || event.key === 'O') {
+        // Resume the audio context if it's suspended
+        if (audioCtx.state === 'suspended') {
+          await audioCtx.resume();  // Ensure the AudioContext is running
+        }
+    
+        // Optionally allow manual control of sound
+        if (isSoundActive) {
+          stopSynth();
+        } else {
+          startSynth();
+        }
+      }
+    });
+    
+    // Continuously process video frames
+    function update() {
+      findDarkCircle();
+      requestAnimationFrame(update);
+    }
+    
+    update();
+    
     </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(196, 2, 245);
+            background-color: rgb(38, 245, 2);
         }
         #video-container {
             position: relative;
@@ -41,7 +41,7 @@
             top: 0;
             left: 50px;
             width: 640px;
-            height: 480px;
+            height: 640px;
             display: grid;
             grid-template-columns: repeat(20, 32px);
             grid-template-rows: repeat(15, 32px);
@@ -136,7 +136,7 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
-                    var pixelGridCanvas = document.getElementById('pixel-grid');
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 
@@ -655,11 +655,11 @@
     }
     
     // Canvas setup for visualization
-  //  const canvas = document.getElementById('pixel-grid');
-    const canvasContext = pixelGridCanvas.getContext('2d');
+    const canvas = document.getElementById('pixel-grid');
+    const canvasContext = canvas.getContext('2d');
     //canvas.width = canvas.offsetWidth;
     //canvas.height = canvas.offsetHeight;
- // pixelGridCanvas
+
     
     // To store the previous frame and position
     let previousFrame = null;
@@ -668,13 +668,13 @@
     
     // Function to find the dark object in the video frame
     function findDarkCircle() {
-      const canvasWidth = 640;
-      const canvasHeight = 480;
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
       
       // Draw video frame onto the canvas
 
-     // const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-    //canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+      const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+    canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
 
      // bytter video med videoElement som vi har fra før. Beholder canvasContext
       

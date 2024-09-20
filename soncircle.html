@@ -637,7 +637,7 @@
         osc2.start();
     
         isSoundActive = true;
-        gainNode3.gain.setValueAtTime(0.5, audioCtx.currentTime); // Set gain to audible level
+        gainNode3.gain.setValueAtTime(0.2, audioCtx.currentTime); // Set gain to audible level
       }
     }
     
@@ -655,7 +655,7 @@
     }
     
     // Canvas setup for visualization
-    const canvas = document.getElementById('pixel-grid');
+    const canvas = document.getElementById('video');
     const canvasContext = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;

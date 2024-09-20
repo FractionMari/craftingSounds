@@ -733,10 +733,10 @@
     
         // Update oscillator frequencies
         if (osc1 && osc2) {
-            gainNode.linearRampToValueAtTime(0.5, 0)
+          gainNode3.linearRampToValueAtTime(0.5, 0)
           osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
           osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
-          gainNode.linearRampToValueAtTime(0, 0.5)
+          gainNode3.linearRampToValueAtTime(0, 0.5)
         }
     
         // Check for movement and start/stop synth accordingly

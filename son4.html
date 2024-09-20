@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 30, 2);
+            background-color: rgb(245, 119, 2);
         }
         #video-container {
             position: relative;
@@ -176,6 +176,11 @@
         let pentatonicScale7 = ['C2', 'D#2', 'F2', 'G2', 'A#2', 'C3', 'D#3', 'F3', 'G3', 'A#3', 'C4', 'D#4', 'F4', 'G4', 'A#4'];
         let pentatonicScale8 = ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',];
 
+        // fifth scale
+
+        let fifthScale = ['C0', 'G0', 'D1', 'A1', 'E3', 'B3', 'F#4', 'Db5', 'Ab5', 'Eb6', 'Bb6', 'F7','C8'];
+        let fifthScale2 = ['C#0', 'G#0', 'D#1', 'A#1', 'E#3', 'B#3', 'G4', 'D5', 'A5', 'E6', 'B6', 'F#7','C#8'];
+
 
         // Tone.js parameters:
         const gainNode = new Tone.Gain().toDestination();
@@ -209,6 +214,11 @@
         //fourth set of drone notes
         let droneNote7 = 'C2';
         let droneNote8 = 'D2';
+
+        // fifth set of drone notes
+        let droneNote9 = 'C1';
+        let droneNote10 = 'C#1';
+
 
         let currentNote = droneNote;
 
@@ -320,6 +330,18 @@
                 droneNote2 = droneNote8;
                 pentatonicScale = pentatonicScale7;
                 droneNote = droneNote7;
+
+                
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 't') {
+
+                pentatonicScale2 = fifthScale2;
+                droneNote2 = droneNote10;
+                pentatonicScale = fifthScale;
+                droneNote = droneNote9;
 
                 
             }

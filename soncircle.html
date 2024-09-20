@@ -609,12 +609,16 @@
         }
 
 
+
+        // ny fukjson her nede
+
+
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let isSoundActive = false;  // To check if sound is currently playing
     
     // Gain (for output control)
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
+   // const gainNode = audioCtx.createGain();
+   // gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
     
     // Delay
     const delayNode = audioCtx.createDelay();

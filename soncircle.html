@@ -659,7 +659,9 @@
     const canvasContext = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    
+
+    // videoElement i stedet for video 
+    /*
     const video = document.getElementById('video');
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
@@ -667,7 +669,7 @@
       })
       .catch((err) => {
         console.error('Feil ved tilgang til webkamera: ', err);
-      });
+      }); */
     
     // To store the previous frame and position
     let previousFrame = null;
@@ -680,9 +682,10 @@
       const canvasHeight = canvas.height;
       
       // Draw video frame onto the canvas
-      canvasContext.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+     // canvasContext.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+     // bytter canvasContext med context som vi har fra før
       
-      const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
+      const frame = context.getImageData(0, 0, canvasWidth, canvasHeight);
       const length = frame.data.length;
       
       let totalX = 0, totalY = 0, count = 0;
@@ -746,18 +749,18 @@
         }
     
         // Clear the canvas and draw the control point
-        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-        canvasContext.drawImage(video, 0, 0, canvasWidth, canvasHeight); // Redraw video
-        canvasContext.beginPath();
-        canvasContext.arc(centerX, centerY, 10, 0, 2 * Math.PI);
-        canvasContext.fillStyle = '#fff';
-        canvasContext.fill();
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(videoElement, 0, 0, canvasWidth, canvasHeight); // Redraw video
+        context.beginPath();
+        context.arc(centerX, centerY, 10, 0, 2 * Math.PI);
+        context.fillStyle = '#fff';
+        context.fill();
     
         // Display frequency values
-        canvasContext.fillStyle = '#fff';
-        canvasContext.font = '16px Arial';
-        canvasContext.fillText(`Osc 1: ${freq1.toFixed(2)} Hz`, 10, 20);
-        canvasContext.fillText(`Osc 2: ${freq2.toFixed(2)} Hz`, 10, 40);
+        context.fillStyle = '#fff';
+        context.font = '16px Arial';
+        context.fillText(`Osc 1: ${freq1.toFixed(2)} Hz`, 10, 20);
+        context.fillText(`Osc 2: ${freq2.toFixed(2)} Hz`, 10, 40);
     
         // Update last center position
         lastCenterX = centerX;

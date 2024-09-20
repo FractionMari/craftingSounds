@@ -728,13 +728,15 @@
         console.log(centerX, centerY);
     
         // Map the coordinates to synth parameters
-        const freq1 = 20 + (centerX / canvasWidth) * 198;
-        const freq2 = 20 + (centerY / canvasHeight) * 198;
+        const freq1 = 20 + (centerX / canvasWidth) * 1980;
+        const freq2 = 20 + (centerY / canvasHeight) * 1980;
     
         // Update oscillator frequencies
         if (osc1 && osc2) {
+            gainNode.linearRampToValueAtTime(0.5, 0)
           osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
           osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
+          gainNode.linearRampToValueAtTime(0, 0.5)
         }
     
         // Check for movement and start/stop synth accordingly

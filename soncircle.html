@@ -655,7 +655,7 @@
     }
     
     // Canvas setup for visualization
-    const canvas = document.getElementById('video');
+    const canvas = document.getElementById('pixel-grid');
     const canvasContext = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -723,11 +723,13 @@
       if (count > 0) {
         // Calculate the center of the dark area
         const centerX = totalX / count;
+        
         const centerY = totalY / count;
+        console.log(centerX, centerY);
     
         // Map the coordinates to synth parameters
-        const freq1 = 20 + (centerX / canvasWidth) * 1980;
-        const freq2 = 20 + (centerY / canvasHeight) * 1980;
+        const freq1 = 20 + (centerX / canvasWidth) * 198;
+        const freq2 = 20 + (centerY / canvasHeight) * 198;
     
         // Update oscillator frequencies
         if (osc1 && osc2) {

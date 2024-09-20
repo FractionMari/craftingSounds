@@ -136,7 +136,7 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    var pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 
@@ -659,7 +659,7 @@
     const canvasContext = canvas.getContext('2d');
     //canvas.width = canvas.offsetWidth;
     //canvas.height = canvas.offsetHeight;
-
+ pixelGridCanvas
     
     // To store the previous frame and position
     let previousFrame = null;
@@ -669,7 +669,7 @@
     // Function to find the dark object in the video frame
     function findDarkCircle() {
       const canvasWidth = 640;
-      const canvasHeight = 2000;
+      const canvasHeight = 480;
       
       // Draw video frame onto the canvas
 

@@ -728,7 +728,7 @@
         console.log(centerX, centerY);
     
         // Map the coordinates to synth parameters
-        const freq1 = 20 + (centerX / canvasWidth) * 1980;
+        const freq1 = 20 + (centerX / canvasWidth) * 990;
         const freq2 = 20 + (centerY / canvasHeight);
     
         // Update oscillator frequencies
@@ -739,7 +739,7 @@
           gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
         }
     
-        // Check for movement and start/stop synth accordingly kanskje denne
+        // Check for movement and start/stop synth accordingly kanskje denne kan fjernes
      /*   if (lastCenterX !== null && lastCenterY !== null) {
           if (Math.abs(centerX - lastCenterX) > 10 || Math.abs(centerY - lastCenterY) > 10) {
             if (!isSoundActive) {

@@ -125,7 +125,7 @@
                     }
                 }
             }
-            //requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
         };
 
         const videoElement = document.createElement('video');
@@ -762,7 +762,7 @@
     // Continuously process video frames
     function update() {
       findDarkCircle();
-      //requestAnimationFrame(update);
+    //  requestAnimationFrame(update);
     }
     
     update();

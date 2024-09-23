@@ -678,10 +678,9 @@
       
       // Draw video frame onto the canvas
 
-      const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+      //const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
       console.log("offsetX: ", offsetX);
-    canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
-
+      canvasContext.drawImage(videoElement, 0, 0, canvasWidth, canvasHeight);
      // bytter video med videoElement som vi har fra før. Beholder canvasContext
       
       const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);

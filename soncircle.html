@@ -672,13 +672,13 @@
     // Function to find the dark object in the video frame
     function findDarkCircle() {
 
-
+        
       console.log("canvas width and height: ", videoElement.videoWidth, videoElement.videoHeight);
       
       // Draw video frame onto the canvas
 
       const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-    //canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+    canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
 
      // bytter video med videoElement som vi har fra før. Beholder canvasContext
       

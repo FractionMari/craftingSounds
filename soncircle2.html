@@ -275,9 +275,9 @@ update();
         
 
         const initPixelGrid = () => {
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 28; i++) {
                 pixelGrid[i] = [];
-                for (let j = 0; j < 40; j++) {
+                for (let j = 0; j < 28; j++) {
                     pixelGrid[i][j] = false;
                 }
             }
@@ -288,8 +288,8 @@ update();
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
-            for (let y = 0; y < 40; y++) {
-                for (let x = 0; x < 40; x++) {
+            for (let y = 0; y < 28; y++) {
+                for (let x = 0; x < 28; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
 
@@ -339,8 +339,8 @@ update();
                 console.error('An error occurred: ', err);
             });
 
-        const rows = 30;
-        const cols = 40;
+        const rows = 22;
+        const cols = 28;
         var key1pressed = false;
         let interval = 500;
         let isPlaying = false;

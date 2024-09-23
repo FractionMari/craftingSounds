@@ -136,7 +136,7 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('pixel-grid');
+                    const pixelGridCanvas = document.getElementById('canvas');
                     const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 

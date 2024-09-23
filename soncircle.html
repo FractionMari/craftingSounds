@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 2, 152);
+            background-color: rgb(51, 245, 2);
         }
         #video-container {
             position: relative;
@@ -668,8 +668,8 @@
     
     // Function to find the dark object in the video frame
     function findDarkCircle() {
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
+      const canvasWidth =  480;//canvas.width;
+      const canvasHeight = 640; // canvas.height;
       console.log("canvas width and height: ", canvas.width, canvas.height);
       
       // Draw video frame onto the canvas

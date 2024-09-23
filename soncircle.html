@@ -40,7 +40,7 @@
             position: absolute;
             top: 0;
             left: 50px;
-            width: 640px;
+            width: 480px;
             height: 640px;
             display: grid;
             grid-template-columns: repeat(20, 32px);
@@ -136,7 +136,7 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
-                    const pixelGridCanvas = document.getElementById('canvas');
+                    const pixelGridCanvas = document.getElementById('pixel-grid');
                     const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 
@@ -679,7 +679,7 @@
       // Draw video frame onto the canvas
 
       const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-      conole.log("offsetX: ", offsetX);
+      console.log("offsetX: ", offsetX);
     canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
 
      // bytter video med videoElement som vi har fra før. Beholder canvasContext

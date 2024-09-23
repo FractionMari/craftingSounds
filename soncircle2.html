@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 119, 2);
+            background-color: rgb(245, 221, 2);
         }
         #video-container {
             position: relative;
@@ -62,6 +62,8 @@
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
         <canvas id="canvas" width="640" height="640"></canvas>
+        <video id="video" autoplay></video>
+        <canvas id="controlCanvas"></canvas>
         <div id="grid"></div>
     </div>
 
@@ -78,6 +80,175 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
     <script>
+         
+  // Web Audio API setup
+
+
+// Web Audio API setup
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let isSoundActive = false;  // To check if sound is currently playing
+
+// Gain (for output control)
+const gainNode = audioCtx.createGain();
+gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
+
+// Delay
+const delayNode = audioCtx.createDelay();
+delayNode.delayTime.setValueAtTime(0.5, audioCtx.currentTime);
+
+// Reverb (using Convolver for simplicity)
+const convolver = audioCtx.createConvolver();
+
+// Creating a basic reverb buffer (impulse response)
+const reverbBuffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 3, audioCtx.sampleRate);
+for (let channel = 0; channel < reverbBuffer.numberOfChannels; channel++) {
+  const nowBuffering = reverbBuffer.getChannelData(channel);
+  for (let i = 0; i < reverbBuffer.length; i++) {
+    nowBuffering[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / reverbBuffer.length, 2);
+  }
+}
+convolver.buffer = reverbBuffer;
+
+// Connect the audio nodes
+gainNode.connect(delayNode).connect(convolver).connect(audioCtx.destination);
+
+// Oscillators that will be dynamically created and destroyed
+let osc1, osc2;
+
+function startSynth() {
+  if (!isSoundActive) {
+    osc1 = audioCtx.createOscillator();
+    osc1.type = 'sine';
+
+    osc2 = audioCtx.createOscillator();
+    osc2.type = 'sine';
+
+    osc1.connect(gainNode);
+    osc2.connect(gainNode);
+
+    osc1.start();
+    osc2.start();
+
+    isSoundActive = true;
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Set gain to audible level
+  }
+}
+
+function stopSynth() {
+  if (isSoundActive) {
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Mute the sound
+
+    osc1.stop();
+    osc2.stop();
+    osc1.disconnect();
+    osc2.disconnect();
+
+    isSoundActive = false;
+  }
+}
+
+// Canvas setup for visualization
+const canvas = document.getElementById('controlCanvas');
+const canvasContext = canvas.getContext('2d');
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
+
+const video = document.getElementById('video');
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then((stream) => {
+    video.srcObject = stream;
+  })
+  .catch((err) => {
+    console.error('Feil ved tilgang til webkamera: ', err);
+  });
+
+// Function to find the dark object in the video frame
+function findDarkCircle() {
+  const canvasWidth = canvas.width;
+  const canvasHeight = canvas.height;
+  
+  // Draw video frame onto the canvas
+  canvasContext.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+  
+  const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
+  const length = frame.data.length;
+  
+  let totalX = 0, totalY = 0, count = 0;
+
+  // Loop through every pixel and check for dark areas
+  for (let i = 0; i < length; i += 4) {
+    const r = frame.data[i];
+    const g = frame.data[i + 1];
+    const b = frame.data[i + 2];
+    
+    // Convert to grayscale and check if it's dark (adjust threshold as needed)
+    const brightness = (r + g + b) / 3;
+    if (brightness < 50) {  // If pixel is dark
+      const pixelIndex = i / 4;
+      const x = pixelIndex % canvasWidth;
+      const y = Math.floor(pixelIndex / canvasWidth);
+      
+      totalX += x;
+      totalY += y;
+      count++;
+    }
+  }
+
+  if (count > 0) {
+    // Calculate the center of the dark area
+    const centerX = totalX / count;
+    const centerY = totalY / count;
+    
+    // Map the coordinates to synth parameters
+    const freq1 = 20 + (centerX / canvasWidth) * 198;
+    const freq2 = 20 + (centerY / canvasHeight) * 198;
+
+    // Update oscillator frequencies
+    if (osc1 && osc2) {
+      osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
+      osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
+    }
+
+    // Clear the canvas and draw the control point
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    canvasContext.beginPath();
+    canvasContext.arc(centerX, centerY, 10, 0, 2 * Math.PI);
+    canvasContext.fillStyle = '#fff';
+    canvasContext.fill();
+
+    // Display frequency values
+    canvasContext.fillStyle = '#fff';
+    canvasContext.font = '16px Arial';
+    canvasContext.fillText(`Osc 1: ${freq1.toFixed(2)} Hz`, 10, 20);
+    canvasContext.fillText(`Osc 2: ${freq2.toFixed(2)} Hz`, 10, 40);
+  }
+}
+
+// Event listener for key press ('O' to start/stop synth)
+document.addEventListener('keydown', async (event) => {
+  if (event.key === 'o' || event.key === 'O') {
+    // Resume the audio context if it's suspended
+    if (audioCtx.state === 'suspended') {
+      await audioCtx.resume();  // Ensure the AudioContext is running
+    }
+
+    if (isSoundActive) {
+      stopSynth();
+    } else {
+      startSynth();
+    }
+  }
+});
+
+// Continuously process video frames
+function update() {
+  findDarkCircle();
+  requestAnimationFrame(update);
+}
+
+update();
+
+
 
         const pixelSize = 32;
         const threshold = 40;

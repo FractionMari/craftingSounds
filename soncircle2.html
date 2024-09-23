@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(51, 245, 2);
+            background-color: rgb(245, 119, 2);
         }
         #video-container {
             position: relative;
@@ -62,7 +62,6 @@
     <div id="video-container">
         <canvas id="pixel-grid"></canvas>
         <canvas id="canvas" width="640" height="640"></canvas>
-
         <div id="grid"></div>
     </div>
 
@@ -222,78 +221,8 @@
 
 
         let currentNote = droneNote;
+
         let currentScale = pentatonicScale;
-
-
-
-        // Web Audio API setup
-
-
-        // Web Audio API setup
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let isSoundActive = false;  // To check if sound is currently playing
-
-        // Gain (for output control)
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
-
-        // Delay
-        const delayNode = audioCtx.createDelay();
-        delayNode.delayTime.setValueAtTime(0.5, audioCtx.currentTime);
-
-        // Reverb (using Convolver for simplicity)
-        const convolver = audioCtx.createConvolver();
-
-        // Creating a basic reverb buffer (impulse response)
-        const reverbBuffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 3, audioCtx.sampleRate);
-        for (let channel = 0; channel < reverbBuffer.numberOfChannels; channel++) {
-        const nowBuffering = reverbBuffer.getChannelData(channel);
-        for (let i = 0; i < reverbBuffer.length; i++) {
-            nowBuffering[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / reverbBuffer.length, 2);
-        }
-        }
-        convolver.buffer = reverbBuffer;
-
-        // Connect the audio nodes
-        gainNode.connect(delayNode).connect(convolver).connect(audioCtx.destination);
-
-        // Oscillators that will be dynamically created and destroyed
-        let osc1, osc2;
-
-        function startSynth() {
-        if (!isSoundActive) {
-            osc1 = audioCtx.createOscillator();
-            osc1.type = 'sine';
-
-            osc2 = audioCtx.createOscillator();
-            osc2.type = 'sine';
-
-            osc1.connect(gainNode);
-            osc2.connect(gainNode);
-
-            osc1.start();
-            osc2.start();
-
-            isSoundActive = true;
-            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Set gain to audible level
-        }
-        }
-
-        function stopSynth() {
-        if (isSoundActive) {
-            gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Mute the sound
-
-            osc1.stop();
-            osc2.stop();
-            osc1.disconnect();
-            osc2.disconnect();
-
-            isSoundActive = false;
-        }
-        }
-
-
-
 
         const gridContainer = document.getElementById('grid');
         for (let i = 0; i < rows; i++) {

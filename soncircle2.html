@@ -58,21 +58,21 @@
         }
 
 
-video, canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
+        video, canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        }
 
-canvas {
-  pointer-events: none; /* Gjør lerretet klikkbart slik at det ikke blokkerer */
-}
+        canvas {
+        pointer-events: none; /* Gjør lerretet klikkbart slik at det ikke blokkerer */
+        }
 
-p {
-  margin-top: 20px;
-}
+        p {
+        margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -106,8 +106,8 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let isSoundActive = false;  // To check if sound is currently playing
 
 // Gain (for output control)
-const gainNode = audioCtx.createGain();
-gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
+const gainNode3 = audioCtx.createGain();
+gainNode3.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
 
 // Delay
 const delayNode = audioCtx.createDelay();
@@ -127,7 +127,7 @@ for (let channel = 0; channel < reverbBuffer.numberOfChannels; channel++) {
 convolver.buffer = reverbBuffer;
 
 // Connect the audio nodes
-gainNode.connect(delayNode).connect(convolver).connect(audioCtx.destination);
+gainNode3.connect(delayNode).connect(convolver).connect(audioCtx.destination);
 
 // Oscillators that will be dynamically created and destroyed
 let osc1, osc2;
@@ -140,20 +140,20 @@ function startSynth() {
     osc2 = audioCtx.createOscillator();
     osc2.type = 'sine';
 
-    osc1.connect(gainNode);
-    osc2.connect(gainNode);
+    osc1.connect(gainNode3);
+    osc2.connect(gainNode3);
 
     osc1.start();
     osc2.start();
 
     isSoundActive = true;
-    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Set gain to audible level
+    gainNode3.gain.setValueAtTime(0.5, audioCtx.currentTime); // Set gain to audible level
   }
 }
 
 function stopSynth() {
   if (isSoundActive) {
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Mute the sound
+    gainNode3.gain.setValueAtTime(0, audioCtx.currentTime); // Mute the sound
 
     osc1.stop();
     osc2.stop();

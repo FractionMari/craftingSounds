@@ -126,6 +126,7 @@
                 }
             }
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+            update();
         };
 
         const videoElement = document.createElement('video');
@@ -770,7 +771,7 @@
       requestAnimationFrame(update);
     }
     
-    update();
+    
     
     </script>
 </body>

@@ -678,6 +678,7 @@
       // Draw video frame onto the canvas
 
       const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+      conole.log("offsetX: ", offsetX);
     canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
 
      // bytter video med videoElement som vi har fra før. Beholder canvasContext

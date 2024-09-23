@@ -126,7 +126,7 @@
                 }
             }
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
-            update();
+            
         };
 
         const videoElement = document.createElement('video');
@@ -147,6 +147,7 @@
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
+                    update();
                 };
             })
             .catch(err => {

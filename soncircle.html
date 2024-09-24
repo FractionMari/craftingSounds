@@ -633,7 +633,7 @@
     gainNode3.connect(delayNode).connect(convolver).connect(audioCtx.destination);
     
     // Oscillators that will be dynamically created and destroyed
-    let osc1, osc2;
+    let osc1, osc2, osc3, osc4;
     
     function startSynth() {
       if (!isSoundActive) {
@@ -641,13 +641,18 @@
         osc1.type = 'sine';
     
         osc2 = audioCtx.createOscillator();
-        osc2.type = 'square';
+        osc2.type = 'sine';
+
+        osc3 = audioCtx.createOscillator();
+        osc3.type = 'sine';
     
         osc1.connect(gainNode3);
         osc2.connect(gainNode3);
+        osc3.connect(gainNode3);
     
         osc1.start();
         osc2.start();
+        osc3.start();
     
         isSoundActive = true;
         gainNode3.gain.setValueAtTime(0.1, audioCtx.currentTime); // Set gain to audible level
@@ -660,6 +665,8 @@
     
         osc1.stop();
         osc2.stop();
+        osc3.stop();
+        osc3.disconnect();
         osc1.disconnect();
         osc2.disconnect();
     
@@ -747,10 +754,11 @@
 
     
         // Update oscillator frequencies
-        if (osc1 && osc2) {
+        if (osc1 && osc2 && osc3) {
           gainNode3.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime);
           osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
           osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
+          osc3.frequency.setValueAtTime((freq1 / 2), audioCtx.currentTime);
           delayNode.delayTime.setValueAtTime(delayTime, audioCtx.currentTime);
           gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
         }

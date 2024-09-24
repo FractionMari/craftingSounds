@@ -642,14 +642,14 @@
         osc2 = audioCtx.createOscillator();
         osc2.type = 'sine';
     
-        osc1.connect(osc2);
+        osc1.connect(gainNode3);
         osc2.connect(gainNode3);
     
         osc1.start();
         osc2.start();
     
         isSoundActive = true;
-        gainNode3.gain.setValueAtTime(0.2, audioCtx.currentTime); // Set gain to audible level
+        gainNode3.gain.setValueAtTime(0.1, audioCtx.currentTime); // Set gain to audible level
       }
     }
     

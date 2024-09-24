@@ -604,7 +604,7 @@
 
 /// ny kode her
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let isSoundActive = false;  // To check if sound is currently playing
     
     // Gain (for output control)
@@ -747,6 +747,7 @@
           gainNode3.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime);
           osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
           osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
+          delayNode.delayTime.setValueAtTime(freq1, audioCtx.currentTime);
           gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
         }
  

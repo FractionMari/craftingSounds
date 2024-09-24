@@ -706,9 +706,9 @@
           
           // Convert to grayscale and check if it's dark (adjust threshold as needed)
           const brightness = (r + g + b) / 3;
-          console.log("brightness ", brightness);
           
-          if (brightness < 50) {  // If pixel is dark
+          // bytter med (brightness < 50) med (brightness < 200) for å få lyse områder i stedet
+          if (brightness > 200) {  // If pixel is light (dark)
             const pixelIndex = i / 4;
             const x = pixelIndex % canvasWidth;
             const y = Math.floor(pixelIndex / canvasWidth);

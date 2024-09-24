@@ -40,7 +40,7 @@
             position: absolute;
             top: 0;
             left: 50px;
-            width: 480px;
+            width: 640px;
             height: 640px;
             display: grid;
             grid-template-columns: repeat(20, 32px);
@@ -142,7 +142,6 @@
 
                     pixelGridCanvas.width = videoWidth;
                     pixelGridCanvas.height = videoHeight;
-                    console.log("pixelGridCanvas width and height: ", videoWidth, videoHeight)
 
                     initPixelGrid();
                     drawFrame(context, videoWidth, videoHeight);
@@ -593,7 +592,7 @@
 
 /// ny kode her
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     let isSoundActive = false;  // To check if sound is currently playing
     
     // Gain (for output control)
@@ -656,13 +655,13 @@
     }
     
     // Canvas setup for visualization
-    //const canvas = document.getElementById('pixel-grid');
-    //const canvasContext = canvas.getContext('2d');
-    //console.log("canvas: ", canvas.width, canvas.height);
+    const canvas = document.getElementById('canvas');
+    const canvasContext = canvas.getContext('2d');
+    console.log("canvas: ", canvas.width, canvas.height);
     //canvas.width = canvas.offsetWidth;
     //canvas.height = canvas.offsetHeight;
-    //const canvasWidth =  480;//canvas.width;
-    //const canvasHeight = 640; // canvas.height;
+    const canvasWidth =  480;//canvas.width;
+    const canvasHeight = 640; // canvas.height;
 
     
     // To store the previous frame and position
@@ -674,16 +673,16 @@
     function findDarkCircle() {
 
         
-      //console.log("canvas width and height: ", videoElement.videoWidth, videoElement.videoHeight);
+      console.log("canvas width and height: ", videoElement.videoWidth, videoElement.videoHeight);
       
       // Draw video frame onto the canvas
 
-      //const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
-      //console.log("offsetX: ", offsetX);
-      //canvasContext.drawImage(videoElement, 0, 0, canvasWidth, canvasHeight);
+      const offsetX = (videoElement.videoWidth - videoElement.videoHeight) / 2;
+    canvasContext.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
+
      // bytter video med videoElement som vi har fra før. Beholder canvasContext
-      // bytter frame med canvasContext med context
-      const frame = context.getImageData(0, 0, videoWidth, videoHeight);
+      
+      const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
       const length = frame.data.length;
       
       let totalX = 0, totalY = 0, count = 0;
@@ -699,8 +698,8 @@
           const brightness = (r + g + b) / 3;
           if (brightness < 50) {  // If pixel is dark
             const pixelIndex = i / 4;
-            const x = pixelIndex % videoWidth;
-            const y = Math.floor(pixelIndex / videoWidth);
+            const x = pixelIndex % canvasWidth;
+            const y = Math.floor(pixelIndex / canvasWidth);
             
             // Compare with previous frame to detect movement
             const prevR = previousFrame.data[i];
@@ -726,8 +725,8 @@
         console.log(centerX, centerY);
     
         // Map the coordinates to synth parameters
-        const freq1 = 20 + (centerX / videoWidth) * 990;
-        const freq2 = 20 + (centerY / videoHeight);
+        const freq1 = 20 + (centerX / canvasWidth) * 990;
+        const freq2 = 20 + (centerY / canvasHeight);
     
         // Update oscillator frequencies
         if (osc1 && osc2) {

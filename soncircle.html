@@ -736,18 +736,20 @@
         const centerX = totalX / count;
         
         const centerY = totalY / count;
-        console.log(centerX, centerY);
+        console.log("centre X value ", centerX, (centerX / 480));
     
         // Map the coordinates to synth parameters
         const freq1 = 20 + (centerX / canvasWidth) * 990;
         const freq2 = 20 + (centerY / canvasHeight);
+        const delayTime = (centerX / 480);
+
     
         // Update oscillator frequencies
         if (osc1 && osc2) {
           gainNode3.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime);
           osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
           osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
-          delayNode.delayTime.setValueAtTime(freq1, audioCtx.currentTime);
+          delayNode.delayTime.setValueAtTime(delayTime, audioCtx.currentTime);
           gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
         }
  

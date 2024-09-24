@@ -609,7 +609,7 @@
     
     // Gain (for output control)
     const gainNode3 = audioCtx.createGain();
-    gainNode3.gain.setValueAtTime(0, o.currentTime); // Start with 0 gain (no sound initially)
+    gainNode3.gain.setValueAtTime(0, audioCtx.currentTime); // Start with 0 gain (no sound initially)
     
     // Delay
     const delayNode = audioCtx.createDelay();
@@ -630,10 +630,10 @@
     console.log("convolver: ", convolver);
     
     // Connect the audio nodes
-    osc2.frequency.connect(delayNode).connect(convolver).connect(audioCtx.destination);
+    gainNode3.connect(delayNode).connect(convolver).connect(audioCtx.destination);
     
     // Oscillators that will be dynamically created and destroyed
-    let osc1, osc2, osc3;
+    let osc1, osc2, osc3, osc4;
     
     function startSynth() {
       if (!isSoundActive) {
@@ -647,10 +647,8 @@
         osc3.type = 'sine';
     
         osc1.connect(gainNode3);
-        //osc2.connect(gainNode3);
-        osc2.connect(audioCtx);
-        //gainNode3.connect(osc2.frequency);
-        //osc3.connect(gainNode3);
+        osc2.connect(gainNode3);
+        osc3.connect(gainNode3);
     
         osc1.start();
         osc2.start();
@@ -757,12 +755,12 @@
     
         // Update oscillator frequencies
         if (osc1 && osc2 && osc3) {
-          gainNode3.gain.linearRampToValueAtTime(0.2, osc2.frequency.currentTime);
+          gainNode3.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime);
           osc1.frequency.setValueAtTime(freq1, audioCtx.currentTime);
           osc2.frequency.setValueAtTime(freq2, audioCtx.currentTime);
           osc3.frequency.setValueAtTime((freq1 / 2), audioCtx.currentTime);
           delayNode.delayTime.setValueAtTime(delayTime, audioCtx.currentTime);
-          gainNode3.gain.linearRampToValueAtTime(0, osc2.frequency.currentTime + 2);
+          gainNode3.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
         }
  
     

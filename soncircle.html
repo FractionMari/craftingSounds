@@ -166,7 +166,6 @@
 
         const rows = 15;
         const cols = 20;
-       // var key1pressed = false;
         let interval = 500;
         let isPlaying = false;
         let timerId;
@@ -296,7 +295,7 @@
                 // Reduser oktaven med 1
                 let lowerOctaveValue = note + (octave - 2);
 
-                console.log(lowerOctaveValue);
+               // console.log(lowerOctaveValue);
 
 
                 synth2.triggerAttackRelease(lowerOctaveValue, 0.5);
@@ -432,7 +431,7 @@
             let interval = 1000; 
             
             clearInterval(timerId);
-           // key1pressed = true;
+           
             timerId = setInterval(updateGrid, interval);
             }
         });
@@ -442,7 +441,7 @@
             let interval = 500; 
             
             clearInterval(timerId);
-            //key1pressed = false;
+           
             timerId = setInterval(updateGrid, interval) ;
             }
         });
@@ -451,7 +450,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '3') {
             let interval = 250; 
-           // key1pressed = false;
+          
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -460,7 +459,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '4') {
             let interval = 167; 
-          //  key1pressed = false;
+         
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -470,7 +469,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '5') {
             let interval = 125; 
-            //key1pressed = false;
+           
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -479,7 +478,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '6') {
             let interval = 63; 
-           // key1pressed = false;
+        
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -489,7 +488,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '7') {
             let interval = 31; 
-           // key1pressed = false;
+           
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -684,7 +683,6 @@
     // Function to find the dark object in the video frame
     function findDarkCircle() {
 
-      console.log("canvas width and height: ", canvas.width, canvas.height);
       
       // Draw video frame onto the canvas
 
@@ -717,6 +715,7 @@
             const prevG = previousFrame.data[i + 1];
             const prevB = previousFrame.data[i + 2];
             const prevBrightness = (prevR + prevG + prevB) / 3;
+            console.log("brightness, prevBrightness: ", brightness, prevBrightness);
     
             // If the brightness has changed significantly (indicating movement)
             if (Math.abs(brightness - prevBrightness) > 20) {
@@ -733,7 +732,7 @@
         const centerX = totalX / count;
         
         const centerY = totalY / count;
-        console.log(centerX, centerY);
+        console.log("centerX, centerY: ", centerX, centerY);
     
         // Map the coordinates to synth parameters
         const freq1 = 20 + (centerX / canvasWidth) * 990;

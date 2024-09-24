@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(132, 245, 2);
+            background-color: rgb(2, 209, 245);
         }
         #video-container {
             position: relative;
@@ -706,6 +706,8 @@
           
           // Convert to grayscale and check if it's dark (adjust threshold as needed)
           const brightness = (r + g + b) / 3;
+          console.log("brightness ", brightness);
+          
           if (brightness < 50) {  // If pixel is dark
             const pixelIndex = i / 4;
             const x = pixelIndex % canvasWidth;
@@ -726,7 +728,7 @@
           }
         }
 
-        console.log("brightness ", brightness);
+        
       }
     
       if (count > 0) {

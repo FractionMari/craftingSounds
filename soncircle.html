@@ -627,13 +627,13 @@
       }
     }
     convolver.buffer = reverbBuffer;
-    console.log("reverbBuffer: ", reverbBuffer);
+    console.log("convolver: ", convolver);
     
     // Connect the audio nodes
     gainNode3.connect(delayNode).connect(convolver).connect(audioCtx.destination);
     
     // Oscillators that will be dynamically created and destroyed
-    let osc1, osc2, osc3, osc4;
+    let osc1, osc2, osc3;
     
     function startSynth() {
       if (!isSoundActive) {

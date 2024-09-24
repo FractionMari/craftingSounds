@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(22, 245, 2);
+            background-color: rgb(245, 30, 2);
         }
         #video-container {
             position: relative;
@@ -166,7 +166,7 @@
 
         const rows = 15;
         const cols = 20;
-        var key1pressed = false;
+       // var key1pressed = false;
         let interval = 500;
         let isPlaying = false;
         let timerId;
@@ -432,7 +432,7 @@
             let interval = 1000; 
             
             clearInterval(timerId);
-            key1pressed = true;
+           // key1pressed = true;
             timerId = setInterval(updateGrid, interval);
             }
         });
@@ -442,7 +442,7 @@
             let interval = 500; 
             
             clearInterval(timerId);
-            key1pressed = false;
+            //key1pressed = false;
             timerId = setInterval(updateGrid, interval) ;
             }
         });
@@ -451,7 +451,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '3') {
             let interval = 250; 
-            key1pressed = false;
+           // key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -460,7 +460,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '4') {
             let interval = 167; 
-            key1pressed = false;
+          //  key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -470,7 +470,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '5') {
             let interval = 125; 
-            key1pressed = false;
+            //key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -479,7 +479,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '6') {
             let interval = 63; 
-            key1pressed = false;
+           // key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -489,7 +489,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '7') {
             let interval = 31; 
-            key1pressed = false;
+           // key1pressed = false;
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -574,9 +574,7 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                if (key1pressed = false) {
-                synth = new Tone.Synth().connect(gainNode);
-                } else {
+
 
                     synth = new Tone.Synth().connect(gainNode);
   /*                  synth = new Tone.AMSynth({
@@ -590,8 +588,7 @@
                                 }).connect(gainNode); 
                                 */
 
-                    }
-                    console.log(key1pressed);
+
                 }
 
             const noteIndex = (i) % currentScale.length;

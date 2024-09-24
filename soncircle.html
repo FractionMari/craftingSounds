@@ -577,15 +577,18 @@
                 if (key1pressed = false) {
                 synth = new Tone.Synth().connect(gainNode);
                 } else {
-                    synth = new Tone.AMSynth({
-/*
+
+                    synth = new Tone.Synth().connect(gainNode);
+  /*                  synth = new Tone.AMSynth({
+
                                 envelope : {
                                     attack : 0.2 ,
                                     decay : 0.9 ,
                                     sustain : 0.8 ,
                                     release : 0.8
-                                    } */
-                                }).connect(gainNode);
+                                    } 
+                                }).connect(gainNode); 
+                                */
 
                     }
                     console.log(key1pressed);

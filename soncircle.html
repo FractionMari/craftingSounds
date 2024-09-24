@@ -627,6 +627,7 @@
       }
     }
     convolver.buffer = reverbBuffer;
+    console.log("reverbBuffer: ", reverbBuffer);
     
     // Connect the audio nodes
     gainNode3.connect(delayNode).connect(convolver).connect(audioCtx.destination);
@@ -640,7 +641,7 @@
         osc1.type = 'sine';
     
         osc2 = audioCtx.createOscillator();
-        osc2.type = 'sine';
+        osc2.type = 'square';
     
         osc1.connect(gainNode3);
         osc2.connect(gainNode3);
@@ -740,8 +741,9 @@
     
         // Map the coordinates to synth parameters
         const freq1 = 20 + (centerX / canvasWidth) * 990;
-        const freq2 = 20 + (centerY / canvasHeight);
-        const delayTime = (centerX / 480);
+        const freq2 = 20 + (centerY / canvasHeight) * 495;
+        const delayTime = (centerX / 640);
+        // X er vannrett, Y er loddrett
 
     
         // Update oscillator frequencies

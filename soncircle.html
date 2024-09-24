@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 71, 2);
+            background-color: rgb(241, 245, 2);
         }
         #video-container {
             position: relative;
@@ -642,7 +642,7 @@
         osc2 = audioCtx.createOscillator();
         osc2.type = 'sine';
     
-        osc1.connect(gainNode3);
+        osc1.connect(osc2);
         osc2.connect(gainNode3);
     
         osc1.start();
@@ -683,7 +683,7 @@
     // Function to find the dark object in the video frame
     function findDarkCircle() {
 
-      console.log("canvas width and height: ", canvas.width, canvas.height);
+    // console.log("canvas width and height: ", canvas.width, canvas.height);
       
       // Draw video frame onto the canvas
 

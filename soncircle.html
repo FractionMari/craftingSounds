@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(156, 4, 149);
+            background-color: rgb(245, 2, 233);
         }
         #video-container {
             position: relative;
@@ -173,11 +173,11 @@
         let availableSynths = []
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
         // first set of pentatonic scales
-        let pentatonicScale = ['A2', null, 'C3', null, 'D3', null, 'E3', null, 'G3', null, 'A3', null, 'C4', null, 'D4', null, 'E4', null, 'G4', null, 'A4', null, 'C5', null, 'D5', null, 'E5', null, 'G5'];
-        let pentatonicScale2 = ['B2', null, 'D3', null, 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+        let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
+        let pentatonicScale2 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
        
         // second set of pentatonic scales
-        let pentatonicScale3 = ['A#2', ['C#3', 'D#3'], 'F3', ['G#3', 'A#3'], 'C#4', ['D#4', 'F4'], 'G#4', ['A#4', 'C#5'], 'D#5', ['F5', 'G#5']];
+        let pentatonicScale3 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
         let pentatonicScale4 = ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'];
        
         // third set of pentatonic scales
@@ -191,7 +191,7 @@
         // fifth scale
 
         let fifthScale = ['C0', null, 'G0', null, 'D1', null, 'A1', null, 'E3', null, 'B3', null, 'F#4', null, 'Db5', null, 'Ab5', null, 'Eb6', null, 'Bb6', null, 'F7', null,'C8'];
-        let fifthScale2 = ['C#0', null, 'G#0', null, 'D#1', null, 'A#1', null, 'E#3', null, 'B#3', null, 'G4', null, 'D5', null, 'A5', null, 'E6', null, 'B6', null, 'F#7', null,'C#8'];
+        let fifthScale2 = ['C#0', null, 'G#0', null, 'D#1', null, 'A#1', null, 'E#3', null, 'B#3', null, 'G4', null, 'D5', null, 'A5', null, 'E6', null, 'B6', null, 'F#7', null, 'C#8'];
 
 
         // Tone.js parameters:

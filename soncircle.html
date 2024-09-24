@@ -295,7 +295,7 @@
                 // Reduser oktaven med 1
                 let lowerOctaveValue = note + (octave - 2);
 
-               // console.log(lowerOctaveValue);
+                console.log(lowerOctaveValue);
 
 
                 synth2.triggerAttackRelease(lowerOctaveValue, 0.5);
@@ -683,6 +683,7 @@
     // Function to find the dark object in the video frame
     function findDarkCircle() {
 
+      console.log("canvas width and height: ", canvas.width, canvas.height);
       
       // Draw video frame onto the canvas
 
@@ -715,7 +716,6 @@
             const prevG = previousFrame.data[i + 1];
             const prevB = previousFrame.data[i + 2];
             const prevBrightness = (prevR + prevG + prevB) / 3;
-            console.log("brightness, prevBrightness: ", brightness, prevBrightness);
     
             // If the brightness has changed significantly (indicating movement)
             if (Math.abs(brightness - prevBrightness) > 20) {
@@ -732,7 +732,7 @@
         const centerX = totalX / count;
         
         const centerY = totalY / count;
-        console.log("centerX, centerY: ", centerX, centerY);
+        console.log(centerX, centerY);
     
         // Map the coordinates to synth parameters
         const freq1 = 20 + (centerX / canvasWidth) * 990;

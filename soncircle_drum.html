@@ -203,6 +203,13 @@
         const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
         const vibrato = new Tone.Vibrato().connect(gainNode);
         const freeverb = new Tone.Freeverb().connect(gainNode);
+        const samplerSynth = new Tone.Sampler({                    
+                "A2" : "./samples/k1.mp3",
+                "C3" : "./samples/s1.mp3",
+                "D3" : "./samples/hh1.mp3",
+                "E3" : "./samples/hh2.mp3",
+                "G3" : "./samples/s2.mp3"
+                }).connect(gainNode);
         gainNode.gain.value = 0.4;
         gainNode2.gain.value = 0.4;
 
@@ -577,17 +584,8 @@
 
 
                     //synth = new Tone.Synth().connect(gainNode);
-                    synth = new Tone.Sampler({
-
-    
-                "A2" : "./samples/k1.mp3",
-                "C3" : "./samples/s1.mp3",
-                "D3" : "./samples/hh1.mp3",
-                "E3" : "./samples/hh2.mp3",
-                "G3" : "./samples/s2.mp3"
-
-            }).connect(gainNode);
-
+                    synth = samplerSynth;
+                    
                     //synth = new Tone.PluckSynth().connect(gainNode);
   /*                  synth = new Tone.AMSynth({
 

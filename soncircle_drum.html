@@ -210,8 +210,11 @@
                 "E3" : "./samples/hh2.mp3",
                 "G3" : "./samples/s2.mp3"
                 }).connect(gainNode);
+        const basicSynth = new Tone.Synth().connect(gainNode);
         gainNode.gain.value = 0.4;
         gainNode2.gain.value = 0.4;
+
+        const key1pressed;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -437,6 +440,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
             let interval = 1000; 
+            key1pressed = true;
             
             clearInterval(timerId);
            
@@ -447,6 +451,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
             let interval = 500; 
+            key1pressed = false;
             
             clearInterval(timerId);
            
@@ -582,10 +587,16 @@
                 synth = availableSynths.pop();
             } else {
 
+                if (key1pressed = true ) { 
+                    synth = samplerSynth;
+                }
+                else {
+                    synth = basicSynth;
+                }
 
                     //synth = new Tone.Synth().connect(gainNode);
-                    synth = samplerSynth;
-                    
+                   
+
                     //synth = new Tone.PluckSynth().connect(gainNode);
   /*                  synth = new Tone.AMSynth({
 

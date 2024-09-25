@@ -193,6 +193,7 @@
         let fifthScale = ['C0', null, 'G0', null, 'D1', null, 'A1', null, 'E3', null, 'B3', null, 'F#4', null, 'Db5', null, 'Ab5', null, 'Eb6', null, 'Bb6', null, 'F7', null,'C8'];
         let fifthScale2 = ['C#0', null, 'G#0', null, 'D#1', null, 'A#1', null, 'E#3', null, 'B#3', null, 'G4', null, 'D5', null, 'A5', null, 'E6', null, 'B6', null, 'F#7', null, 'C#8'];
 
+        // En annen mulighet her er å få inn en 15 x 20 array med tromme-samples. eller at 
 
         // Tone.js parameters:
         const gainNode = new Tone.Gain().toDestination();
@@ -576,8 +577,18 @@
 
 
                     //synth = new Tone.Synth().connect(gainNode);
+                    synth = new Tone.Sampler({
 
-                    synth = new Tone.PluckSynth().connect(gainNode);
+    
+                "A2" : "samples/K1.mp3",
+                "C3" : "samples/S1.mp3",
+                "D3" : "samples/HH1.mp3",
+                "E3" : "samples/HH2.mp3",
+                "G3" : "samples/S2.mp3"
+
+            }).connect(gainNode);
+
+                    //synth = new Tone.PluckSynth().connect(gainNode);
   /*                  synth = new Tone.AMSynth({
 
                                 envelope : {

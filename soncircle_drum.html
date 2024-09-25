@@ -577,7 +577,7 @@
 
                     //synth = new Tone.Synth().connect(gainNode);
 
-                    synth = new Tone.NoiseSynth().connect(gainNode);
+                    synth = new Tone.PluckSynth()..connect(gainNode);
   /*                  synth = new Tone.AMSynth({
 
                                 envelope : {

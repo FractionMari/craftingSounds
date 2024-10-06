@@ -185,11 +185,11 @@
         // Tone.js parameters:
         const gainNode = new Tone.Gain().toDestination();
         const gainNode2 = new Tone.Gain().toDestination();
-        const pingPong = new Tone.PingPongDelay().connect(gainNode2);
-        const phaser = new Tone.Phaser().connect(gainNode);
-        const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
-        const vibrato = new Tone.Vibrato().connect(gainNode);
-        const freeverb = new Tone.Freeverb().connect(gainNode);
+        //const pingPong = new Tone.PingPongDelay().connect(gainNode2);
+        //const phaser = new Tone.Phaser().connect(gainNode);
+        //const autoWah = new Tone.AutoWah(50, 6, -30).connect(gainNode);
+        //const vibrato = new Tone.Vibrato().connect(gainNode);
+        //const freeverb = new Tone.Freeverb().connect(gainNode);
         gainNode.gain.value = 0.3;
         gainNode2.gain.value = 0.4;
 

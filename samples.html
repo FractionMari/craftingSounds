@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(2, 115, 245);
+            background-color: rgb(241, 245, 2);
         }
         #video-container {
             position: relative;
@@ -200,12 +200,14 @@
         const gainNode2 = new Tone.Gain().toDestination();
 
         const samplerSynth = new Tone.Sampler({                    
-                "C2" : "./samples/sample1.mp3",
-                "D2" : "./samples/sample2.mp3",
-                "E2" : "./samples/sample3.mp3",
-                "F2" : "./samples/sample4.mp3",
-                "G2" : "./samples/sample5.mp3",
-                "A2" : "./samples/sample6.mp3",
+                "C3" : "./samples/sample1.mp3",
+                "D3" : "./samples/sample2.mp3",
+                "E3" : "./samples/sample3.mp3",
+                "F3" : "./samples/sample4.mp3",
+                "G3" : "./samples/sample5.mp3",
+                "A3" : "./samples/sample6.mp3",
+
+                release: 1,
    
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);
@@ -647,7 +649,7 @@
       }
     }
     convolver.buffer = reverbBuffer;
-    console.log("convolver: ", convolver);
+    //console.log("convolver: ", convolver);
     
     // Connect the audio nodes
     gainNode3.connect(delayNode).connect(convolver).connect(audioCtx.destination);
@@ -764,7 +766,7 @@
         const centerX = totalX / count;
         
         const centerY = totalY / count;
-        console.log("centre X value ", centerX, (centerX / 480));
+      //  console.log("centre X value ", centerX, (centerX / 480));
     
         // Map the coordinates to synth parameters
         const freq1 = 20 + (centerX / canvasWidth) * 990;

@@ -200,12 +200,17 @@
         const gainNode2 = new Tone.Gain().toDestination();
 
         const samplerSynth = new Tone.Sampler({                    
-                "A2" : "./samples/sample1.mp3",
+                "A2" : "./samples/sample6.mp3",
                 "C3" : "./samples/sample2.mp3",
                 "D3" : "./samples/sample3.mp3",
                 "E3" : "./samples/sample4.mp3",
                 "G3" : "./samples/sample5.mp3",
-
+                
+                curve: "linear",
+                onload: () => {
+                    sampler.triggerAttackRelease('C4', 2000)
+                    },
+                attack : 5 // is this supposed to be 5 seconds?
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);
         gainNode.gain.value = 0.4;

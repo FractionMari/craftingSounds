@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(180, 245, 2);
+            background-color: rgb(2, 115, 245);
         }
         #video-container {
             position: relative;
@@ -207,7 +207,6 @@
                 "G2" : "./samples/sample5.mp3",
                 "A2" : "./samples/sample6.mp3",
    
-                attack : 1 // is this supposed to be 5 seconds?
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);
         gainNode.gain.value = 0.4;

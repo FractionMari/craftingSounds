@@ -212,8 +212,6 @@
         gainNode.gain.value = 0.4;
         gainNode2.gain.value = 0.4;
 
-        var key1pressed = false;
-
 
         const synth2 = new Tone.MonoSynth({
             
@@ -438,8 +436,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
             let interval = 500; 
-            key1pressed = true;
-            
+
             clearInterval(timerId);
            
             timerId = setInterval(updateGrid, interval);
@@ -449,7 +446,6 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
             let interval = 200; 
-            key1pressed = false;
             
             clearInterval(timerId);
            
@@ -585,28 +581,7 @@
                 synth = availableSynths.pop();
             } else {
 
-                if (key1pressed = true ) { 
                     synth = samplerSynth;
-                }
-                else {
-                    synth = basicSynth;
-                }
-
-                    //synth = new Tone.Synth().connect(gainNode);
-                   
-
-                    //synth = new Tone.PluckSynth().connect(gainNode);
-  /*                  synth = new Tone.AMSynth({
-
-                                envelope : {
-                                    attack : 0.2 
-                                    decay : 0.9 ,
-                                    sustain : 0.8 ,
-                                    release : 0.8
-                                    } 
-                                }).connect(gainNode); 
-                                */
-
 
                 }
 

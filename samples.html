@@ -206,8 +206,9 @@
                 "F3" : "./samples/sample4.mp3",
                 "G3" : "./samples/sample5.mp3",
                 "A3" : "./samples/sample6.mp3",
-
-                release: 1,
+                onload: () => {
+		samplerSynth.triggerAttackRelease(["C1", "E1", "G1", "B1"], 0.5);
+	}
    
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);

@@ -204,7 +204,11 @@
                 "C3" : "./samples/sample2.mp3",
                 "D3" : "./samples/sample3.mp3",
                 "E3" : "./samples/sample4.mp3",
-                "G3" : "./samples/sample5.mp3"
+                "G3" : "./samples/sample5.mp3",
+
+                envelope : {
+                    release : 5
+                }
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);
         gainNode.gain.value = 0.4;

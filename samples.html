@@ -206,9 +206,7 @@
                 "E3" : "./samples/sample4.mp3",
                 "G3" : "./samples/sample5.mp3",
 
-                envelope : {
-                    release : 5
-                }
+                sampleTime : 2
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);
         gainNode.gain.value = 0.4;
@@ -439,7 +437,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '1') {
-            let interval = 1000; 
+            let interval = 500; 
             key1pressed = true;
             
             clearInterval(timerId);
@@ -450,7 +448,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '2') {
-            let interval = 2000; 
+            let interval = 200; 
             key1pressed = false;
             
             clearInterval(timerId);
@@ -462,7 +460,7 @@
 
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '3') {
-            let interval = 3000; 
+            let interval = 100; 
           
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);

@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(192, 245, 2);
+            background-color: rgb(245, 2, 2);
         }
         #video-container {
             position: relative;
@@ -80,8 +80,8 @@
     <script>
 
         const pixelSize = 32;
-        const threshold = 40;
-        const threshold2 = 50;
+        const threshold = 90;
+        const threshold2 = 100;
 
         let pixelGrid = [];
         
@@ -153,16 +153,34 @@
 
         const rows = 15;
         const cols = 20;
-        var key1pressed = false;
+
         let interval = 500;
         let isPlaying = false;
         let timerId;
         let activeSynths = [];
         let availableSynths = []
         let grid = new Array(rows).fill(null).map(() => new Array(cols).fill(0));
+        // first set of pentatonic scales
+        let pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
+        let pentatonicScale2 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+       
+        // second set of pentatonic scales
+        let pentatonicScale3 = ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'];
+        let pentatonicScale4 = ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'];
+       
+        // third set of pentatonic scales
+        let pentatonicScale5 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+        let pentatonicScale6 = ['C#3', 'E3', 'F#3', 'G#3', 'B3', 'C#4', 'E4', 'F#4', 'G#4', 'B4', 'C#5', 'E5', 'F#5', 'G#5', 'B5'];
+ 
+        // fourth set of pentatonic scales
+        let pentatonicScale7 = ['C2', 'D#2', 'F2', 'G2', 'A#2', 'C3', 'D#3', 'F3', 'G3', 'A#3', 'C4', 'D#4', 'F4', 'G4', 'A#4'];
+        let pentatonicScale8 = ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',];
 
-        
-     
+        // fifth scale
+
+        let fifthScale = ['C0', 'G0', 'D1', 'A1', 'E3', 'B3', 'F#4', 'Db5', 'Ab5', 'Eb6', 'Bb6', 'F7','C8'];
+        let fifthScale2 = ['C#0', 'G#0', 'D#1', 'A#1', 'E#3', 'B#3', 'G4', 'D5', 'A5', 'E6', 'B6', 'F#7','C#8'];
+
 
         // Tone.js parameters:
         const gainNode = new Tone.Gain().toDestination();
@@ -181,10 +199,30 @@
 
         }).connect(gainNode2);
 
+        //first set of drone notes
+        let droneNote = 'A2';
+        let droneNote2 = 'B3';
+
+        //second set of drone notes
+        let droneNote3 = 'A#2';
+        let droneNote4 = 'C3';
+
+        //third set of drone notes
+        let droneNote5 = 'B2';
+        let droneNote6 = 'C#3';
+
+        //fourth set of drone notes
+        let droneNote7 = 'C2';
+        let droneNote8 = 'D2';
+
+        // fifth set of drone notes
+        let droneNote9 = 'C1';
+        let droneNote10 = 'C#1';
 
 
+        let currentNote = droneNote;
 
-
+        let currentScale = pentatonicScale;
 
         const gridContainer = document.getElementById('grid');
         for (let i = 0; i < rows; i++) {
@@ -252,36 +290,64 @@
             }
         });
 
- 
- 
-        const scales = {
-            set1: { pentatonicScale: ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'], pentatonicScale2: ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'], droneNote: 'A2', droneNote2: 'B2'},
-            set2: { pentatonicScale: ['A#2', 'C#3', 'D#3', 'F3', 'G#3', 'A#3', 'C#4', 'D#4', 'F4', 'G#4', 'A#4', 'C#5', 'D#5', 'F5', 'G#5'], pentatonicScale2: ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'], droneNote: 'A#2', droneNote2: 'C2' },
-            set3: { pentatonicScale: ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'], pentatonicScale2: ['C#3', 'E3', 'F#3', 'G#3', 'B3', 'C#4', 'E4', 'F#4', 'G#4', 'B4', 'C#5', 'E5', 'F#5', 'G#5', 'B5'], droneNote: 'B3', droneNote2: 'C#3' },
-            set4: { pentatonicScale: ['C2', 'D#3', 'F3', 'G3', 'A#3', 'C3', 'D#4', 'F4', 'G4', 'A#4', 'C4', 'D#5', 'F5', 'G5', 'A#5'], pentatonicScale2: ['D2', 'F2', 'G2', 'A2', 'C3', 'D3', 'F3', 'G3', 'A3', 'C4', 'D4', 'F4', 'G4', 'A4', 'C5', 'D5',], droneNote: 'C3', droneNote2: 'D2' }
-        };
 
 
-        let currentNote = droneNote;
-
-        let currentScale = pentatonicScale;
-
-
-        let currentSet = scales.set1;
 
         document.addEventListener('keydown', (event) => {
-            const keyMap = {
-                'q': 'set1',
-                'w': 'set2',
-                'e': 'set3',
-                'r': 'set4'
-            };
-            if (keyMap[event.key]) {
-                currentSet = scales[keyMap[event.key]];
+            if (event.key.toLowerCase() === 'q') {
+
+                pentatonicScale = ['A2', 'C3', 'D3', 'E3', 'G3', 'A3', 'C4', 'D4', 'E4', 'G4', 'A4', 'C5', 'D5', 'E5', 'G5'];
+                pentatonicScale2 = ['B2', 'D3', 'E3', 'F#3', 'A3', 'B3', 'D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5'];
+                let droneNote = 'A2';
+                let droneNote2 = 'B3';
             }
         });
 
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'w') {
 
+                pentatonicScale2 = pentatonicScale4;
+                droneNote2 = droneNote4;
+                pentatonicScale = pentatonicScale3;
+                droneNote = droneNote3; 
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'e') {
+
+                pentatonicScale2 = pentatonicScale6;
+                droneNote2 = droneNote6;
+                pentatonicScale = pentatonicScale5;
+                droneNote = droneNote5;        
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'r') {
+
+                pentatonicScale2 = pentatonicScale8;
+                droneNote2 = droneNote8;
+                pentatonicScale = pentatonicScale7;
+                droneNote = droneNote7;
+
+                
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 't') {
+
+                pentatonicScale2 = fifthScale2;
+                droneNote2 = droneNote10;
+                pentatonicScale = fifthScale;
+                droneNote = droneNote9;
+
+                
+            }
+        });
+
+        
 
         function drawGlider(i, j) {
             for (let i = 0; i < rows; i++) {
@@ -353,7 +419,7 @@
             let interval = 1000; 
             
             clearInterval(timerId);
-            key1pressed = true;
+
             timerId = setInterval(updateGrid, interval);
             }
         });
@@ -363,7 +429,7 @@
             let interval = 500; 
             
             clearInterval(timerId);
-            key1pressed = false;
+
             timerId = setInterval(updateGrid, interval) ;
             }
         });
@@ -372,7 +438,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '3') {
             let interval = 250; 
-            key1pressed = false;
+
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -381,7 +447,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '4') {
             let interval = 167; 
-            key1pressed = false;
+
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -391,7 +457,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '5') {
             let interval = 125; 
-            key1pressed = false;
+
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -400,7 +466,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '6') {
             let interval = 63; 
-            key1pressed = false;
+
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -410,7 +476,7 @@
         document.addEventListener('keydown', (event) => {
             if (event.key.toLowerCase() === '7') {
             let interval = 31; 
-            key1pressed = false;
+
             clearInterval(timerId);
             timerId = setInterval(updateGrid, interval);
             }
@@ -495,9 +561,7 @@
             if (availableSynths.length > 0) {
                 synth = availableSynths.pop();
             } else {
-                if (key1pressed = false) {
-                synth = new Tone.Synth().connect(gainNode);
-                } else {
+
                     synth = new Tone.AMSynth({
 
                                 envelope : {
@@ -508,8 +572,6 @@
                                     }
                                 }).connect(gainNode);
 
-                    }
-                    console.log(key1pressed);
                 }
 
             const noteIndex = (i) % currentScale.length;

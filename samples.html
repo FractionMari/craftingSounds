@@ -166,7 +166,7 @@
 
         const rows = 15;
         const cols = 20;
-        let interval = 500;
+        let interval = 300;
         let isPlaying = false;
         let timerId;
         let activeSynths = [];
@@ -642,7 +642,7 @@
 
             grid = newGrid;
 
-            if (activeCellCount > 30) {
+            if (activeCellCount > 40) {
                 currentScale = pentatonicScale2;
                 currentNote = droneNote2;
             } else {

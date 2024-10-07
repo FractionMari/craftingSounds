@@ -787,9 +787,12 @@
           const r = frame.data[i];
           const g = frame.data[i + 1];
           const b = frame.data[i + 2];
+          console.log(r);
           
           // Convert to grayscale and check if it's dark (adjust threshold as needed)
           const brightness = (r + g + b) / 3;
+
+          
           
           // bytter med (brightness < 50) med (brightness < 200) for å få lyse områder i stedet
           if (brightness > 200) {  // If pixel is light (dark)

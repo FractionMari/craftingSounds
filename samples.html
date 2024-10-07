@@ -288,8 +288,8 @@
    
                 }).connect(gainNode);
         const basicSynth = new Tone.Synth().connect(gainNode);
-        gainNode.gain.value = 0.4;
-        gainNode2.gain.value = 0.4;
+        gainNode.gain.value = 0.5;
+        gainNode2.gain.value = 0.3;
 
 
         const synth2 = new Tone.MonoSynth({
@@ -729,7 +729,7 @@
         osc3.start();
     
         isSoundActive = true;
-        gainNode3.gain.setValueAtTime(0.1, audioCtx.currentTime); // Set gain to audible level
+        gainNode3.gain.setValueAtTime(0.01, audioCtx.currentTime); // Set gain to audible level
       }
     }
     

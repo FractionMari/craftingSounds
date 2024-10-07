@@ -201,13 +201,13 @@
 
         const samplerSynth = new Tone.Sampler({  
              
-            "G2" : "./samples/sampleA.mp3",
-                "D3" : "./samples/sampleAA.mp3",
-                "G3" : "./samples/sampleAAA.mp3",
-                "A2" : "./samples/sample1.mp3",
-                "A#3" : "./samples/sample11.mp3",
-                "C4" : "./samples/sample111.mp3",
-                "F4" : "./samples/sample4.mp3",
+                "C2" : "./samples/synthC2.mp3",
+                "C3" : "./samples/synthC3.mp3",
+                "D2" : "./samples/synthD2.mp3",
+                "D3" : "./samples/synthD3.mp3",
+                "G2" : "./samples/synthG2.mp3",
+                "G3" : "./samples/synthG3.mp3",
+
 
 
 /*
@@ -770,7 +770,9 @@
       const length = frame.data.length;
       
       let totalX = 0, totalY = 0, count = 0;
+      for (let i = 0; i < length; i += 4) {
       console.log("frame data ", frame.data[i]);
+      };
     
       if (previousFrame) {
         // Loop through every pixel and check for dark areas with movement

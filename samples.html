@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(2, 59, 245);
+            background-color: rgb(221, 245, 2);
         }
         #video-container {
             position: relative;
@@ -200,8 +200,11 @@
         const gainNode2 = new Tone.Gain().toDestination();
 
         const samplerSynth = new Tone.Sampler({  
-            
-           
+             
+            "G2" : "./samples/sampleB.mp3",
+            "A#2" : "./samples/sampleBB.mp3",
+            "D3" : "./samples/sampleBBBB.mp3",
+            "D#3" : "./samples/sampleBBB.mp3",
             "F3" : "./samples/sample999.mp3",
             "G3" : "./samples/sampleA.mp3",
             "A#3" : "./samples/sample99.mp3",

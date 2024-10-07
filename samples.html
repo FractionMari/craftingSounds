@@ -199,12 +199,23 @@
         const gainNode = new Tone.Gain().toDestination();
         const gainNode2 = new Tone.Gain().toDestination();
 
-        const samplerSynth = new Tone.Sampler({                    
+        const samplerSynth = new Tone.Sampler({  
+            
+            
+    
+                "G2" : "./samples/sample0.mp3",
+                "G3" : "./samples/sample00.mp3",
+                "A#4" : "./samples/sample000.mp3",
 
+
+/*
                 "C2" : "./samples/sample1.mp3",
                 "C3" : "./samples/sample11.mp3",
                 "C4" : "./samples/sample11.mp3",
-                "C#3" : "./samples/sample2.mp3",
+
+                "C#2" : "./samples/sample9.mp3",
+                "C#3" : "./samples/sample99.mp3",
+                "C#4" : "./samples/sample999.mp3",
 
                 "D1" : "./samples/sample3.mp3",
                 "D2" : "./samples/sample33.mp3",
@@ -248,11 +259,9 @@
                 "B2" : "./samples/sampleB.mp3",
                 "B3" : "./samples/sampleBB.mp3",
                 "B4" : "./samples/sampleBBBB.mp3",
-                "B5" : "./samples/sampleBBB.mp3",
+                "B5" : "./samples/sampleBBB.mp3", */
 
-                "B#2" : "./samples/sample9.mp3",
-                "B#3" : "./samples/sample99.mp3",
-                "B#4" : "./samples/sample999.mp3",
+
 
    
                 }).connect(gainNode);

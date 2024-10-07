@@ -776,6 +776,13 @@
       
       const frame = canvasContext.getImageData(0, 0, canvasWidth, canvasHeight);
       const length = frame.data.length;
+
+      for (let i = 0; i < length; i += 4) {
+          const r = frame.data[i];
+          const g = frame.data[i + 1];
+          const b = frame.data[i + 2];
+          console.log(r); 
+      };
       
       let totalX = 0, totalY = 0, count = 0;
       

@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgba(245, 152, 2, 0.883);
+            background-color: rgba(47, 2, 245, 0.883);
         }
         #video-container {
             position: relative;
@@ -114,7 +114,7 @@
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
             const frame1 = context.getImageData(0, 0, videoWidth, videoHeight);
             let previousFrame1 = null;
-
+/*
         if (previousFrame1) {
 
             for (let y = 0; y < 20; y++) {
@@ -149,7 +149,7 @@
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
             
             previousFrame1 = frame1;
-        };
+        }; */
         };
         const videoElement = document.getElementById('video');
         //const videoElement = document.createElement('video');

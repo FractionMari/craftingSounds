@@ -116,6 +116,41 @@
          //   let previousFrame1 = null;
 
 
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
+                    let averageBrightness = 0;
+                    
+
+                    
+
+                    for (let i = 0; i < pixelSize; i++) {
+                        for (let j = 0; j < pixelSize; j++) {
+                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
+                        }
+                    }
+                    averageBrightness /= (pixelSize * pixelSize);
+                    console.log(averageBrightness);
+
+                    if (averageBrightness > 200){
+                        if (!pixelGrid[y][x]) {
+                            pixelGrid[y][x] = true;
+                            context.fillStyle = '#000';
+                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                            grid[y][x] = 1;
+                        }
+                    } else {
+                        pixelGrid[y][x] = false;
+                    }
+                }
+            }
+            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
+            
+            previousFrame1 = frame1;
+         
+        };
+
 
 
             /// ny kode her
@@ -322,40 +357,6 @@
 
         
 
-            for (let y = 0; y < 20; y++) {
-                for (let x = 0; x < 20; x++) {
-                    const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
-                    let averageBrightness = 0;
-                    
-
-                    
-
-                    for (let i = 0; i < pixelSize; i++) {
-                        for (let j = 0; j < pixelSize; j++) {
-                            const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
-                            averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                        }
-                    }
-                    averageBrightness /= (pixelSize * pixelSize);
-                    console.log(averageBrightness);
-
-                    if (averageBrightness > 200){
-                        if (!pixelGrid[y][x]) {
-                            pixelGrid[y][x] = true;
-                            context.fillStyle = '#000';
-                            context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
-                            grid[y][x] = 1;
-                        }
-                    } else {
-                        pixelGrid[y][x] = false;
-                    }
-                }
-            }
-            requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
-            
-            previousFrame1 = frame1;
-         
-        };
         const videoElement = document.getElementById('video');
         //const videoElement = document.createElement('video');
         videoElement.autoplay = true;

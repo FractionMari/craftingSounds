@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgba(245, 2, 213, 0.883);
+            background-color: rgba(79, 245, 2, 0.883);
         }
         #video-container {
             position: relative;
@@ -113,8 +113,8 @@
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
-            for (let y = 0; y < 40; y++) {
-                for (let x = 0; x < 40; x++) {
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
 

@@ -319,7 +319,7 @@
     }
     
     update();
-/*
+
         
 
             for (let y = 0; y < 20; y++) {
@@ -354,7 +354,7 @@
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
             
             previousFrame1 = frame1;
-         */
+         
         };
         const videoElement = document.getElementById('video');
         //const videoElement = document.createElement('video');
@@ -366,14 +366,14 @@
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
                     const pixelGridCanvas = document.getElementById('pixel-grid');
-                    const context2 = pixelGridCanvas.getContext('2d');
+                    const context = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 
                     pixelGridCanvas.width = videoWidth;
                     pixelGridCanvas.height = videoHeight;
 
                     initPixelGrid();
-                    drawFrame(context2, videoWidth, videoHeight);
+                    drawFrame(context, videoWidth, videoHeight);
                 };
             })
             .catch(err => {

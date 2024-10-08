@@ -115,6 +115,9 @@
          //   const frame1 = context.getImageData(0, 0, videoWidth, videoHeight);
          //   let previousFrame1 = null;
 
+
+
+         
             /// ny kode her
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -317,7 +320,7 @@
     
     update();
 /*
-        if (previousFrame1) {
+        
 
             for (let y = 0; y < 20; y++) {
                 for (let x = 0; x < 20; x++) {
@@ -351,7 +354,7 @@
             requestAnimationFrame(() => drawFrame(context, videoWidth, videoHeight));
             
             previousFrame1 = frame1;
-        }; */
+         */
         };
         const videoElement = document.getElementById('video');
         //const videoElement = document.createElement('video');

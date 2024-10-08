@@ -117,7 +117,7 @@
 
 
 
-         
+
             /// ny kode her
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -366,14 +366,14 @@
                 videoElement.play();
                 videoElement.onloadedmetadata = () => {
                     const pixelGridCanvas = document.getElementById('pixel-grid');
-                    const context = pixelGridCanvas.getContext('2d');
+                    const context2 = pixelGridCanvas.getContext('2d');
                     const { videoWidth, videoHeight } = videoElement;
 
                     pixelGridCanvas.width = videoWidth;
                     pixelGridCanvas.height = videoHeight;
 
                     initPixelGrid();
-                    drawFrame(context, videoWidth, videoHeight);
+                    drawFrame(context2, videoWidth, videoHeight);
                 };
             })
             .catch(err => {

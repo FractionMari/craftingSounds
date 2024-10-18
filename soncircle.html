@@ -95,6 +95,7 @@
         const pixelSize = 32;
         const threshold = 150;
         const threshold2 = 160;
+        const redThreshold = 250;
 
         let pixelGrid = [];
         
@@ -118,14 +119,16 @@
                 for (let x = 0; x < 20; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
+                    let redBrightness = 0;
                     
 
                     for (let i = 0; i < pixelSize; i++) {
-                        console.log("red: ", imageData[i]);
+                        //console.log("red: ", imageData[i]);
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                            
+                            console.log("imageData Index: ", imageData[index]);
+                            //redBrightness += imageData[i]
                         }
                     }
                     averageBrightness /= (pixelSize * pixelSize);

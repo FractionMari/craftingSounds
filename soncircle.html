@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 99, 2);
+            background-color: rgb(75, 2, 245);
         }
         #video-container {
             position: relative;
@@ -121,7 +121,7 @@
                     
 
                     for (let i = 0; i < pixelSize; i++) {
-                        console.log("red: ", imageData(i));
+                        console.log("red: ", imageData[i]);
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;

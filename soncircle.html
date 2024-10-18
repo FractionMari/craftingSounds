@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(245, 79, 2);
+            background-color: rgb(2, 245, 184);
         }
         #video-container {
             position: relative;
@@ -129,7 +129,7 @@
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
                             
                             
-                            redBrightness += (imageData[index]) / 3;
+                            redBrightness += imageData[index];
                             console.log("red Brightness ",  redBrightness);
                         }
                     }

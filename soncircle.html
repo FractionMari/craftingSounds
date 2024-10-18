@@ -127,8 +127,10 @@
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
-                            console.log("imageData Index: ", imageData[index]);
-                            //redBrightness += imageData[i]
+                            
+                            
+                            redBrightness += (imageData[index]) / 3;
+                            console.log("red Brightness ",  redBrightness);
                         }
                     }
                     averageBrightness /= (pixelSize * pixelSize);

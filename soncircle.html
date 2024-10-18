@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgb(2, 245, 184);
+            background-color: rgb(245, 51, 2);
         }
         #video-container {
             position: relative;
@@ -126,14 +126,17 @@
                         //console.log("red: ", imageData[i]);
                         for (let j = 0; j < pixelSize; j++) {
                             const index = pixelIndex + (i * videoWidth * 4) + (j * 4);
+                           
                             averageBrightness += (imageData[index] + imageData[index + 1] + imageData[index + 2]) / 3;
                             
                             
                             redBrightness += imageData[index];
-                            console.log("red Brightness ",  redBrightness);
+                            
                         }
                     }
                     averageBrightness /= (pixelSize * pixelSize);
+                    redBrightness /= (pixelSize * pixelSize);
+                    console.log("red Brightness ",  redBrightness);
 
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {

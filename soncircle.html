@@ -129,7 +129,7 @@
                     if ((averageBrightness > threshold) && (averageBrightness < threshold2)){
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
-                            context.fillStyle = '#000';
+                            context.fillStyle = '#FFFFFF';
                             context.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
                             grid[y][x] = 1;
                         }

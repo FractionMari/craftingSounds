@@ -133,15 +133,26 @@
       }
     }
 
-    // Tone.js synths
-    const redSynth = new Tone.Synth().toDestination();
-    const greenSynth = new Tone.Synth().toDestination();
-    const blueSynth = new Tone.Synth().toDestination();
-    
-    // Start Tone.js
-    Tone.start();
+    let currentRedSynth = null;
+    let currentGreenSynth = null;
+    let currentBlueSynth = null;
 
-    function playSound(synth, frequency, filterValue) {
+    function playSound(color, frequency, filterValue) {
+      let synth;
+      if (color === 'red') {
+        if (currentRedSynth) currentRedSynth.dispose(); // Ødelegg gammel synth
+        synth = new Tone.Synth().toDestination();
+        currentRedSynth = synth;
+      } else if (color === 'green') {
+        if (currentGreenSynth) currentGreenSynth.dispose();
+        synth = new Tone.Synth().toDestination();
+        currentGreenSynth = synth;
+      } else if (color === 'blue') {
+        if (currentBlueSynth) currentBlueSynth.dispose();
+        synth = new Tone.Synth().toDestination();
+        currentBlueSynth = synth;
+      }
+
       synth.triggerAttack(frequency, Tone.now());
       synth.set({
         envelope: {
@@ -173,19 +184,19 @@
 
         if (r > 150 && g < 100 && b < 100) {
           redGrid[cellY][cellX] = 1;
-          const frequency = (cellX / gridSize) * 1000; // Frekvens på X-aksen
-          const filterValue = (cellY / gridSize) * 1000; // Filtereffekt på Y-aksen
-          playSound(redSynth, frequency, filterValue);
+          const frequency = (cellX / gridSize) * 1000;
+          const filterValue = (cellY / gridSize) * 1000;
+          playSound('red', frequency, filterValue);
         } else if (g > 150 && r < 100 && b < 100) {
           greenGrid[cellY][cellX] = 1;
           const frequency = (cellX / gridSize) * 1000;
           const filterValue = (cellY / gridSize) * 1000;
-          playSound(greenSynth, frequency, filterValue);
+          playSound('green', frequency, filterValue);
         } else if (b > 150 && r < 100 && g < 100) {
           blueGrid[cellY][cellX] = 1;
           const frequency = (cellX / gridSize) * 1000;
           const filterValue = (cellY / gridSize) * 1000;
-          playSound(blueSynth, frequency, filterValue);
+          playSound('blue', frequency, filterValue);
         }
       }
 

@@ -3,22 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game of Life med Fargebevegelse og Lyd</title>
+  <title>Game of Life med Lyd</title>
   <style>
-    /* Samme CSS som før */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #fff;
+    }
+
+    .overlay-container {
+      position: relative;
+      width: 320px;
+      height: 240px;
+      margin-top: 20px;
+    }
+
+    #webcam, #grid-red, #grid-green, #grid-blue {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #grid-red, #grid-green, #grid-blue {
+      opacity: 0.4;
+    }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.26/Tone.js"></script>
 </head>
 <body>
   <h1>Game of Life med Fargebevegelse og Lyd</h1>
+
   <div class="overlay-container">
     <video id="webcam" autoplay></video>
-    <canvas id="canvas" style="display: none;"></canvas>
+    <canvas id="canvas" style="display: none;"></canvas> <!-- Skjult canvas for bildeprosessering -->
     <canvas id="grid-red"></canvas>
     <canvas id="grid-green"></canvas>
     <canvas id="grid-blue"></canvas>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.23/Tone.js"></script>
   <script>
     const video = document.getElementById('webcam');
     const canvas = document.getElementById('canvas');
@@ -35,28 +62,13 @@
     const gridSize = 80;
     const cellSize = 4;
 
-    function createEmptyGrid(size) {
-      return Array(size).fill().map(() => Array(size).fill(0));
-    }
-
     let redGrid = createEmptyGrid(gridSize);
     let greenGrid = createEmptyGrid(gridSize);
     let blueGrid = createEmptyGrid(gridSize);
 
-    // Tone.js synth- og effekt-innstillinger
-    const redSynth = new Tone.Synth().toDestination();
-    const greenSynth = new Tone.Synth().toDestination();
-    const blueSynth = new Tone.Synth().toDestination();
-
-    const redFilter = new Tone.Filter(200, "lowpass").toDestination();
-    const greenFilter = new Tone.Filter(400, "bandpass").toDestination();
-    const blueFilter = new Tone.Filter(600, "highpass").toDestination();
-
-    redSynth.connect(redFilter);
-    greenSynth.connect(greenFilter);
-    blueSynth.connect(blueFilter);
-
-    let lastFrameTime = Date.now();
+    function createEmptyGrid(size) {
+      return Array(size).fill().map(() => Array(size).fill(0));
+    }
 
     function gameOfLifeStep(grid) {
       const newGrid = createEmptyGrid(gridSize);
@@ -100,24 +112,30 @@
       }
     }
 
-    function playSynth(synth, filter, x, y, speed) {
-      const frequency = Tone.Frequency(200 + (x / gridSize) * 800).toFrequency();
-      const filterFrequency = 100 + (y / gridSize) * 500;
-      const attack = Math.min(0.1, speed / 200);
-      const release = Math.min(0.2, speed / 150);
+    // Tone.js Synths
+    const redSynth = new Tone.Synth().toDestination();
+    const greenSynth = new Tone.Synth().toDestination();
+    const blueSynth = new Tone.Synth().toDestination();
 
-      synth.envelope.attack = attack;
-      synth.envelope.release = release;
-      synth.triggerAttackRelease(frequency, "8n");
+    function playSound(color, x, y, velocity) {
+      const now = Tone.now();
+      const frequency = Tone.Frequency(100 + (x / gridSize) * 1000); // Scale frequency along X
+      const filter = new Tone.Filter(y * 10, 'lowpass').toDestination(); // Scale filter along Y
+      
+      let synth;
+      if (color === 'red') {
+        synth = redSynth;
+      } else if (color === 'green') {
+        synth = greenSynth;
+      } else if (color === 'blue') {
+        synth = blueSynth;
+      }
 
-      filter.frequency.value = filterFrequency;
+      synth.connect(filter);
+      synth.triggerAttackRelease(frequency, 0.1, now, velocity);
     }
 
     function updateGrids() {
-      const now = Date.now();
-      const delta = now - lastFrameTime;
-      lastFrameTime = now;
-
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = frame.data;
@@ -135,13 +153,13 @@
 
         if (r > 150 && g < 100 && b < 100) {
           redGrid[cellY][cellX] = 1;
-          playSynth(redSynth, redFilter, x, y, delta);
+          playSound('red', x, y, 0.5);
         } else if (g > 150 && r < 100 && b < 100) {
           greenGrid[cellY][cellX] = 1;
-          playSynth(greenSynth, greenFilter, x, y, delta);
+          playSound('green', x, y, 0.5);
         } else if (b > 150 && r < 100 && g < 100) {
           blueGrid[cellY][cellX] = 1;
-          playSynth(blueSynth, blueFilter, x, y, delta);
+          playSound('blue', x, y, 0.5);
         }
       }
 

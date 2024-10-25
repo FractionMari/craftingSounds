@@ -179,8 +179,8 @@ height: 480px;
                     redBrightness /= (pixelSize * pixelSize);
                    // console.log("red Brightness ",  redBrightness);
 
-                    //if ((averageBrightness > threshold) && (averageBrightness < threshold2)){ //generell lysstyrke
-                    if (redBrightness > 200){
+                    if ((averageBrightness > threshold) && (averageBrightness < threshold2)){ //generell lysstyrke
+                    //if (redBrightness > 200){
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#FF0000';

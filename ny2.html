@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgba(2, 38, 245, 0.883);
+            background-color: rgba(0, 0, 0, 0.883);
         }
         #video-container {
             position: relative;
@@ -142,9 +142,9 @@ height: 480px;
         
 
         const initPixelGrid = () => {
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 40; i++) {
                 pixelGrid[i] = [];
-                for (let j = 0; j < 20; j++) {
+                for (let j = 0; j < 40; j++) {
                     pixelGrid[i][j] = false;
                 }
             }
@@ -155,8 +155,8 @@ height: 480px;
             context.drawImage(videoElement, offsetX, 0, videoElement.videoHeight, videoElement.videoHeight, 0, 0, canvas.width, canvas.height);
             const imageData = context.getImageData(0, 0, videoWidth, videoHeight).data;
 
-            for (let y = 0; y < 20; y++) {
-                for (let x = 0; x < 20; x++) {
+            for (let y = 0; y < 40; y++) {
+                for (let x = 0; x < 40; x++) {
                     const pixelIndex = (y * videoWidth * 4 * pixelSize) + (x * 4 * pixelSize);
                     let averageBrightness = 0;
                     let redBrightness = 0;
@@ -278,7 +278,7 @@ height: 480px;
 /// veldig kul kombo, ta vare på:
 
                 "G2" : "./samples/sampleA.mp3",
-                "D3" : "./samples/sampleAA.mp3",
+         /*       "D3" : "./samples/sampleAA.mp3",
                 "G3" : "./samples/sampleAAA.mp3",
                 "A2" : "./samples/sample1.mp3",
                 "A#3" : "./samples/sample11.mp3",
@@ -337,7 +337,7 @@ height: 480px;
                 "B2" : "./samples/sampleB.mp3",
                 "B3" : "./samples/sampleBB.mp3",
                 "B4" : "./samples/sampleBBBB.mp3",
-                "B5" : "./samples/sampleBBB.mp3", 
+                "B5" : "./samples/sampleBBB.mp3", */
 
 
    

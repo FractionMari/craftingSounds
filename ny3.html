@@ -3,49 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game of Life med Lyd</title>
+  <title>Game of Life med Fargebevegelse og Lyd</title>
+  <script src="https://cdn.jsdelivr.net/npm/tone@next/build/Tone.js"></script>
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background-color: #222;
-      color: #fff;
-    }
-
-    .overlay-container {
-      position: relative;
-      width: 320px;
-      height: 240px;
-      margin-top: 20px;
-    }
-
-    #webcam, #grid-red, #grid-green, #grid-blue {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    #grid-red, #grid-green, #grid-blue {
-      opacity: 0.4;
-    }
+      body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: Arial, sans-serif;
+          background-color: #222;
+          color: #fff;
+      }
+      h1 {
+          margin-bottom: 20px;
+      }
+      .overlay-container {
+          position: relative;
+          width: 320px;
+          height: 240px;
+          margin-top: 20px;
+      }
+      #webcam {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+      }
+      #grid-red, #grid-green, #grid-blue {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+          opacity: 0.4;
+      }
+      #grid-green {
+          z-index: 3;
+      }
+      #grid-blue {
+          z-index: 4;
+      }
   </style>
 </head>
 <body>
   <h1>Game of Life med Fargebevegelse og Lyd</h1>
-
+  
   <div class="overlay-container">
     <video id="webcam" autoplay></video>
-    <canvas id="canvas" style="display: none;"></canvas> <!-- Skjult canvas for bildeprosessering -->
+    <canvas id="canvas" style="display: none;"></canvas>
     <canvas id="grid-red"></canvas>
     <canvas id="grid-green"></canvas>
     <canvas id="grid-blue"></canvas>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.23/Tone.js"></script>
   <script>
     const video = document.getElementById('webcam');
     const canvas = document.getElementById('canvas');
@@ -61,14 +74,22 @@
 
     const gridSize = 80;
     const cellSize = 4;
+    const gridWidth = gridSize * cellSize;
 
-    let redGrid = createEmptyGrid(gridSize);
-    let greenGrid = createEmptyGrid(gridSize);
-    let blueGrid = createEmptyGrid(gridSize);
+    redCanvas.width = gridWidth;
+    redCanvas.height = gridWidth;
+    greenCanvas.width = gridWidth;
+    greenCanvas.height = gridWidth;
+    blueCanvas.width = gridWidth;
+    blueCanvas.height = gridWidth;
 
     function createEmptyGrid(size) {
       return Array(size).fill().map(() => Array(size).fill(0));
     }
+
+    let redGrid = createEmptyGrid(gridSize);
+    let greenGrid = createEmptyGrid(gridSize);
+    let blueGrid = createEmptyGrid(gridSize);
 
     function gameOfLifeStep(grid) {
       const newGrid = createEmptyGrid(gridSize);
@@ -101,7 +122,7 @@
     }
 
     function drawGrid(ctx, grid, color) {
-      ctx.clearRect(0, 0, redCanvas.width, redCanvas.height);
+      ctx.clearRect(0, 0, gridWidth, gridWidth);
       ctx.fillStyle = color;
       for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
@@ -112,27 +133,27 @@
       }
     }
 
-    // Tone.js Synths
+    // Tone.js synths
     const redSynth = new Tone.Synth().toDestination();
     const greenSynth = new Tone.Synth().toDestination();
     const blueSynth = new Tone.Synth().toDestination();
+    
+    // Start Tone.js
+    Tone.start();
 
-    function playSound(color, x, y, velocity) {
-      const now = Tone.now();
-      const frequency = Tone.Frequency(100 + (x / gridSize) * 1000); // Scale frequency along X
-      const filter = new Tone.Filter(y * 10, 'lowpass').toDestination(); // Scale filter along Y
-      
-      let synth;
-      if (color === 'red') {
-        synth = redSynth;
-      } else if (color === 'green') {
-        synth = greenSynth;
-      } else if (color === 'blue') {
-        synth = blueSynth;
-      }
-
-      synth.connect(filter);
-      synth.triggerAttackRelease(frequency, 0.1, now, velocity);
+    function playSound(synth, frequency, filterValue) {
+      synth.triggerAttack(frequency, Tone.now());
+      synth.set({
+        envelope: {
+          attack: 0.1,
+          decay: 0.2,
+          sustain: 0.5,
+          release: 1
+        },
+        filter: {
+          frequency: filterValue
+        }
+      });
     }
 
     function updateGrids() {
@@ -147,19 +168,24 @@
 
         const x = (i / 4) % canvas.width;
         const y = Math.floor((i / 4) / canvas.width);
-
         const cellX = Math.floor((x / canvas.width) * gridSize);
         const cellY = Math.floor((y / canvas.height) * gridSize);
 
         if (r > 150 && g < 100 && b < 100) {
           redGrid[cellY][cellX] = 1;
-          playSound('red', x, y, 0.5);
+          const frequency = (cellX / gridSize) * 1000; // Frekvens på X-aksen
+          const filterValue = (cellY / gridSize) * 1000; // Filtereffekt på Y-aksen
+          playSound(redSynth, frequency, filterValue);
         } else if (g > 150 && r < 100 && b < 100) {
           greenGrid[cellY][cellX] = 1;
-          playSound('green', x, y, 0.5);
+          const frequency = (cellX / gridSize) * 1000;
+          const filterValue = (cellY / gridSize) * 1000;
+          playSound(greenSynth, frequency, filterValue);
         } else if (b > 150 && r < 100 && g < 100) {
           blueGrid[cellY][cellX] = 1;
-          playSound('blue', x, y, 0.5);
+          const frequency = (cellX / gridSize) * 1000;
+          const filterValue = (cellY / gridSize) * 1000;
+          playSound(blueSynth, frequency, filterValue);
         }
       }
 
@@ -180,14 +206,6 @@
         video.onloadedmetadata = () => {
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
-
-          redCanvas.width = video.videoWidth;
-          redCanvas.height = video.videoHeight;
-          greenCanvas.width = video.videoWidth;
-          greenCanvas.height = video.videoHeight;
-          blueCanvas.width = video.videoWidth;
-          blueCanvas.height = video.videoHeight;
-
           requestAnimationFrame(updateGrids);
         };
       })

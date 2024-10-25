@@ -6,7 +6,7 @@
     <title>Knapper for å bytte tonalitet</title>
     <style>
         body {
-            background-color: rgba(245, 91, 2, 0.883);
+            background-color: rgba(221, 245, 2, 0.883);
         }
         #video-container {
             position: relative;
@@ -137,7 +137,7 @@
                    // console.log("red Brightness ",  redBrightness);
 
                     //if ((averageBrightness > threshold) && (averageBrightness < threshold2)){ //generell lysstyrke
-                    if (redBrightness > 150){
+                    if (redBrightness > 250){
                         if (!pixelGrid[y][x]) {
                             pixelGrid[y][x] = true;
                             context.fillStyle = '#FF0000';

@@ -705,6 +705,59 @@ height: 480px;
                 currentNote = droneNote;
             }
 
+            // fra matrix
+
+
+         for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 9; j++) {
+                let content = grid[i][j];
+                activeCellA0 += content;
+                }
+            } 
+        for (let i = 7; i < 15; i++) {
+            for (let j = 0; j < 9; j++) {
+                let content = grid[i][j];
+                activeCellB0 += content;
+                }
+            } 
+        for (let i = 0; i < 7; i++) {
+            for (let j = 9; j < 20; j++) {
+                let content = grid[i][j];
+                activeCellA1 += content;
+                }
+            } 
+
+        for (let i = 7; i < 15; i++) {
+            for (let j = 9; j < 20; j++) {
+                let content = grid[i][j];
+                activeCellA0 += content;
+                }
+            } 
+
+// Finn den høyeste verdien og hvilken activeCell den tilhører
+let maxValue = Math.max(activeCellA0, activeCellA1, activeCellB0, activeCellB1);
+let highestCell;
+
+if (maxValue === activeCellA0) {
+    highestCell = 'activeCellA0';
+    currentScale = pentatonicScale;
+    currentNote = droneNote;
+} else if (maxValue === activeCellA1) {
+    highestCell = 'activeCellA1';
+    currentScale = pentatonicScale2;
+    currentNote = droneNote2;
+} else if (maxValue === activeCellB0) {
+    highestCell = 'activeCellB0';
+    currentScale = pentatonicScale3;
+    currentNote = droneNote3;
+} else if (maxValue === activeCellB1) {
+    highestCell = 'activeCellB1';
+    currentScale = pentatonicScale4;
+    currentNote = droneNote4;
+}
+
+//
+
             
             
         }

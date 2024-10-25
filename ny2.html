@@ -114,6 +114,7 @@
         <canvas id="grid-red"></canvas>
         <canvas id="grid-green"></canvas>
         <canvas id="grid-blue"></canvas>
+        <canvas id="canvas2" style="display: none;"></canvas> <!-- Skjult canvas for bildeprosessering -->
         <video id="webcam" autoplay></video>
         <div id="grid"></div>
     </div>
@@ -133,8 +134,8 @@
     <script>
   
         const video = document.getElementById('webcam');
-          const canvas = document.getElementById('canvas');
-          const ctx = canvas.getContext('2d');
+          const canvas2 = document.getElementById('canvas');
+          const ctx = canvas2.getContext('2d');
           
           const redCanvas = document.getElementById('grid-red');
           const greenCanvas = document.getElementById('grid-green');
@@ -212,8 +213,8 @@
           
           // Oppdatere grids basert på fargebevegelse i webkameraet
           function updateGrids() {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(video, 0, 0, canvas2.width, canvas2.height);
+            const frame = ctx.getImageData(0, 0, canvas2.width, canvas2.height);
             const pixels = frame.data;
           
             for (let i = 0; i < pixels.length; i += 4) {
@@ -221,11 +222,11 @@
               const g = pixels[i + 1];
               const b = pixels[i + 2];
           
-              const x = (i / 4) % canvas.width;
-              const y = Math.floor((i / 4) / canvas.width);
+              const x = (i / 4) % canvas2.width;
+              const y = Math.floor((i / 4) / canvas2.width);
           
-              const cellX = Math.floor((x / canvas.width) * gridSize);
-              const cellY = Math.floor((y / canvas.height) * gridSize);
+              const cellX = Math.floor((x / canvas2.width) * gridSize);
+              const cellY = Math.floor((y / canvas2.height) * gridSize);
           
               // Sjekk bevegelse i rød farge
               if (r > 150 && g < 100 && b < 100) {
@@ -259,8 +260,8 @@
             .then(stream => {
               video.srcObject = stream;
               video.onloadedmetadata = () => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
+                canvas2.width = video.videoWidth;
+                canvas2.height = video.videoHeight;
                 requestAnimationFrame(updateGrids);
               };
             })

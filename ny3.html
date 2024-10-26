@@ -18,22 +18,33 @@
         #controls {
             position: static;
             width: 400px;
-            height: 400px;
+            
         }
         #pixel-grid {
             position: absolute;
             top: 0;
             left: 50px;
             display: grid;
-            grid-template-columns: repeat(20, 32px);
-            grid-template-rows: repeat(15, 32px);
+            grid-template-columns: repeat(40, 16px);
+            grid-template-rows: repeat(30, 16px);
             width: 640px;
             height: 480px;
+            object-fit: cover;
+            display: none;
         }
+
+        video, canvas {
+            position: absolute;
+            top: 0;
+            left: 50px;
+            width: 640px;
+            height: 480px;
+            object-fit: cover; /* Legger til dette for å bevare forholdet */
+            }
         .pixel {
             width: 32px;
             height: 32px;
-            border: 1px solid #000;
+            border: 0px solid #000;
             border-radius: 50px;
         }
         #grid {

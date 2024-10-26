@@ -697,8 +697,12 @@ height: 480px;
 
             grid = newGrid;
             console.log(activeCellCount);
+            
 
-            if  ((activeCellCount > 80) && (activeCellCount < 100)) {
+            if  ((activeCellCount > 100) && (activeCellCount < 110)) {
+                currentScale = pentatonicScale5;
+                currentNote = droneNote5;
+            } if  ((activeCellCount > 80) && (activeCellCount < 100)) {
                 currentScale = pentatonicScale4;
                 currentNote = droneNote4;
             } if ((activeCellCount > 60) && (activeCellCount < 80))  {

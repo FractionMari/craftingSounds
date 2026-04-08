@@ -61,7 +61,6 @@ function octatonicScale() {
   return scale;
 }
 
-// Generer tilfeldig melodi
 function generateMelody() {
   // Velg skala
   const scales = ['halvtoneskala', 'heltoneskala', 'oktaton'];
@@ -77,7 +76,11 @@ function generateMelody() {
 
   melody = [];
   for (let i = 0; i < 20; i++) {
-    const note = scale[Math.floor(Math.random()*scale.length)];
+    let note = scale[Math.floor(Math.random()*scale.length)];
+
+    // Filtrer ut noter under 60 eller over 96
+    if (note < 60 || note > 96) note = 0;
+
     melody.push(note);
   }
 

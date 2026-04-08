@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Tilfeldig Melodi Generator</title>
+<title>5-stemmet Tilfeldig Melodi Generator - Rutenett</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -18,7 +18,20 @@
   }
   #info {
     margin-top: 20px;
-    white-space: pre-wrap;
+  }
+  table {
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  td {
+    border: 1px solid #aaa;
+    padding: 8px 12px;
+    text-align: center;
+    width: 40px;
+  }
+  td.zero {
+    background-color: #ddd;
+    color: #999;
   }
 </style>
 </head>
@@ -52,7 +65,7 @@ function wholeToneScale() {
 
 function octatonicScale() {
   let scale = [];
-  let note = Math.floor(Math.random() * 64); // startnote 0-63
+  let note = Math.floor(Math.random() * 64);
   for (let i = 0; i < 128; i++) {
     scale.push(note);
     note += (i % 2 === 0 ? 2 : 1);
@@ -70,7 +83,7 @@ function generateMelody() {
   else if (scaleType === 'heltoneskala') scale = wholeToneScale();
   else if (scaleType === 'oktaton') scale = octatonicScale();
 
-  rootNote = Math.floor(Math.random()*12) + 60; 
+  rootNote = Math.floor(Math.random()*12) + 60;
   tempo = Math.floor(Math.random()*(180-60+1)+60);
 
   melody = [];
@@ -88,13 +101,19 @@ function generateMelody() {
   updateInfo();
 }
 
-// Oppdater info
+// Oppdater info og vis som rutenett
 function updateInfo() {
-  let infoText = `Tempo: ${tempo} BPM\nToneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote%12]}\nSkala: ${scaleType}\n\n`;
+  let infoText = `<p>Tempo: ${tempo} BPM<br>Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote%12]}<br>Skala: ${scaleType}</p>`;
+  infoText += '<table>';
   melody.forEach((voice, i) => {
-    infoText += `Stemme ${i+1}: ${voice.join(', ')}\n`;
+    infoText += '<tr>';
+    voice.forEach(note => {
+      infoText += `<td class="${note===0 ? 'zero':''}">${note}</td>`;
+    });
+    infoText += '</tr>';
   });
-  document.getElementById('info').innerText = infoText;
+  infoText += '</table>';
+  document.getElementById('info').innerHTML = infoText;
 }
 
 // Spill av melodi
@@ -112,14 +131,11 @@ function playMelody() {
   currentNote = 0;
 
   intervalId = setInterval(() => {
-    if (currentNote >= 20) {
-      currentNote = 0;
-    }
+    if (currentNote >= 20) currentNote = 0;
 
-    // Spill alle stemmer samtidig
     melody.forEach(voice => {
       const note = voice[currentNote];
-      if (note === 0) return; // stille hvis 0
+      if (note === 0) return;
 
       const osc = audioCtx.createOscillator();
       const gainNode = audioCtx.createGain();

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Melodigenerator med regler</title>
+<style>
+  table { border-collapse: collapse; }
+  td { width: 35px; height: 35px; text-align: center; }
+  .active { background-color: yellow; }
+  .tempo-slow { background-color: #ff8a80; color: #fff; }
+</style>
+</head>
+<body>
+
+<h2>Melodigenerator</h2>
+<button onclick="generateMelody()">Generer Melodi</button>
+<button onclick="playMelody()">Spill/Stop</button>
+<br><br>
+
+<div>
+  Tempo: <span id="tempoVal">120</span> BPM
+</div>
+<div id="grid"></div>
+
+<script>
+const VOICES = 5;
+const STEPS = 16;
+let melody = [];
+let tempo = 120;
+let rootNote = 60; // C
+let scaleType = "halvtoneskala";
+let currentStep = 0;
+let isPlaying = false;
+
+// ---------- GENERER MELODI ----------
+function generateMelody() {
+  melody = [];
+  rootNote = 60; // C
+  let scaleOptions = ["halvtoneskala","heltoneskala","oktaton","diatonisk"];
+  scaleType = scaleOptions[Math.floor(Math.random()*scaleOptions.length)];
+
+  for(let v=0; v<VOICES; v++){
+    melody[v] = [];
+    let scaleNotesArr = scaleNotes(scaleType, rootNote);
+    for(let s=0; s<STEPS; s++){
+      melody[v][s] = scaleNotesArr[Math.floor(Math.random()*scaleNotesArr.length)];
+      if(melody[v][s] < 60 || melody[v][s] > 96) melody[v][s]=0;
+    }
+  }
+
+  applyABARule();
+  drawGrid();
+}
+
+// ---------- SKALA-FUNKSJON ----------
+function scaleNotes(scaleType, rootNote) {
+  let notes = [];
+  if(scaleType === "halvtoneskala"){
+    for(let i=0;i<128;i++) notes.push(i);
+  } else if(scaleType==="heltoneskala"){
+    let start = Math.random()<0.5?0:1;
+    for(let i=start;i<128;i+=2) notes.push(i);
+  } else if(scaleType==="oktaton"){
+    let n=0;
+    while(n<128){
+      notes.push(n);
+      n+=1;
+      if(n<128) notes.push(n);
+      n+=1;
+    }
+  } else if(scaleType==="diatonisk"){
+    let intervals = [0,2,4,5,7,9,11];
+    for(let i=0;i<11;i++){
+      intervals.forEach(iv=>{
+        let n = rootNote + iv + i*12;
+        if(n<=127) notes.push(n);
+      });
+    }
+  }
+  return notes;
+}
+
+// ---------- ABA-REGEL MED DOBBEL VARIGHET ----------
+function applyABARule(){
+  melody.forEach(voice=>{
+    for(let i=2;i<STEPS-2;i++){
+      let a = voice[i-2], b = voice[i-1], c = voice[i];
+      if(a===c && a!==b && a!==0 && b!==0){
+        let newABA = [a,a,b,b,a,a];
+        for(let j=0;j<newABA.length && i+1+j<STEPS;j++){
+          voice[i+1+j] = newABA[j];
+        }
+        i+=2;
+      }
+    }
+  });
+}
+
+// ---------- TEGN RUTENETT ----------
+function drawGrid(){
+  let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote%12]}<br>
+Skala: ${scaleType}<br><br>
+<table border="1" cellspacing="0" cellpadding="5"><tr><td><b>BPM</b></td>`;
+  for(let s=0;s<STEPS;s++){
+    html += `<td id="bpm_${s}">${tempo}</td>`;
+  }
+  html += `</tr>`;
+
+  for(let v=0;v<VOICES;v++){
+    html += `<tr><td><b>Stemme ${v+1}</b></td>`;
+    for(let s=0;s<STEPS;s++){
+      html += `<td id="c${v}_${s}">${melody[v][s]}</td>`;
+    }
+    html += `</tr>`;
+  }
+  html += `</table>`;
+  let gridDiv = document.getElementById("grid");
+  if(gridDiv) gridDiv.innerHTML = html;
+}
+
+// ---------- AVSPILLING MED DYNAMISK TEMPO ----------
+function playMelody(){
+  if(isPlaying){ isPlaying=false; return; }
+
+  const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  isPlaying = true;
+  currentStep = 0;
+  let slowFlag = false;
+  let startTempo = tempo;
+
+  function playStep(){
+    if(!isPlaying) return;
+
+    // Spill toner
+    melody.forEach((voice,v)=>{
+      let note = voice[currentStep];
+      let cell = document.getElementById(`c${v}_${currentStep}`);
+      if(cell) cell.classList.add("active");
+      setTimeout(()=>{ if(cell) cell.classList.remove("active"); },200);
+
+      if(note===0) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = 440*Math.pow(2,(note-69)/12);
+      osc.type="sine";
+      gain.gain.setValueAtTime(0.2,audioCtx.currentTime);
+      osc.start();
+      osc.stop(audioCtx.currentTime+0.25);
+    });
+
+    // Dynamisk tempo
+    let nonZeroVoices = melody.filter(voice=>voice[currentStep]!==0).length;
+
+    if(nonZeroVoices===0){
+      slowFlag=true;
+      for(let v=0;v<VOICES;v++){
+        let cell=document.getElementById(`c${v}_${currentStep}`);
+        if(cell) cell.classList.add("tempo-slow");
+      }
+    } else if(nonZeroVoices===3 || nonZeroVoices===4){
+      tempo=startTempo;
+      slowFlag=false;
+      console.log("Tempo gjenopprettet til start:",tempo,"BPM");
+    } else if(slowFlag){
+      tempo = Math.max(10, tempo-50);
+      slowFlag=false;
+      console.log("Tempo redusert til",tempo,"BPM");
+    }
+
+    // Oppdater BPM-div og rad
+    let tempoSpan = document.getElementById("tempoVal");
+    if(tempoSpan) tempoSpan.innerText = tempo;
+    let bpmCell = document.getElementById(`bpm_${currentStep}`);
+    if(bpmCell) bpmCell.innerText = tempo;
+
+    // Neste steg
+    let beat = (60/tempo)*1000;
+    currentStep++;
+    if(currentStep>=STEPS) currentStep=0;
+    setTimeout(playStep, beat);
+  }
+
+  playStep();
+}
+</script>
+
+</body>
+</html>

@@ -44,17 +44,16 @@ background:#ffd54f;
   color: #fff;
 }
 </style>
-</head>
+<h2>Melodigenerator</h2>
+<button onclick="generateMelody()">Generer Melodi</button>
+<button onclick="playMelody()">Spill/Stop</button>
+<br><br>
 
-<body>
+<div>
+  Tempo: <span id="tempoVal">120</span> BPM
+</div>
 
-<h2>5-stemmet tilfeldig virke</h2>
-
-<button id="generate">Generer</button>
-<button id="play">Spill / Stopp</button>
-<button id="print">Print</button>
-
-<div id="info"></div>
+<div id="grid"></div>
 
 <script>
 

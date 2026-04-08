@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#8534f9;
+background:#7534f9;
 }
 
 button{
@@ -181,6 +181,7 @@ currentStep=0
 drawGrid()
 
 }
+*/
 function drawGrid() {
   let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
 Skala: ${scaleType}<br><br>
@@ -205,7 +206,7 @@ Skala: ${scaleType}<br><br>
   html += `</table>`;
   document.getElementById("grid").innerHTML = html;
 }  
-*/
+
 
 function generateMelody() {
   melody = [];

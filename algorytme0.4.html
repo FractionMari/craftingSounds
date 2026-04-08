@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#06f4f9;
+background:#05f4f9;
 }
 
 button{
@@ -241,7 +241,7 @@ document.getElementById("info").innerHTML=html
       console.log("Tempo gjenopprettet til start:", tempo, "BPM");
     } else if (slowFlag) {
       // Reduser tempo etter alle 0
-      tempo = Math.max(10, tempo - 50);
+      tempo = Math.max(10, tempo - 10);
       slowFlag = false;
       console.log("Tempo redusert til", tempo, "BPM");
     }

@@ -281,30 +281,24 @@ function playMelody() {
     // ---------------- DYNAMISK TEMPO -----------------
     let allZero = melody.every(voice => voice[currentStep] === 0);
 
-    // markér cellene hvis dette steget trigget tempo-senking
-    if (allZero) {
-      slowFlag = true;
-      for (let v = 0; v < VOICES; v++) {
-        let cell = document.getElementById(`c${v}_${currentStep}`);
-        if (cell) cell.classList.add("tempo-slow");
-      }
-    } else if (slowFlag) {
-      // Reduser tempo NÅ før neste steg
-      tempo = Math.max(10, tempo - 50);
-      slowFlag = false;
-      console.log("Tempo redusert til", tempo, "BPM");
-    }
+if(allZero){
+  slowFlag = true;
+  for(let v=0; v<VOICES; v++){
+    let cell = document.getElementById(`c${v}_${currentStep}`);
+    if(cell) cell.classList.add("tempo-slow");
+  }
+} else if(slowFlag){
+  tempo = Math.max(10, tempo-50);
+  slowFlag = false;
+  console.log("Tempo redusert til", tempo, "BPM");
+}
 
-    // Oppdater BPM i info-div og BPM-rad
+// Her oppdaterer vi både info-div og BPM-rad
 let tempoSpan = document.getElementById("tempoVal");
-if (tempoSpan) tempoSpan.innerText = tempo;
+if(tempoSpan) tempoSpan.innerText = tempo;
 
-// Oppdater BPM i BPM-rad for neste steg
 let bpmCell = document.getElementById(`bpm_${currentStep}`);
-if (bpmCell) bpmCell.innerText = tempo;
-    // Oppdater BPM i info-div
-    let tempoSpan = document.getElementById("tempoVal");
-    if (tempoSpan) tempoSpan.innerText = tempo;
+if(bpmCell) bpmCell.innerText = tempo;
 
     // Beregn delay for neste steg basert på **oppdatert tempo**
     let beat = (60 / tempo) * 1000;

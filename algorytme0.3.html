@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Melodi Generator (16 steg) versjon5</title>
+<title>5-stemmet Melodi Generator (16 steg) versjon6</title>
 
 <style>
 
@@ -218,8 +218,39 @@ currentStep++
 document.getElementById("generate").onclick=generateMelody
 document.getElementById("play").onclick=playMelody
 document.getElementById("print").onclick=()=>console.log(melody)
-
 function applyABARule(){
+
+  melody.forEach(voice => {
+
+    for(let i = 2; i < STEPS-2; i++){
+
+      let a = voice[i-2]
+      let b = voice[i-1]
+      let c = voice[i]
+
+      // sjekk a-b-a og ignorer 0
+      if(a === c && a !== b && a !== 0){
+    //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
+
+        // vi lager en ny ABA med dobbel varighet
+        let newABA = [a, a, b, b, a, a]
+
+        // sett inn etter i (uten å overskride STEPS)
+        for(let j=0; j<newABA.length && i+1+j<STEPS; j++){
+          voice[i+1+j] = newABA[j]
+        }
+
+        // hopp over de neste tonene så vi ikke trigger regelen på samme segment
+        i += 2
+      }
+
+    }
+
+  })
+
+}
+
+/* function applyABARule(){ // gammel
 
   melody.forEach(voice => {
 
@@ -252,7 +283,8 @@ function applyABARule(){
   })
 
 }
-
+*/
+  
 /* function applyAscendingRule(){
 
 let triggered = false

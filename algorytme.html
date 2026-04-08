@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>Frozen Rain Composer - Skala Konsistent</title>
+<title>Frozen Rain Composer - Konsistent Skala</title>
 
 <style>
 body{
@@ -53,7 +53,7 @@ textarea{
 </head>
 
 <body>
-<h1>Frozen Rain Composer - Konsistent Skala</h1>
+<h1>Frozen Rain Composer - Skala Korrekt</h1>
 
 <div class="controls">
 <button onclick="generate()">Generate Composition</button>
@@ -95,15 +95,24 @@ function generateMatrix(min,max){
   return arr
 }
 
+// Funksjon som returnerer gyldig pitch i valgt skala
 function filterPitchByScale(pitch){
   if(scaleType===0){ // Heltoneskala
-    // velg partall eller oddetall en gang
-    let useEven = helOdd === 0
-    return useEven ? pitch - pitch%2 : pitch - pitch%2 + 1
+    let useEven = helOdd===0
+    // Finn nærmeste partall/oddetall
+    let filtered = pitch
+    filtered = useEven ? pitch - pitch%2 : pitch - pitch%2 +1
+    // begrens til MIDI 0-127
+    if(filtered>127) filtered-=2
+    if(filtered<0) filtered+=2
+    return filtered
   }else if(scaleType===1){ // Halvtoneskala
     return pitch
   }else{ // Oktaton
-    let closest = octatonic.reduce((prev,curr)=> Math.abs(curr+key - pitch) < Math.abs(prev - pitch) ? curr+key : prev, octatonic[0]+key)
+    // Finn nærmeste note i oktaton + key
+    let candidates = octatonic.map(n=>n+key)
+    // Finn nærmeste
+    let closest = candidates.reduce((prev,curr)=>Math.abs(curr-pitch)<Math.abs(prev-pitch)?curr:prev)
     return closest
   }
 }
@@ -112,7 +121,7 @@ function generate(){
   scaleType=random(0,2)
   tempo=random(60,180)
   key=random(0,11)
-  helOdd = random(0,1) // 0=even, 1=odd, kun relevant for heltoneskala
+  helOdd = random(0,1) // 0=even,1=odd, relevant kun for heltoneskala
 
   matrices=[
     generateMatrix(60,96),

@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>Frozen Rain Composer 1</title>
+<title>Frozen Rain Composer - Skala Konsistent</title>
 
 <style>
 body{
@@ -53,7 +53,7 @@ textarea{
 </head>
 
 <body>
-<h1>Frozen Rain Composer</h1>
+<h1>Frozen Rain Composer - Konsistent Skala</h1>
 
 <div class="controls">
 <button onclick="generate()">Generate Composition</button>
@@ -76,17 +76,13 @@ const bars=20
 const stepsPerBar=4
 const totalSteps=bars*stepsPerBar
 
-let tempo,key,scaleType
+let tempo,key,scaleType,helOdd
 let composition=[]
 let drops=[]
 let matrices=[]
 
 const scaleNames=["Heltoneskala","Halvtoneskala","Oktaton-skala"]
-const scales=[
-  Array.from({length:6},(_,i)=>i*2),         // Heltoneskala: 0,2,4,6,8,10
-  Array.from({length:12},(_,i)=>i),          // Halvtoneskala: 0-11
-  [0,2,3,5,6,8,9,11]                         // Oktaton-skala
-]
+const octatonic=[0,2,3,5,6,8,9,11]
 
 function random(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 
@@ -99,11 +95,24 @@ function generateMatrix(min,max){
   return arr
 }
 
+function filterPitchByScale(pitch){
+  if(scaleType===0){ // Heltoneskala
+    // velg partall eller oddetall en gang
+    let useEven = helOdd === 0
+    return useEven ? pitch - pitch%2 : pitch - pitch%2 + 1
+  }else if(scaleType===1){ // Halvtoneskala
+    return pitch
+  }else{ // Oktaton
+    let closest = octatonic.reduce((prev,curr)=> Math.abs(curr+key - pitch) < Math.abs(prev - pitch) ? curr+key : prev, octatonic[0]+key)
+    return closest
+  }
+}
+
 function generate(){
-  // Velg felles skala for alle instrumenter
   scaleType=random(0,2)
   tempo=random(60,180)
   key=random(0,11)
+  helOdd = random(0,1) // 0=even, 1=odd, kun relevant for heltoneskala
 
   matrices=[
     generateMatrix(60,96),
@@ -119,10 +128,8 @@ function generate(){
   for(let i=0;i<totalSteps;i++){
     for(let inst=0;inst<5;inst++){
       let pitch=matrices[inst][i]
-      if(pitch!=0){
-        let scale=scales[scaleType]
-        let degree=scale[random(0,scale.length-1)]
-        let note=pitch+degree+key
+      if(pitch!==0){
+        let note = filterPitchByScale(pitch)
         composition.push({time:i,instrument:inst,pitch:note})
         drops.push({
           x:Math.random()*canvas.width,
@@ -135,13 +142,13 @@ function generate(){
     }
   }
 
-  // Vis info
-  let infoHTML=`Tempo: ${tempo} BPM | Toneart: ${key} | Skala: ${scaleNames[scaleType]}<br>`
-  infoHTML+=`<b>Genererte matriser:</b><br>`
+  // Vis info + matriser
+  let infoHTML=`Tempo: ${tempo} BPM | Toneart: ${key} | Skala: ${scaleNames[scaleType]}`
+  if(scaleType===0) infoHTML+=` (${helOdd===0?'Partall':'Oddetall'})`
+  infoHTML+=`<br><b>Genererte matriser:</b><br>`
   matrices.forEach((m,i)=>{
     infoHTML+=`Instrument ${i}: <span class="matrix">[${m.join(', ')}]</span><br>`
   })
-
   document.getElementById("info").innerHTML=infoHTML
   draw()
 }

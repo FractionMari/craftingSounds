@@ -5,77 +5,60 @@
 <title>Frozen Rain Composer</title>
 
 <style>
-
 body{
-background:#0e0f18;
-color:white;
-font-family:Arial;
-text-align:center;
-margin:0;
-overflow:hidden;
+  background:#0e0f18;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  margin:0;
+  overflow:hidden;
 }
-
-h1{
-margin-top:10px;
-}
-
-.controls{
-margin:10px;
-}
-
+h1{margin-top:10px;}
+.controls{margin:10px;}
 button{
-padding:12px 18px;
-margin:6px;
-font-size:16px;
-border-radius:8px;
-border:none;
-background:#5aa9ff;
-color:white;
-cursor:pointer;
+  padding:12px 18px;
+  margin:6px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  background:#5aa9ff;
+  color:white;
+  cursor:pointer;
 }
-
-button:hover{
-background:#3f8de0;
-}
-
-#canvas{
-border-top:1px solid #333;
-}
-
+button:hover{background:#3f8de0;}
+#canvas{border-top:1px solid #333;}
 textarea{
-width:80%;
-height:150px;
-margin-top:10px;
-background:#111;
-color:#0f0;
+  width:80%;
+  height:150px;
+  margin-top:10px;
+  background:#111;
+  color:#0f0;
 }
-
+#info{
+  margin:10px;
+  font-size:18px;
+  color:#aaf;
+}
 </style>
 </head>
 
 <body>
-
 <h1>Frozen Rain Composer</h1>
 
 <div class="controls">
-
 <button onclick="generate()">Generate Composition</button>
 <button onclick="play()">Play</button>
 <button onclick="exportScore()">Export Score</button>
-
 </div>
 
+<div id="info"></div>
 <canvas id="canvas"></canvas>
-
 <br>
-
 <textarea id="xml"></textarea>
 
 <script>
-
 const canvas=document.getElementById("canvas")
 const ctx=canvas.getContext("2d")
-
 canvas.width=window.innerWidth
 canvas.height=window.innerHeight*0.6
 
@@ -83,172 +66,115 @@ const bars=20
 const stepsPerBar=4
 const totalSteps=bars*stepsPerBar
 
-let tempo
-let key
-let scaleType
-
+let tempo,key,scaleType
 let composition=[]
 let drops=[]
 
+const scaleNames=["Heltoneskala","Halvtoneskala","Oktaton-skala"]
 const scales=[
-[0,2,4,6,8,10],       // whole tone
-[0,1,3,5,6,8,10],     // half
-[0,2,3,5,6,8,9,11]    // octatonic
+  Array.from({length:12},(_,i)=>i),           // Heltoneskala: alle toner
+  Array.from({length:12},(_,i)=>i),           // Halvtoneskala: alle toner (skal modifiseres under)
+  [0,2,3,5,6,8,9,11]                          // Oktaton-skala
 ]
 
-function random(min,max){
-return Math.floor(Math.random()*(max-min+1))+min
-}
+// Modifiser halvtoneskala og heltoneskala
+scales[0]=Array.from({length:12},(_,i)=>i*2%12)       // Heltoneskala: 0,2,4,6,8,10
+scales[1]=Array.from({length:12},(_,i)=>i)           // Halvtoneskala: 0,1,2,3,...
+
+function random(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 
 function generateMatrix(min,max){
-
-let arr=[]
-
-for(let i=0;i<totalSteps;i++){
-
-if(Math.random()<0.25){
-arr.push(0)
-}else{
-arr.push(random(min,max))
-}
-
-}
-
-return arr
+  let arr=[]
+  for(let i=0;i<totalSteps;i++){
+    if(Math.random()<0.25) arr.push(0)
+    else arr.push(random(min,max))
+  }
+  return arr
 }
 
 let matrices
 
 function generate(){
+  tempo=random(60,180)
+  key=random(0,11)
+  scaleType=random(0,2)
 
-tempo=random(60,180)
-key=random(0,11)
-scaleType=random(0,2)
+  matrices=[
+    generateMatrix(60,96),
+    generateMatrix(50,103),
+    generateMatrix(55,108),
+    generateMatrix(48,92),
+    generateMatrix(36,88)
+  ]
 
-matrices=[
-generateMatrix(60,96),
-generateMatrix(50,103),
-generateMatrix(55,108),
-generateMatrix(48,92),
-generateMatrix(36,88)
-]
+  composition=[]
+  drops=[]
 
-composition=[]
-drops=[]
+  for(let i=0;i<totalSteps;i++){
+    for(let inst=0;inst<5;inst++){
+      let pitch=matrices[inst][i]
+      if(pitch!=0){
+        let scale=scales[scaleType]
+        let degree=scale[random(0,scale.length-1)]
+        let note=pitch+degree+key
+        composition.push({time:i,instrument:inst,pitch:note})
+        drops.push({x:Math.random()*canvas.width,
+                    y:Math.random()*canvas.height,
+                    size:4+inst*2,
+                    time:i,pitch:note})
+      }
+    }
+  }
 
-for(let i=0;i<totalSteps;i++){
+  // Vis info
+  document.getElementById("info").innerHTML=
+    `Tempo: ${tempo} BPM | Toneart: ${key} | Skala: ${scaleNames[scaleType]}`
 
-for(let inst=0;inst<5;inst++){
-
-let pitch=matrices[inst][i]
-
-if(pitch!=0){
-
-let scale=scales[scaleType]
-let degree=scale[random(0,scale.length-1)]
-
-let note=pitch+degree+key
-
-composition.push({
-time:i,
-instrument:inst,
-pitch:note
-})
-
-drops.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-size:4+inst*2,
-time:i,
-pitch:note
-
-})
-
-}
-
-}
-
-}
-
-draw()
-
+  draw()
 }
 
 function draw(){
-
-ctx.fillStyle="#0e0f18"
-ctx.fillRect(0,0,canvas.width,canvas.height)
-
-drops.forEach(d=>{
-
-ctx.beginPath()
-
-ctx.fillStyle="rgba(120,180,255,0.7)"
-
-ctx.arc(d.x,d.y,d.size,0,Math.PI*2)
-
-ctx.fill()
-
-})
-
+  ctx.fillStyle="#0e0f18"
+  ctx.fillRect(0,0,canvas.width,canvas.height)
+  drops.forEach(d=>{
+    ctx.beginPath()
+    ctx.fillStyle="rgba(120,180,255,0.7)"
+    ctx.arc(d.x,d.y,d.size,0,Math.PI*2)
+    ctx.fill()
+  })
 }
 
 const audioCtx=new(window.AudioContext||window.webkitAudioContext)()
 
 function play(){
-
-let now=audioCtx.currentTime
-
-composition.forEach(note=>{
-
-let osc=audioCtx.createOscillator()
-let gain=audioCtx.createGain()
-
-osc.type="sine"
-
-osc.frequency.value=440*Math.pow(2,(note.pitch-69)/12)
-
-gain.gain.setValueAtTime(0.0001,now)
-
-gain.gain.exponentialRampToValueAtTime(
-0.2,
-now+note.time*(60/tempo)+0.02
-)
-
-gain.gain.exponentialRampToValueAtTime(
-0.0001,
-now+note.time*(60/tempo)+0.6
-)
-
-osc.connect(gain)
-gain.connect(audioCtx.destination)
-
-osc.start(now+note.time*(60/tempo))
-osc.stop(now+note.time*(60/tempo)+0.6)
-
-})
-
+  let now=audioCtx.currentTime
+  composition.forEach(note=>{
+    let osc=audioCtx.createOscillator()
+    let gain=audioCtx.createGain()
+    osc.type="sine"
+    osc.frequency.value=440*Math.pow(2,(note.pitch-69)/12)
+    gain.gain.setValueAtTime(0.0001,now)
+    gain.gain.exponentialRampToValueAtTime(0.2,now+note.time*(60/tempo)+0.02)
+    gain.gain.exponentialRampToValueAtTime(0.0001,now+note.time*(60/tempo)+0.6)
+    osc.connect(gain)
+    gain.connect(audioCtx.destination)
+    osc.start(now+note.time*(60/tempo))
+    osc.stop(now+note.time*(60/tempo)+0.6)
+  })
 }
 
 function exportScore(){
-
-let xml=`<?xml version="1.0" encoding="UTF-8"?>
+  let xml=`<?xml version="1.0" encoding="UTF-8"?>
 <score-partwise version="3.1">
-
 <part-list>
 <score-part id="P1">
 <part-name>Rain</part-name>
 </score-part>
 </part-list>
-
 <part id="P1">`
 
-composition.forEach(note=>{
-
-xml+=`
-<measure number="${note.time}">
-
+  composition.forEach(note=>{
+    xml+=`<measure number="${note.time}">
 <note>
 <pitch>
 <step>C</step>
@@ -256,20 +182,13 @@ xml+=`
 </pitch>
 <duration>1</duration>
 </note>
-
 </measure>`
+  })
 
-})
-
-xml+=`
-</part>
-</score-partwise>`
-
-document.getElementById("xml").value=xml
-
+  xml+=`</part></score-partwise>`
+  document.getElementById("xml").value=xml
 }
 
 </script>
-
 </body>
 </html>

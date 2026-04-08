@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>Generativ 5-stemmig sekvenser</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:30px;
+background:#f0f0f5;
+}
+
+button{
+padding:10px 18px;
+margin:5px;
+font-size:15px;
+}
+
+table{
+border-collapse:collapse;
+margin-top:20px;
+}
+
+td{
+border:1px solid #888;
+width:40px;
+height:32px;
+text-align:center;
+}
+
+.zero{
+background:#ddd;
+color:#999;
+}
+
+.active{
+background:#ffd54f !important;
+}
+
+.pattern{
+background:#90caf9;
+}
+
+.imitation{
+background:#a5d6a7;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>Generativ polyfon sekvenser</h2>
+
+<button id="generate">Generer</button>
+<button id="play">Spill / stopp</button>
+<button id="print">Print</button>
+
+<br><br>
+
+Tempo
+<input type="range" min="60" max="180" value="120" id="tempoSlider">
+<span id="tempoVal">120</span>
+
+<div id="info"></div>
+<div id="grid"></div>
+
+<script>
+
+const STEPS = 16
+const VOICES = 5
+
+let melody=[]
+let cellTypes=[]
+let tempo=120
+let scaleType=""
+let rootNote=0
+
+let currentStep=0
+let playing=false
+let intervalID
+
+const noteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+
+/* ---------------- scales ---------------- */
+
+function halfToneScale(){
+return Array.from({length:128},(_,i)=>i)
+}
+
+function wholeToneScale(){
+let start=Math.random()<0.5?0:1
+return Array.from({length:64},(_,i)=>start+i*2)
+}
+
+function octatonicScale(){
+let scale=[]
+let n=Math.floor(Math.random()*64)
+
+for(let i=0;i<128;i++){
+scale.push(n)
+n+=(i%2==0?2:1)
+if(n>127) break
+}
+
+return scale
+}
+
+/* ---------------- melody generation ---------------- */
+
+function generate(){
+
+const scales=["halvtoneskala","heltoneskala","oktaton"]
+scaleType=scales[Math.floor(Math.random()*3)]
+
+let scale
+
+if(scaleType=="halvtoneskala") scale=halfToneScale()
+if(scaleType=="heltoneskala") scale=wholeToneScale()
+if(scaleType=="oktaton") scale=octatonicScale()
+
+rootNote=Math.floor(Math.random()*12)
+
+melody=[]
+cellTypes=[]
+
+for(let v=0;v<VOICES;v++){
+
+let voice=[]
+let types=[]
+
+for(let s=0;s<STEPS;s++){
+
+let note=scale[Math.floor(Math.random()*scale.length)]
+
+if(note<60||note>96) note=0
+
+voice.push(note)
+types.push("")
+
+}
+
+melody.push(voice)
+cellTypes.push(types)
+
+}
+
+applyABARule()
+applySequenceRule()
+applyImitationRule()
+applyHarmonyRule()
+
+draw()
+
+}
+
+/* ---------------- RULES ---------------- */
+
+function applyABARule(){
+
+melody.forEach((voice,v)=>{
+
+for(let i=2;i<STEPS;i++){
+
+let a=voice[i-2]
+let b=voice[i-1]
+let c=voice[i]
+
+if(a===c && a!==b){
+
+let pat=[a,a,b,b,a,a]
+
+for(let j=0;j<pat.length;j++){
+
+let pos=i+1+j
+if(pos<STEPS){
+voice[pos]=pat[j]
+cellTypes[v][pos]="pattern"
+}
+
+}
+
+}
+
+}
+
+})
+
+}
+
+/* sequence rule */
+
+function applySequenceRule(){
+
+melody.forEach((voice,v)=>{
+
+for(let i=0;i<STEPS-6;i++){
+
+let a=voice[i]
+let b=voice[i+1]
+let c=voice[i+2]
+
+for(let j=i+3;j<STEPS-2;j++){
+
+if(voice[j]==a && voice[j+1]==b && voice[j+2]==c){
+
+let shift=(Math.random()<0.5?2:-2)
+
+voice[j]+=shift
+voice[j+1]+=shift
+voice[j+2]+=shift
+
+cellTypes[v][j]="pattern"
+cellTypes[v][j+1]="pattern"
+cellTypes[v][j+2]="pattern"
+
+}
+
+}
+
+}
+
+})
+
+}
+
+/* imitation rule */
+
+function applyImitationRule(){
+
+for(let v=1;v<VOICES;v++){
+
+let source=Math.floor(Math.random()*v)
+
+let start=Math.floor(Math.random()*8)
+let delay=2+Math.floor(Math.random()*4)
+
+for(let i=0;i<4;i++){
+
+let pos=start+delay+i
+
+if(pos<STEPS){
+
+melody[v][pos]=melody[source][start+i]
+
+cellTypes[v][pos]="imitation"
+
+}
+
+}
+
+}
+
+}
+
+/* harmony rule */
+
+function applyHarmonyRule(){
+
+const consonant=[0,3,4,5,7,8,9,12]
+
+for(let s=0;s<STEPS;s++){
+
+let base=melody[0][s]
+
+for(let v=1;v<VOICES;v++){
+
+let note=melody[v][s]
+
+if(note===0||base===0) continue
+
+let interval=Math.abs(note-base)%12
+
+if(!consonant.includes(interval)){
+
+melody[v][s]=base+7
+}
+
+}
+
+}
+
+}
+
+/* ---------------- drawing ---------------- */
+
+function draw(){
+
+document.getElementById("info").innerHTML=
+"Tempo: "+tempo+" BPM<br>"+
+"Toneart: "+noteNames[rootNote]+"<br>"+
+"Skala: "+scaleType
+
+let html="<table>"
+
+for(let v=0;v<VOICES;v++){
+
+html+="<tr>"
+
+for(let s=0;s<STEPS;s++){
+
+let n=melody[v][s]
+let cls=""
+
+if(n===0) cls="zero"
+
+if(cellTypes[v][s]) cls=cellTypes[v][s]
+
+html+=`<td class="${cls}" id="c${v}_${s}">${n}</td>`
+
+}
+
+html+="</tr>"
+
+}
+
+html+="</table>"
+
+document.getElementById("grid").innerHTML=html
+
+}
+
+/* ---------------- playback ---------------- */
+
+function play(){
+
+if(playing){
+clearInterval(intervalID)
+playing=false
+return
+}
+
+const ctx=new (window.AudioContext||window.webkitAudioContext)()
+
+playing=true
+currentStep=0
+
+intervalID=setInterval(()=>{
+
+for(let v=0;v<VOICES;v++){
+
+let n=melody[v][currentStep]
+
+let cell=document.getElementById("c"+v+"_"+currentStep)
+
+if(cell) cell.classList.add("active")
+
+if(n===0) continue
+
+let osc=ctx.createOscillator()
+let gain=ctx.createGain()
+
+osc.connect(gain)
+gain.connect(ctx.destination)
+
+osc.frequency.value=440*Math.pow(2,(n-69)/12)
+
+osc.type="triangle"
+
+gain.gain.setValueAtTime(0.15,ctx.currentTime)
+
+osc.start()
+osc.stop(ctx.currentTime+0.25)
+
+}
+
+setTimeout(()=>{
+for(let v=0;v<VOICES;v++){
+let c=document.getElementById("c"+v+"_"+currentStep)
+if(c) c.classList.remove("active")
+}
+},200)
+
+currentStep++
+
+if(currentStep>=STEPS) currentStep=0
+
+},60000/tempo)
+
+}
+
+/* ---------------- UI ---------------- */
+
+document.getElementById("generate").onclick=generate
+document.getElementById("play").onclick=play
+
+document.getElementById("print").onclick=()=>{
+console.log(melody)
+}
+
+document.getElementById("tempoSlider").oninput=e=>{
+tempo=e.target.value
+document.getElementById("tempoVal").innerText=tempo
+}
+
+generate()
+
+</script>
+
+</body>
+</html>

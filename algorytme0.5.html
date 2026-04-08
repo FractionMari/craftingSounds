@@ -7,7 +7,7 @@
   table { border-collapse: collapse; }
   td { width: 35px; height: 35px; text-align: center; }
   .active { background-color: yellow; }
-  .tempo-slow { background-color: #ff8a80; color: #fff; }
+  .tempo-slow { background-color: #0f8a80; color: #fff; }
 </style>
 </head>
 <body>
@@ -165,7 +165,7 @@ function playMelody(){
       slowFlag=false;
       console.log("Tempo gjenopprettet til start:",tempo,"BPM");
     } else if(slowFlag){
-      tempo = Math.max(10, tempo-50);
+      tempo = Math.max(10, tempo-10);
       slowFlag=false;
       console.log("Tempo redusert til",tempo,"BPM");
     }

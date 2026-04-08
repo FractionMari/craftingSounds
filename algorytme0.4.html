@@ -48,7 +48,7 @@ background:#ffd54f;
 
 <body>
 
-<h2>5-stemmet tilfeldig melodi 5</h2>
+<h2>5-stemmet tilfeldig melodi 6</h2>
 
 <button id="generate">Generer</button>
 <button id="play">Spill / Stopp</button>
@@ -259,14 +259,8 @@ function playMelody(){
     // ---------------- DYNAMISK TEMPO -----------------
     let allZero = melody.every(voice => voice[currentStep]===0)
 
-    // markér cellene hvis dette steget trigget tempo-senking
     if(allZero){
       slowFlag = true
-      // legg på klasse på alle stemmer i dette steget
-      for(let v=0; v<VOICES; v++){
-        let cell = document.getElementById(`c${v}_${currentStep}`)
-        if(cell) cell.classList.add("tempo-slow")
-      }
     } else if(slowFlag){
       tempo = Math.max(10, tempo-50)
       slowFlag = false

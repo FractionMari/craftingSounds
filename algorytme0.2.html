@@ -227,7 +227,8 @@ function applyABARule(){
       let c = voice[i]
 
       // sjekk a-b-a og at ingen er 0
-      if(a === c && a !== b && a !== 0 && b !== 0){
+      if(a === c && a !== b && a !== 0){
+    //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
 
         let pattern = [a,a,b,b,a,a]
 

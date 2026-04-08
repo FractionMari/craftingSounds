@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>Frozen Rain Composer</title>
+<title>Frozen Rain Composer 1</title>
 
 <style>
 body{
@@ -38,6 +38,16 @@ textarea{
   margin:10px;
   font-size:18px;
   color:#aaf;
+  text-align:left;
+  width:80%;
+  margin-left:auto;
+  margin-right:auto;
+}
+.matrix{
+  font-family: monospace;
+  color: #0f0;
+  margin-top:5px;
+  white-space: pre;
 }
 </style>
 </head>
@@ -60,7 +70,7 @@ textarea{
 const canvas=document.getElementById("canvas")
 const ctx=canvas.getContext("2d")
 canvas.width=window.innerWidth
-canvas.height=window.innerHeight*0.6
+canvas.height=window.innerHeight*0.5
 
 const bars=20
 const stepsPerBar=4
@@ -69,17 +79,14 @@ const totalSteps=bars*stepsPerBar
 let tempo,key,scaleType
 let composition=[]
 let drops=[]
+let matrices=[]
 
 const scaleNames=["Heltoneskala","Halvtoneskala","Oktaton-skala"]
 const scales=[
-  Array.from({length:12},(_,i)=>i),           // Heltoneskala: alle toner
-  Array.from({length:12},(_,i)=>i),           // Halvtoneskala: alle toner (skal modifiseres under)
-  [0,2,3,5,6,8,9,11]                          // Oktaton-skala
+  Array.from({length:6},(_,i)=>i*2),         // Heltoneskala: 0,2,4,6,8,10
+  Array.from({length:12},(_,i)=>i),          // Halvtoneskala: 0-11
+  [0,2,3,5,6,8,9,11]                         // Oktaton-skala
 ]
-
-// Modifiser halvtoneskala og heltoneskala
-scales[0]=Array.from({length:12},(_,i)=>i*2%12)       // Heltoneskala: 0,2,4,6,8,10
-scales[1]=Array.from({length:12},(_,i)=>i)           // Halvtoneskala: 0,1,2,3,...
 
 function random(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 
@@ -92,12 +99,11 @@ function generateMatrix(min,max){
   return arr
 }
 
-let matrices
-
 function generate(){
+  // Velg felles skala for alle instrumenter
+  scaleType=random(0,2)
   tempo=random(60,180)
   key=random(0,11)
-  scaleType=random(0,2)
 
   matrices=[
     generateMatrix(60,96),
@@ -118,18 +124,25 @@ function generate(){
         let degree=scale[random(0,scale.length-1)]
         let note=pitch+degree+key
         composition.push({time:i,instrument:inst,pitch:note})
-        drops.push({x:Math.random()*canvas.width,
-                    y:Math.random()*canvas.height,
-                    size:4+inst*2,
-                    time:i,pitch:note})
+        drops.push({
+          x:Math.random()*canvas.width,
+          y:Math.random()*canvas.height,
+          size:4+inst*2,
+          time:i,
+          pitch:note
+        })
       }
     }
   }
 
   // Vis info
-  document.getElementById("info").innerHTML=
-    `Tempo: ${tempo} BPM | Toneart: ${key} | Skala: ${scaleNames[scaleType]}`
+  let infoHTML=`Tempo: ${tempo} BPM | Toneart: ${key} | Skala: ${scaleNames[scaleType]}<br>`
+  infoHTML+=`<b>Genererte matriser:</b><br>`
+  matrices.forEach((m,i)=>{
+    infoHTML+=`Instrument ${i}: <span class="matrix">[${m.join(', ')}]</span><br>`
+  })
 
+  document.getElementById("info").innerHTML=infoHTML
   draw()
 }
 

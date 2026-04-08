@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#0534f9;
+background:#1534f9;
 }
 
 button{
@@ -106,7 +106,7 @@ function diatonicScale(){
   return scale;
 }
 
-function generateMelody(){
+/*function generateMelody(){
 
 const scales=['halvtoneskala','heltoneskala','oktaton','diatonisk']
 scaleType=scales[Math.floor(Math.random()*scales.length)]
@@ -172,6 +172,44 @@ Skala: ${scaleType}<br><br>
 
   html += `</table>`;
   document.getElementById("grid").innerHTML = html;
+}  
+*/
+
+function generateMelody() {
+  melody = [];
+
+  // Velg skala tilfeldig
+  let scaleOptions = [halfToneScale, wholeToneScale, octatonicScale, diatonicScale];
+  let chosenScaleFunc = scaleOptions[Math.floor(Math.random() * scaleOptions.length)];
+  let scaleNotesArr = chosenScaleFunc();
+
+  // Definer range per stemme
+  const voiceRanges = [
+    {min: 60, max: 96},  // Stemme 1
+    {min: 50, max: 103}, // Stemme 2
+    {min: 55, max: 108}, // Stemme 3
+    {min: 48, max: 92},  // Stemme 4
+    {min: 36, max: 88}   // Stemme 5
+  ];
+
+  // Generer noter
+  for (let v = 0; v < VOICES; v++) {
+    melody[v] = [];
+    for (let s = 0; s < STEPS; s++) {
+      let note = scaleNotesArr[Math.floor(Math.random() * scaleNotesArr.length)];
+
+      // Filter for stemme-range
+      if (note < voiceRanges[v].min || note > voiceRanges[v].max) note = 0;
+
+      melody[v][s] = note;
+    }
+  }
+
+  // ABA-regel med dobbel varighet
+  applyABARule();
+
+  // Tegn rutenett
+  drawGrid();
 }  
 /*
 function drawGrid(){

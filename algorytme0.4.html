@@ -215,73 +215,68 @@ currentStep++
 
 }
 */
-
 function playMelody(){
 
   if(isPlaying){
-    clearInterval(intervalId)
-    isPlaying=false
+    isPlaying = false
     return
   }
 
   const audioCtx = new (window.AudioContext||window.webkitAudioContext)()
-  let beat = (60/tempo)*1000
-
   isPlaying = true
   currentStep = 0
+  let slowFlag = false  // flagg for å senke tempo neste steg
 
-  let slowFlag = false  // <- flag for å vente til neste steg
+  function playStep(){
 
-  intervalId = setInterval(()=>{
+    if(!isPlaying) return
 
-    if(currentStep >= STEPS) currentStep = 0
-
-    // ----------------- AVSPILLING -----------------
+    // ---------------- AVSPILLING -----------------
     melody.forEach((voice,v)=>{
-
       let note = voice[currentStep]
-
       let cell = document.getElementById(`c${v}_${currentStep}`)
       if(cell) cell.classList.add("active")
-
-      setTimeout(()=>{
-        if(cell) cell.classList.remove("active")
-      },200)
+      setTimeout(()=>{ if(cell) cell.classList.remove("active") }, 200)
 
       if(note===0) return
 
       const osc = audioCtx.createOscillator()
       const gain = audioCtx.createGain()
-
       osc.connect(gain)
       gain.connect(audioCtx.destination)
 
       osc.frequency.value = 440*Math.pow(2,(note-69)/12)
       osc.type = "sine"
       gain.gain.setValueAtTime(0.2,audioCtx.currentTime)
-
       osc.start()
       osc.stop(audioCtx.currentTime+0.25)
-
     })
 
-    // ----------------- DYNAMISK TEMPO -----------------
-    // Sjekk om alle stemmer er 0 i dette steget
+    // ---------------- DYNAMISK TEMPO -----------------
     let allZero = melody.every(voice => voice[currentStep]===0)
 
     if(allZero){
-      slowFlag = true  // neste steg senker tempoet
+      slowFlag = true
     } else if(slowFlag){
-      tempo = Math.max(10, tempo-50)  // reduser tempoet
-      beat = (60/tempo)*1000           // oppdater intervallet
+      tempo = Math.max(10, tempo-50)
       slowFlag = false
       console.log("Tempo redusert til", tempo, "BPM")
     }
 
+    // Oppdater BPM i info-div
+    document.getElementById("tempoVal").innerText = tempo
+
+    // Gå til neste steg
     currentStep++
+    if(currentStep >= STEPS) currentStep = 0
 
-  }, beat)
+    // Planlegg neste steg med oppdatert tempo
+    let beat = (60/tempo)*1000
+    setTimeout(playStep, beat)
 
+  }
+
+  playStep()
 }
 
 document.getElementById("generate").onclick=generateMelody

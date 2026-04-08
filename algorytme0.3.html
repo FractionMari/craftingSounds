@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Melodi Generator (16 steg) versjon4</title>
+<title>5-stemmet Melodi Generator (16 steg) versjon5</title>
 
 <style>
 
@@ -124,6 +124,7 @@ melody.push(voice)
 applyABARule()   // ← NY REGEL
 //applyAscendingRule()
 applyUnisonRule()
+applyAllVoicesRule()
 
 currentStep=0
 drawGrid()
@@ -323,6 +324,51 @@ melody[v1][s+2] = a + 12
 // andre stemme
 melody[v2][s+1] = a - 5
 melody[v2][s+2] = a - 12
+
+}
+
+}
+
+}
+
+}
+function applyAllVoicesRule(){
+
+for(let s=0; s<STEPS-5; s++){
+
+let allPlaying = true
+
+for(let v=0; v<VOICES; v++){
+if(melody[v][s] === 0){
+allPlaying = false
+break
+}
+}
+
+if(allPlaying){
+
+for(let v=0; v<VOICES; v++){
+
+let start = melody[v][s]
+
+let direction = Math.random() < 0.5 ? -1 : 1
+
+let stepSize = 1
+
+if(scaleType === "heltoneskala") stepSize = 2
+if(scaleType === "oktaton") stepSize = (Math.random()<0.5?1:2)
+
+for(let i=1;i<=5;i++){
+
+let newNote = start + direction * stepSize * i
+
+if(newNote >= 60 && newNote <= 96){
+melody[v][s+i] = newNote
+}else{
+melody[v][s+i] = 0
+}
+
+}
 
 }
 

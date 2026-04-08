@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#1534f9;
+background:#8534f9;
 }
 
 button{
@@ -44,7 +44,7 @@ background:#ffd54f;
   color: #fff;
 }
 </style>
-<h2>Melodigenerator</h2>
+<h2>Melodigenerator 2</h2>
 <button onclick="generateMelody()">Generer Melodi</button>
 <button onclick="playMelody()">Spill/Stop</button>
 <br><br>
@@ -68,7 +68,38 @@ let intervalId
 
 const STEPS=32
 const VOICES=5
+function halfToneScale() {
+  return Array.from({length:128}, (_, i) => i);
+}
 
+function wholeToneScale() {
+  let start = Math.random() < 0.5 ? 0 : 1;
+  return Array.from({length:64}, (_, i) => start + i*2);
+}
+
+function octatonicScale() {
+  let scale = [];
+  let note = Math.floor(Math.random()*64);
+  for(let i=0;i<64;i++){
+    scale.push(note);
+    note += (i % 2 === 0 ? 1 : 2);
+    if(note>127) note=127;
+  }
+  return scale;
+}
+
+function diatonicScale() {
+  let scale = [];
+  let intervals = [0,2,4,5,7,9,11]; // C-D-E-F-G-A-B
+  for(let octave=0; octave<11; octave++){
+    intervals.forEach(iv => {
+      let n = iv + octave*12;
+      if(n<=127) scale.push(n);
+    });
+  }
+  return scale;
+}
+  /*
 function halfToneScale(){
 return Array.from({length:128},(_,i)=>i)
 }
@@ -105,6 +136,7 @@ function diatonicScale(){
   }
   return scale;
 }
+*/
 
 /*function generateMelody(){
 

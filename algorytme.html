@@ -2,222 +2,139 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>Frozen Rain Composer - Konsistent Skala</title>
-
+<title>Tilfeldig Melodi Generator</title>
 <style>
-body{
-  background:#0e0f18;
-  color:white;
-  font-family:Arial;
-  text-align:center;
-  margin:0;
-  overflow:hidden;
-}
-h1{margin-top:10px;}
-.controls{margin:10px;}
-button{
-  padding:12px 18px;
-  margin:6px;
-  font-size:16px;
-  border-radius:8px;
-  border:none;
-  background:#5aa9ff;
-  color:white;
-  cursor:pointer;
-}
-button:hover{background:#3f8de0;}
-#canvas{border-top:1px solid #333;}
-textarea{
-  width:80%;
-  height:150px;
-  margin-top:10px;
-  background:#111;
-  color:#0f0;
-}
-#info{
-  margin:10px;
-  font-size:18px;
-  color:#aaf;
-  text-align:left;
-  width:80%;
-  margin-left:auto;
-  margin-right:auto;
-}
-.matrix{
-  font-family: monospace;
-  color: #0f0;
-  margin-top:5px;
-  white-space: pre;
-}
+  body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    background: #f4f4f9;
+    color: #333;
+  }
+  button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #info {
+    margin-top: 20px;
+  }
 </style>
 </head>
-
 <body>
-<h1>Frozen Rain Composer - Skala Korrekt</h1>
 
-<div class="controls">
-<button onclick="generate()">Generate Composition</button>
-<button onclick="play()">Play</button>
-<button onclick="exportScore()">Export Score</button>
-</div>
+<h1>Tilfeldig Melodi Generator</h1>
+<button id="generate">Generer Melodi</button>
+<button id="play">Spill Av / Stopp</button>
+<button id="print">Print Noter</button>
 
 <div id="info"></div>
-<canvas id="canvas"></canvas>
-<br>
-<textarea id="xml"></textarea>
 
 <script>
-const canvas=document.getElementById("canvas")
-const ctx=canvas.getContext("2d")
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight*0.5
+let melody = [];
+let tempo = 120;
+let scaleType = '';
+let rootNote = 60;
+let isPlaying = false;
+let currentNote = 0;
+let intervalId;
 
-const bars=20
-const stepsPerBar=4
-const totalSteps=bars*stepsPerBar
-
-let tempo,key,scaleType,helOdd
-let composition=[]
-let drops=[]
-let matrices=[]
-
-const scaleNames=["Heltoneskala","Halvtoneskala","Oktaton-skala"]
-const octatonic=[0,2,3,5,6,8,9,11]
-
-function random(min,max){return Math.floor(Math.random()*(max-min+1))+min}
-
-function generateMatrix(min,max){
-  let arr=[]
-  for(let i=0;i<totalSteps;i++){
-    if(Math.random()<0.25) arr.push(0)
-    else arr.push(random(min,max))
-  }
-  return arr
+// Skala funksjoner
+function halfToneScale() {
+  return Array.from({length: 128}, (_, i) => i);
 }
 
-// Funksjon som returnerer gyldig pitch i valgt skala
-function filterPitchByScale(pitch){
-  if(scaleType===0){ // Heltoneskala
-    let useEven = helOdd===0
-    // Finn nærmeste partall/oddetall
-    let filtered = pitch
-    filtered = useEven ? pitch - pitch%2 : pitch - pitch%2 +1
-    // begrens til MIDI 0-127
-    if(filtered>127) filtered-=2
-    if(filtered<0) filtered+=2
-    return filtered
-  }else if(scaleType===1){ // Halvtoneskala
-    return pitch
-  }else{ // Oktaton
-    // Finn nærmeste note i oktaton + key
-    let candidates = octatonic.map(n=>n+key)
-    // Finn nærmeste
-    let closest = candidates.reduce((prev,curr)=>Math.abs(curr-pitch)<Math.abs(prev-pitch)?curr:prev)
-    return closest
-  }
+function wholeToneScale() {
+  let start = Math.random() < 0.5 ? 0 : 1;
+  return Array.from({length: 64}, (_, i) => start + i*2);
 }
 
-function generate(){
-  scaleType=random(0,2)
-  tempo=random(60,180)
-  key=random(0,11)
-  helOdd = random(0,1) // 0=even,1=odd, relevant kun for heltoneskala
+function octatonicScale() {
+  let start = Math.floor(Math.random()*120);
+  let scale = [];
+  for (let i = 0; i < 20; i++) {
+    scale.push(start);
+    start += (i%2===0 ? 2 : 1); // annenhver hel/halv tone
+  }
+  return scale;
+}
 
-  matrices=[
-    generateMatrix(60,96),
-    generateMatrix(50,103),
-    generateMatrix(55,108),
-    generateMatrix(48,92),
-    generateMatrix(36,88)
-  ]
+// Generer tilfeldig melodi
+function generateMelody() {
+  // Velg skala
+  const scales = ['halvtoneskala', 'heltoneskala', 'oktaton'];
+  scaleType = scales[Math.floor(Math.random()*scales.length)];
+  let scale = [];
+  if (scaleType === 'halvtoneskala') scale = halfToneScale();
+  else if (scaleType === 'heltoneskala') scale = wholeToneScale();
+  else if (scaleType === 'oktaton') scale = octatonicScale();
 
-  composition=[]
-  drops=[]
+  // Velg root note C=0 ... B=11
+  rootNote = Math.floor(Math.random()*12) + 60; // start nær midten
+  tempo = Math.floor(Math.random()*(180-60+1)+60);
 
-  for(let i=0;i<totalSteps;i++){
-    for(let inst=0;inst<5;inst++){
-      let pitch=matrices[inst][i]
-      if(pitch!==0){
-        let note = filterPitchByScale(pitch)
-        composition.push({time:i,instrument:inst,pitch:note})
-        drops.push({
-          x:Math.random()*canvas.width,
-          y:Math.random()*canvas.height,
-          size:4+inst*2,
-          time:i,
-          pitch:note
-        })
-      }
+  melody = [];
+  for (let i = 0; i < 20; i++) {
+    const note = scale[Math.floor(Math.random()*scale.length)];
+    melody.push(note);
+  }
+
+  currentNote = 0;
+  updateInfo();
+}
+
+// Oppdater info på skjerm
+function updateInfo() {
+  document.getElementById('info').innerHTML = `
+    <p><strong>Melodi:</strong> ${melody.join(', ')}</p>
+    <p><strong>Tempo:</strong> ${tempo} BPM</p>
+    <p><strong>Toneart:</strong> ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote%12]}</p>
+    <p><strong>Skala:</strong> ${scaleType}</p>
+  `;
+}
+
+// Spill av melodi
+function playMelody() {
+  if (isPlaying) {
+    clearInterval(intervalId);
+    isPlaying = false;
+    return;
+  }
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const beatInterval = (60/tempo) * 1000;
+
+  isPlaying = true;
+  intervalId = setInterval(() => {
+    if (currentNote >= melody.length) {
+      currentNote = 0;
     }
-  }
+    const note = melody[currentNote];
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
 
-  // Vis info + matriser
-  let infoHTML=`Tempo: ${tempo} BPM | Toneart: ${key} | Skala: ${scaleNames[scaleType]}`
-  if(scaleType===0) infoHTML+=` (${helOdd===0?'Partall':'Oddetall'})`
-  infoHTML+=`<br><b>Genererte matriser:</b><br>`
-  matrices.forEach((m,i)=>{
-    infoHTML+=`Instrument ${i}: <span class="matrix">[${m.join(', ')}]</span><br>`
-  })
-  document.getElementById("info").innerHTML=infoHTML
-  draw()
+    // Konverter MIDI til frekvens
+    osc.frequency.value = 440 * Math.pow(2, (note-69)/12);
+    osc.type = 'sine';
+    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.3); // spill note i 0.3 sek
+
+    currentNote++;
+  }, beatInterval);
 }
 
-function draw(){
-  ctx.fillStyle="#0e0f18"
-  ctx.fillRect(0,0,canvas.width,canvas.height)
-  drops.forEach(d=>{
-    ctx.beginPath()
-    ctx.fillStyle="rgba(120,180,255,0.7)"
-    ctx.arc(d.x,d.y,d.size,0,Math.PI*2)
-    ctx.fill()
-  })
-}
-
-const audioCtx=new(window.AudioContext||window.webkitAudioContext)()
-
-function play(){
-  let now=audioCtx.currentTime
-  composition.forEach(note=>{
-    let osc=audioCtx.createOscillator()
-    let gain=audioCtx.createGain()
-    osc.type="sine"
-    osc.frequency.value=440*Math.pow(2,(note.pitch-69)/12)
-    gain.gain.setValueAtTime(0.0001,now)
-    gain.gain.exponentialRampToValueAtTime(0.2,now+note.time*(60/tempo)+0.02)
-    gain.gain.exponentialRampToValueAtTime(0.0001,now+note.time*(60/tempo)+0.6)
-    osc.connect(gain)
-    gain.connect(audioCtx.destination)
-    osc.start(now+note.time*(60/tempo))
-    osc.stop(now+note.time*(60/tempo)+0.6)
-  })
-}
-
-function exportScore(){
-  let xml=`<?xml version="1.0" encoding="UTF-8"?>
-<score-partwise version="3.1">
-<part-list>
-<score-part id="P1">
-<part-name>Rain</part-name>
-</score-part>
-</part-list>
-<part id="P1">`
-
-  composition.forEach(note=>{
-    xml+=`<measure number="${note.time}">
-<note>
-<pitch>
-<step>C</step>
-<octave>4</octave>
-</pitch>
-<duration>1</duration>
-</note>
-</measure>`
-  })
-
-  xml+=`</part></score-partwise>`
-  document.getElementById("xml").value=xml
-}
-
+// Event listeners
+document.getElementById('generate').addEventListener('click', generateMelody);
+document.getElementById('play').addEventListener('click', playMelody);
+document.getElementById('print').addEventListener('click', () => {
+  console.log('Melodi:', melody);
+  alert('Melodi: ' + melody.join(', '));
+});
 </script>
+
 </body>
 </html>

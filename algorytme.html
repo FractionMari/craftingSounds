@@ -50,11 +50,13 @@ function wholeToneScale() {
 }
 
 function octatonicScale() {
-  let start = Math.floor(Math.random()*120);
   let scale = [];
-  for (let i = 0; i < 20; i++) {
-    scale.push(start);
-    start += (i%2===0 ? 2 : 1); // annenhver hel/halv tone
+  let note = Math.floor(Math.random() * 64); // startnote mellom 0-63
+  for (let i = 0; i < 128; i++) {
+    scale.push(note);
+    // annenhver hel/halv tone
+    note += (i % 2 === 0 ? 2 : 1);
+    if (note > 127) break; // ikke gå over MIDI-range
   }
   return scale;
 }

@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Melodi Generator (16 steg) versjon2</title>
+<title>5-stemmet Melodi Generator (16 steg) versjon3</title>
 
 <style>
 
@@ -122,6 +122,7 @@ melody.push(voice)
 
 }
 applyABARule()   // ← NY REGEL
+applyAscendingRule()
 
 currentStep=0
 drawGrid()
@@ -250,6 +251,54 @@ function applyABARule(){
 
 }
 
+  function applyAscendingRule(){
+
+let triggered = false
+
+melody.forEach(voice => {
+
+for(let i=0;i<STEPS-2;i++){
+
+let a = voice[i]
+let b = voice[i+1]
+let c = voice[i+2]
+
+if(a!==0 && b!==0 && c!==0){
+
+if(b>a && c>b){
+triggered = true
+}
+
+}
+
+}
+
+})
+
+if(triggered){
+
+// transponer alle stemmer
+for(let v=0; v<VOICES; v++){
+
+for(let s=0; s<STEPS; s++){
+
+if(melody[v][s] !== 0){
+melody[v][s] += 1
+}
+
+}
+
+}
+
+// oppdater toneart
+rootNote = (rootNote + 1) % 12
+
+// øk tempo
+tempo += 10
+
+}
+
+}
 </script>
 
 </body>

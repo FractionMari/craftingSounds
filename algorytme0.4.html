@@ -48,7 +48,7 @@ background:#ffd54f;
 
 <body>
 
-<h2>5-stemmet tilfeldig melodi 6</h2>
+<h2>5-stemmet tilfeldig virke</h2>
 
 <button id="generate">Generer</button>
 <button id="play">Spill / Stopp</button>
@@ -219,68 +219,73 @@ currentStep++
 
 }
 */
-function playMelody(){
-
-  if(isPlaying){
-    isPlaying = false
-    return
+function playMelody() {
+  if (isPlaying) {
+    isPlaying = false;
+    return;
   }
 
-  const audioCtx = new (window.AudioContext||window.webkitAudioContext)()
-  isPlaying = true
-  currentStep = 0
-  let slowFlag = false  // flagg for å senke tempo neste steg
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  isPlaying = true;
+  currentStep = 0;
+  let slowFlag = false; // flagg for å senke tempo neste steg
 
-  function playStep(){
-
-    if(!isPlaying) return
+  function playStep() {
+    if (!isPlaying) return;
 
     // ---------------- AVSPILLING -----------------
-    melody.forEach((voice,v)=>{
-      let note = voice[currentStep]
-      let cell = document.getElementById(`c${v}_${currentStep}`)
-      if(cell) cell.classList.add("active")
-      setTimeout(()=>{ if(cell) cell.classList.remove("active") }, 200)
+    melody.forEach((voice, v) => {
+      let note = voice[currentStep];
+      let cell = document.getElementById(`c${v}_${currentStep}`);
+      if (cell) cell.classList.add("active");
+      setTimeout(() => { if (cell) cell.classList.remove("active"); }, 200);
 
-      if(note===0) return
+      if (note === 0) return;
 
-      const osc = audioCtx.createOscillator()
-      const gain = audioCtx.createGain()
-      osc.connect(gain)
-      gain.connect(audioCtx.destination)
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
 
-      osc.frequency.value = 440*Math.pow(2,(note-69)/12)
-      osc.type = "sine"
-      gain.gain.setValueAtTime(0.2,audioCtx.currentTime)
-      osc.start()
-      osc.stop(audioCtx.currentTime+0.25)
-    })
+      osc.frequency.value = 440 * Math.pow(2, (note - 69) / 12);
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.25);
+    });
 
     // ---------------- DYNAMISK TEMPO -----------------
-    let allZero = melody.every(voice => voice[currentStep]===0)
+    let allZero = melody.every(voice => voice[currentStep] === 0);
 
-    if(allZero){
-      slowFlag = true
-    } else if(slowFlag){
-      tempo = Math.max(10, tempo-50)
-      slowFlag = false
-      console.log("Tempo redusert til", tempo, "BPM")
+    // markér cellene hvis dette steget trigget tempo-senking
+    if (allZero) {
+      slowFlag = true;
+      for (let v = 0; v < VOICES; v++) {
+        let cell = document.getElementById(`c${v}_${currentStep}`);
+        if (cell) cell.classList.add("tempo-slow");
+      }
+    } else if (slowFlag) {
+      // Reduser tempo NÅ før neste steg
+      tempo = Math.max(10, tempo - 50);
+      slowFlag = false;
+      console.log("Tempo redusert til", tempo, "BPM");
     }
 
     // Oppdater BPM i info-div
-    document.getElementById("tempoVal").innerText = tempo
+    let tempoSpan = document.getElementById("tempoVal");
+    if (tempoSpan) tempoSpan.innerText = tempo;
 
-    // Gå til neste steg
-    currentStep++
-    if(currentStep >= STEPS) currentStep = 0
+    // Beregn delay for neste steg basert på **oppdatert tempo**
+    let beat = (60 / tempo) * 1000;
 
-    // Planlegg neste steg med oppdatert tempo
-    let beat = (60/tempo)*1000
-    setTimeout(playStep, beat)
+    // gå til neste steg etter delay
+    currentStep++;
+    if (currentStep >= STEPS) currentStep = 0;
 
+    setTimeout(playStep, beat);
   }
 
-  playStep()
+  playStep();
 }
 
 document.getElementById("generate").onclick=generateMelody

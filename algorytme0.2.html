@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Melodi Generator (16 steg)</title>
+<title>5-stemmet Melodi Generator (16 steg) versjon2</title>
 
 <style>
 
@@ -121,6 +121,7 @@ voice.push(note)
 melody.push(voice)
 
 }
+applyABARule()   // ← NY REGEL
 
 currentStep=0
 drawGrid()
@@ -214,6 +215,38 @@ currentStep++
 document.getElementById("generate").onclick=generateMelody
 document.getElementById("play").onclick=playMelody
 document.getElementById("print").onclick=()=>console.log(melody)
+
+function applyABARule(){
+
+  melody.forEach(voice => {
+
+    for(let i = 2; i < STEPS; i++){
+
+      let a = voice[i-2]
+      let b = voice[i-1]
+      let c = voice[i]
+
+      if(a === c && a !== b){
+
+        let pattern = [a,a,b,b,a,a]
+
+        for(let j = 0; j < pattern.length; j++){
+
+          let pos = i + 1 + j
+
+          if(pos < STEPS){
+            voice[pos] = pattern[j]
+          }
+
+        }
+
+      }
+
+    }
+
+  })
+
+}
 
 </script>
 

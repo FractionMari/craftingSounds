@@ -134,7 +134,31 @@ currentStep=0
 drawGrid()
 
 }
+function drawGrid() {
+  let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
+Skala: ${scaleType}<br><br>
+<table border="1" cellspacing="0" cellpadding="5"><tr>`;
 
+  // Lag BPM-rad
+  html += `<td><b>BPM</b></td>`;
+  for (let s = 0; s < STEPS; s++) {
+    html += `<td id="bpm_${s}">${tempo}</td>`;
+  }
+  html += `</tr>`;
+
+  // Lag tone-rader for stemmene
+  for (let v = 0; v < VOICES; v++) {
+    html += `<tr><td><b>Stemme ${v+1}</b></td>`;
+    for (let s = 0; s < STEPS; s++) {
+      html += `<td id="c${v}_${s}">${melody[v][s]}</td>`;
+    }
+    html += `</tr>`;
+  }
+
+  html += `</table>`;
+  document.getElementById("grid").innerHTML = html;
+}  
+/*
 function drawGrid(){
 
 let html=`Tempo: ${tempo} BPM<br>
@@ -164,7 +188,7 @@ html+="</table>"
 document.getElementById("info").innerHTML=html
 
 }
-
+*/
 /*function playMelody(){
 
 if(isPlaying){
@@ -271,6 +295,13 @@ function playMelody() {
       console.log("Tempo redusert til", tempo, "BPM");
     }
 
+    // Oppdater BPM i info-div og BPM-rad
+let tempoSpan = document.getElementById("tempoVal");
+if (tempoSpan) tempoSpan.innerText = tempo;
+
+// Oppdater BPM i BPM-rad for neste steg
+let bpmCell = document.getElementById(`bpm_${currentStep}`);
+if (bpmCell) bpmCell.innerText = tempo;
     // Oppdater BPM i info-div
     let tempoSpan = document.getElementById("tempoVal");
     if (tempoSpan) tempoSpan.innerText = tempo;

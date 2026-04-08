@@ -108,7 +108,7 @@ function diatonicScale(){
 
 function generateMelody(){
 
-const scales=['halvtoneskala','heltoneskala','oktaton', 'diatonisk']
+const scales=['halvtoneskala','heltoneskala','oktaton','diatonisk']
 scaleType=scales[Math.floor(Math.random()*scales.length)]
 
 let scale
@@ -116,7 +116,7 @@ let scale
 if(scaleType==='halvtoneskala') scale=halfToneScale()
 if(scaleType==='heltoneskala') scale=wholeToneScale()
 if(scaleType==='oktaton') scale=octatonicScale()
-  if(scaleType==='diatonisk') scale=diatonicScale()
+if(scaleType==='diatonisk') scale=diatonicScale()
 
 tempo=Math.floor(Math.random()*121)+60
 rootNote=Math.floor(Math.random()*12)

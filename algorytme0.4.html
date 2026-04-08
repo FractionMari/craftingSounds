@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#f4f4f9;
+background:#06f4f9;
 }
 
 button{
@@ -188,60 +188,85 @@ document.getElementById("info").innerHTML=html
 
 }
 */
-/*function playMelody(){
+  function playMelody() {
+  if (isPlaying) {
+    isPlaying = false;
+    return;
+  }
 
-if(isPlaying){
-clearInterval(intervalId)
-isPlaying=false
-return
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  isPlaying = true;
+  currentStep = 0;
+  let slowFlag = false;       // flagg for tempo-senking
+  let startTempo = tempo;     // husk starttempo
+
+  function playStep() {
+    if (!isPlaying) return;
+
+    // ---------------- AVSPILLING -----------------
+    melody.forEach((voice, v) => {
+      let note = voice[currentStep];
+      let cell = document.getElementById(`c${v}_${currentStep}`);
+      if (cell) cell.classList.add("active");
+      setTimeout(() => { if (cell) cell.classList.remove("active"); }, 200);
+
+      if (note === 0) return;
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.frequency.value = 440 * Math.pow(2, (note - 69) / 12);
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.25);
+    });
+
+    // ---------------- DYNAMISK TEMPO -----------------
+    let nonZeroVoices = melody.filter(voice => voice[currentStep] !== 0).length;
+
+    if (nonZeroVoices === 0) {
+      // Alle 0 → reduser tempo på neste steg
+      slowFlag = true;
+      for (let v = 0; v < VOICES; v++) {
+        let cell = document.getElementById(`c${v}_${currentStep}`);
+        if (cell) cell.classList.add("tempo-slow");
+      }
+    } else if (nonZeroVoices === 3 || nonZeroVoices === 4) {
+      // Tre eller fire stemmer → gjenopprett starttempo
+      tempo = startTempo;
+      slowFlag = false; // nullstill flagg
+      console.log("Tempo gjenopprettet til start:", tempo, "BPM");
+    } else if (slowFlag) {
+      // Reduser tempo etter alle 0
+      tempo = Math.max(10, tempo - 50);
+      slowFlag = false;
+      console.log("Tempo redusert til", tempo, "BPM");
+    }
+
+    // Oppdater BPM i info-div
+    let tempoSpan = document.getElementById("tempoVal");
+    if (tempoSpan) tempoSpan.innerText = tempo;
+
+    // Oppdater BPM i BPM-rad
+    let bpmCell = document.getElementById(`bpm_${currentStep}`);
+    if (bpmCell) bpmCell.innerText = tempo;
+
+    // Beregn delay for neste steg basert på oppdatert tempo
+    let beat = (60 / tempo) * 1000;
+
+    // Gå til neste steg
+    currentStep++;
+    if (currentStep >= STEPS) currentStep = 0;
+
+    setTimeout(playStep, beat);
+  }
+
+  playStep();
 }
-
-const audioCtx=new (window.AudioContext||window.webkitAudioContext)()
-
-const beat=(60/tempo)*1000
-
-isPlaying=true
-currentStep=0
-
-intervalId=setInterval(()=>{
-
-if(currentStep>=STEPS) currentStep=0
-
-melody.forEach((voice,v)=>{
-
-let note=voice[currentStep]
-
-let cell=document.getElementById(`c${v}_${currentStep}`)
-if(cell) cell.classList.add("active")
-
-setTimeout(()=>{
-if(cell) cell.classList.remove("active")
-},200)
-
-if(note===0) return
-
-const osc=audioCtx.createOscillator()
-const gain=audioCtx.createGain()
-
-osc.connect(gain)
-gain.connect(audioCtx.destination)
-
-osc.frequency.value=440*Math.pow(2,(note-69)/12)
-osc.type="sine"
-
-gain.gain.setValueAtTime(0.2,audioCtx.currentTime)
-
-osc.start()
-osc.stop(audioCtx.currentTime+0.25)
-
-})
-
-currentStep++
-
-},beat)
-
-}
-*/
+  /*
 function playMelody() {
   if (isPlaying) {
     isPlaying = false;
@@ -287,7 +312,7 @@ if(allZero){
     if(cell) cell.classList.add("tempo-slow");
   }
 } else if(slowFlag){
-  tempo = Math.max(10, tempo-50);
+  tempo = Math.max(10, tempo-10);
   slowFlag = false;
   console.log("Tempo redusert til", tempo, "BPM");
 }
@@ -310,7 +335,7 @@ if(bpmCell) bpmCell.innerText = tempo;
   }
 
   playStep();
-}
+} */
 
 document.getElementById("generate").onclick=generateMelody
 document.getElementById("play").onclick=playMelody

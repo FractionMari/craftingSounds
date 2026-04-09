@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#7534f9;
+background:#4534f9;
 }
 
 button{
@@ -265,26 +265,8 @@ melody.push(voice)
 
   
 
-  // Definer range per stemme
-  const voiceRanges = [
-    {min: 60, max: 96},  // Stemme 1
-    {min: 50, max: 103}, // Stemme 2
-    {min: 55, max: 108}, // Stemme 3
-    {min: 48, max: 92},  // Stemme 4
-    {min: 36, max: 88}   // Stemme 5
-  ];
-
-
-
-      // Filter for stemme-range
-      if (note < voiceRanges[v].min || note > voiceRanges[v].max) note = 0;
-
-      melody[v][s] = note;
-
-  
-
 applyABARule()   // ← NY REGEL
-//applyAscendingRule()
+//Rule()
 applyUnisonRule()
 applyAllVoicesRule()
 

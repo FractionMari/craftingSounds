@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon10</title>
-<h2>Melodigenerator 23</h2>
+<h2>Melodigenerator 24</h2>
 <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
 <style>
 
@@ -68,7 +68,7 @@ let isPlaying=false
 let currentStep=0
 let intervalId
 
-const STEPS=32
+const STEPS=100
 const VOICES=5
   /*
 function halfToneScale() {
@@ -194,10 +194,10 @@ function generateMelody() {
   // Range for hver stemme
   const voiceRanges = [
     {min:60, max:96},
-    {min:50, max:103},
-    {min:55, max:108},
+    {min:50, max:96},
+    {min:55, max:96},
     {min:48, max:92},
-    {min:36, max:88}
+    {min:36, max:60}
   ];
 
   for(let v=0; v<VOICES; v++){

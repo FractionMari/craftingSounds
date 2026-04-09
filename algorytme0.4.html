@@ -44,7 +44,7 @@ background:#ffd54f;
   color: #fff;
 }
 </style>
-<h2>Melodigenerator 2</h2>
+<h2>Melodigenerator 3</h2>
 <button onclick="generateMelody()">Generer Melodi</button>
 <button onclick="playMelody()">Spill/Stop</button>
 <br><br>
@@ -211,39 +211,45 @@ Skala: ${scaleType}<br><br>
 function generateMelody() {
   melody = [];
 
-  // Velg skala tilfeldig
-  let scaleOptions = [halfToneScale, wholeToneScale, octatonicScale, diatonicScale];
-  let chosenScaleFunc = scaleOptions[Math.floor(Math.random() * scaleOptions.length)];
-  let scaleNotesArr = chosenScaleFunc();
-
-  // Definer range per stemme
-  const voiceRanges = [
-    {min: 60, max: 96},  // Stemme 1
-    {min: 50, max: 103}, // Stemme 2
-    {min: 55, max: 108}, // Stemme 3
-    {min: 48, max: 92},  // Stemme 4
-    {min: 36, max: 88}   // Stemme 5
+  // Velg skala tilfeldig (navn + funksjon)
+  let scaleOptions = [
+    {name:"halvtoneskala", func:halfToneScale},
+    {name:"heltoneskala", func:wholeToneScale},
+    {name:"oktaton", func:octatonicScale},
+    {name:"diatonisk", func:diatonicScale}
   ];
 
-  // Generer noter
-  for (let v = 0; v < VOICES; v++) {
-    melody[v] = [];
-    for (let s = 0; s < STEPS; s++) {
-      let note = scaleNotesArr[Math.floor(Math.random() * scaleNotesArr.length)];
+  let chosen = scaleOptions[Math.floor(Math.random()*scaleOptions.length)];
+  scaleType = chosen.name;            // ← dette fikser "undefined"
+  let scaleNotesArr = chosen.func();
 
-      // Filter for stemme-range
-      if (note < voiceRanges[v].min || note > voiceRanges[v].max) note = 0;
+  // Range for hver stemme
+  const voiceRanges = [
+    {min:60, max:96},
+    {min:50, max:103},
+    {min:55, max:108},
+    {min:48, max:92},
+    {min:36, max:88}
+  ];
+
+  for(let v=0; v<VOICES; v++){
+    melody[v] = [];
+
+    for(let s=0; s<STEPS; s++){
+
+      let note = scaleNotesArr[Math.floor(Math.random()*scaleNotesArr.length)];
+
+      if(note < voiceRanges[v].min || note > voiceRanges[v].max){
+        note = 0;
+      }
 
       melody[v][s] = note;
     }
   }
 
-  // ABA-regel med dobbel varighet
   applyABARule();
-
-  // Tegn rutenett
   drawGrid();
-}  
+}
 /*
 function drawGrid(){
 

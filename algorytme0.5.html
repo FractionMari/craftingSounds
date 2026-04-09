@@ -174,7 +174,7 @@ function generateMelody() {
   //bpm = Math.floor(Math.random()*121) + 60
 
   //startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
-  tempo = Math.floor(Math.random()*121) + 60
+  tempo = Math.floor(Math.random()*241) + 60
   startTempo = tempo
   // Velg tilfeldig toneart (0–11)
   rootNote = Math.floor(Math.random()*12);
@@ -395,7 +395,7 @@ function applyABCRule(){ // gammel
       if(a === b && a !== c && a !== 0 && c !== 0){
     //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
 
-        let pattern = [(a+1),(a+1),(c+1),(c+1),(a+1),0]
+        let pattern = [(a+1),(c+1),a,c,(a+1),0]
   
 
         for(let j = 0; j < pattern.length; j++){

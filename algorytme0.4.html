@@ -9,7 +9,7 @@
 body{
 font-family:Arial;
 padding:30px;
-background:#4534f9;
+background:#7534f9;
 }
 
 button{
@@ -182,14 +182,9 @@ drawGrid()
 
 }
 */
-
 function drawGrid() {
-    console.log("scaleType: ", scaleType);
   let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
-  
 Skala: ${scaleType}<br><br>
-
-
 <table border="1" cellspacing="0" cellpadding="5"><tr>`;
 
   // Lag BPM-rad
@@ -214,32 +209,14 @@ Skala: ${scaleType}<br><br>
 
 
 function generateMelody() {
+  melody = [];
 
-  const scales=['halvtoneskala','heltoneskala','oktaton','diatonisk']
-scaleType=scales[Math.floor(Math.random()*scales.length)]
+  // Velg skala tilfeldig
+  let scaleOptions = [halfToneScale, wholeToneScale, octatonicScale, diatonicScale];
+  let chosenScaleFunc = scaleOptions[Math.floor(Math.random() * scaleOptions.length)];
+  let scaleNotesArr = chosenScaleFunc();
 
-let scale
-
-if(scaleType==='halvtoneskala') scale=halfToneScale()
-if(scaleType==='heltoneskala') scale=wholeToneScale()
-if(scaleType==='oktaton') scale=octatonicScale()
-if(scaleType==='diatonisk') scale=diatonicScale()
-
-tempo=Math.floor(Math.random()*121)+60
-rootNote=Math.floor(Math.random()*12)
-
-melody=[]
-
-for(let v=0;v<VOICES;v++){
-
-let voice=[]
-
-for(let s=0;s<STEPS;s++){
-
-let note=scale[Math.floor(Math.random()*scale.length)]
-
-//if(note<60 || note>96) note=0
-    // Definer range per stemme
+  // Definer range per stemme
   const voiceRanges = [
     {min: 60, max: 96},  // Stemme 1
     {min: 50, max: 103}, // Stemme 2
@@ -248,31 +225,24 @@ let note=scale[Math.floor(Math.random()*scale.length)]
     {min: 36, max: 88}   // Stemme 5
   ];
 
-
+  // Generer noter
+  for (let v = 0; v < VOICES; v++) {
+    melody[v] = [];
+    for (let s = 0; s < STEPS; s++) {
+      let note = scaleNotesArr[Math.floor(Math.random() * scaleNotesArr.length)];
 
       // Filter for stemme-range
       if (note < voiceRanges[v].min || note > voiceRanges[v].max) note = 0;
 
       melody[v][s] = note;
+    }
+  }
 
-voice.push(note)
+  // ABA-regel med dobbel varighet
+  applyABARule();
 
-}
-
-melody.push(voice)
-
-}
-
-  
-
-applyABARule()   // ← NY REGEL
-//Rule()
-applyUnisonRule()
-applyAllVoicesRule()
-
-currentStep=0
-drawGrid()
-  
+  // Tegn rutenett
+  drawGrid();
 }  
 /*
 function drawGrid(){

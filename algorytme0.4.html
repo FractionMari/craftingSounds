@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon6</title>
-
+<h2>Melodigenerator 3</h2>
 <style>
 
 body{
@@ -183,8 +183,11 @@ drawGrid()
 }
 */
 function drawGrid() {
-  let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
-Skala: ${scaleType}<br><br>
+
+let noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+let html = `Toneart: ${noteNames[rootNote]}<br>
+
+
 <table border="1" cellspacing="0" cellpadding="5"><tr>`;
 
   // Lag BPM-rad
@@ -210,6 +213,9 @@ Skala: ${scaleType}<br><br>
 
 function generateMelody() {
   melody = [];
+  
+  // Velg tilfeldig toneart (0–11)
+  rootNote = Math.floor(Math.random()*12);
 
   // Velg skala tilfeldig (navn + funksjon)
   let scaleOptions = [

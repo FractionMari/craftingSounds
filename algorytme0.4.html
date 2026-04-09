@@ -238,7 +238,22 @@ for(let s=0;s<STEPS;s++){
 
 let note=scale[Math.floor(Math.random()*scale.length)]
 
-if(note<60 || note>96) note=0
+//if(note<60 || note>96) note=0
+    // Definer range per stemme
+  const voiceRanges = [
+    {min: 60, max: 96},  // Stemme 1
+    {min: 50, max: 103}, // Stemme 2
+    {min: 55, max: 108}, // Stemme 3
+    {min: 48, max: 92},  // Stemme 4
+    {min: 36, max: 88}   // Stemme 5
+  ];
+
+
+
+      // Filter for stemme-range
+      if (note < voiceRanges[v].min || note > voiceRanges[v].max) note = 0;
+
+      melody[v][s] = note;
 
 voice.push(note)
 

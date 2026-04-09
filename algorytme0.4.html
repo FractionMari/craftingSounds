@@ -400,7 +400,8 @@ document.getElementById("info").innerHTML=html
         let cell = document.getElementById(`c${v}_${currentStep}`);
         if (cell) cell.classList.add("tempo-slow");
       }
-    } else if (nonZeroVoices === 3 || nonZeroVoices === 4) {
+    } else if (nonZeroVoices === 4) {
+    //   } else if (nonZeroVoices === 3 || nonZeroVoices === 4) {
       // Tre eller fire stemmer → gjenopprett starttempo
       tempo = startTempo;
       slowFlag = false; // nullstill flagg
@@ -627,7 +628,7 @@ melody[v2][s+2] = a - 12
   
 function applyAllVoicesRule(){
 
-for(let s=0; s<STEPS-4; s++){
+for(let s=0; s<STEPS-5; s++){
 
 let allPlaying = true
 
@@ -657,7 +658,7 @@ if(scaleType === "diatonisk") {
     stepSize = intervals[Math.floor(Math.random()*intervals.length)];
 }
 
-for(let i=1;i<=4;i++){
+for(let i=1;i<=5;i++){
 
 let newNote = start + direction * stepSize * i
 

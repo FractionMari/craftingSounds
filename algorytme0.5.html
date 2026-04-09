@@ -344,6 +344,8 @@ function applyABARule(){ // gammel
 
 }
 
+
+
 function applyABCRule(){ // gammel
 
   melody.forEach(voice => {
@@ -361,8 +363,10 @@ function applyABCRule(){ // gammel
         let pattern = [a,b,c,a+1,b+1,a+1]
 
         for(let j = 0; j < pattern.length; j++){
+          console.log(pattern.length);
 
           let pos = i + 1 + j
+           console.log(pos);
 
           if(pos < STEPS){
             voice[pos] = pattern[j]

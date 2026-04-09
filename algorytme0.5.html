@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon10</title>
-<h2>Melodigenerator 20</h2>
+<h2>Melodigenerator 22</h2>
 <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
 <style>
 
@@ -360,8 +360,8 @@ function applyABCRule(){ // gammel
       if(a === b && a !== c && a !== 0 && c !== 0){
     //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
 
-        let pattern = [a,(a+1),c,c,a,a]
-        console.log("a= ", a, "a+1= ", (a+1));
+        let pattern = [a,(a+1),c,(c+1),a,0]
+  
 
         for(let j = 0; j < pattern.length; j++){
 

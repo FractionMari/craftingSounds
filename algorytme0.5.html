@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon07</title>
-<h2>Melodigenerator 7</h2>
+<h2>Melodigenerator 9</h2>
 <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
 <style>
 
@@ -216,6 +216,7 @@ function generateMelody() {
   }
 
   applyABARule();
+  applyABCRule();
   applyUnisonRule()
   applyAllVoicesRule()
   applyImitationRule();   // NY REGEL
@@ -342,6 +343,41 @@ function applyABARule(){ // gammel
   })
 
 }
+
+function applyABCRule(){ // gammel
+
+  melody.forEach(voice => {
+
+    for(let i = 2; i < STEPS; i++){
+
+      let a = voice[i-2]
+      let b = voice[i-1]
+      let c = voice[i]
+
+      // sjekk a-b-a og at ingen er 0
+      if(a !== c && a !== b && c !== b &&a !== 0 && b !== 0 && c !== 0 ){
+
+
+        let pattern = [a,b,c,c,b,a]
+
+        for(let j = 0; j < pattern.length; j++){
+
+          let pos = i + 1 + j
+
+          if(pos < STEPS){
+            voice[pos] = pattern[j]
+          }
+
+        }
+
+      }
+
+    }
+
+  })
+
+}
+
 
 
   

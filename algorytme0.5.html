@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon07</title>
 <h2>Melodigenerator 7</h2>
+<script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
 <style>
 
 body{
@@ -474,56 +475,62 @@ melody[d][s+1+i] = melody[v2][s-3+i]
 }
 
 }
-async function exportMIDI() {
-  // Sjekk at melody finnes
-  if (!melody || melody.length === 0) {
-    alert("Generer først en melodi!");
-    return;
-  }
+function exportMIDI(){
 
-  // Importer Tonejs/Midi via CDN
-  if (typeof Midi === "undefined") {
-    await import("https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.js").then(module => {
-      window.Midi = module.Midi;
-    });
-  }
-
-  const midi = new Midi();
-
-  // Instrumenter: tverrfløyte, klarinett, fiolin, bratsj, cello
-  const instruments = ["flute", "clarinet", "violin", "viola", "cello"];
-
-  for (let v = 0; v < VOICES; v++) {
-    const track = midi.addTrack();
-    track.instrument.name = instruments[v];
-
-    let time = 0; // starttid i sekunder
-    const beatDuration = 60 / tempo; // varighet av ett slag
-
-    for (let s = 0; s < STEPS; s++) {
-      const note = melody[v][s];
-      if (note !== 0) {
-        // Alle noter varer ett slag
-        track.addNote({ midi: note, time: time, duration: beatDuration });
-      }
-      time += beatDuration; // neste steg
-    }
-  }
-
-  // Generer MIDI-fil som blob
-  const bytes = midi.toArray();
-  const blob = new Blob([bytes], { type: "audio/midi" });
-  const url = URL.createObjectURL(blob);
-
-  // Last ned fil
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "melodi.mid";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+if(!melody || melody.length===0){
+alert("Generer først en melodi")
+return
 }
 
+const midi = new Midi()
+
+const instruments = [
+"flute",
+"clarinet",
+"violin",
+"viola",
+"cello"
+]
+
+for(let v=0; v<VOICES; v++){
+
+let track = midi.addTrack()
+track.instrument.name = instruments[v]
+
+let time = 0
+let beat = 60/tempo
+
+for(let s=0; s<STEPS; s++){
+
+let note = melody[v][s]
+
+if(note !== 0){
+
+track.addNote({
+midi: note,
+time: time,
+duration: beat
+})
+
+}
+
+time += beat
+
+}
+
+}
+
+// lag fil
+let bytes = midi.toArray()
+let blob = new Blob([bytes], {type:"audio/midi"})
+let url = URL.createObjectURL(blob)
+
+let a = document.createElement("a")
+a.href = url
+a.download = "melodi.mid"
+a.click()
+
+}
 </script>
 
 </body>

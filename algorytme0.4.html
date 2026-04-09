@@ -214,12 +214,41 @@ Skala: ${scaleType}<br><br>
 
 
 function generateMelody() {
-  melody = [];
 
-  // Velg skala tilfeldig
-  let scaleOptions = [halfToneScale, wholeToneScale, octatonicScale, diatonicScale];
-  let chosenScaleFunc = scaleOptions[Math.floor(Math.random() * scaleOptions.length)];
-  let scaleNotesArr = chosenScaleFunc();
+  const scales=['halvtoneskala','heltoneskala','oktaton','diatonisk']
+scaleType=scales[Math.floor(Math.random()*scales.length)]
+
+let scale
+
+if(scaleType==='halvtoneskala') scale=halfToneScale()
+if(scaleType==='heltoneskala') scale=wholeToneScale()
+if(scaleType==='oktaton') scale=octatonicScale()
+if(scaleType==='diatonisk') scale=diatonicScale()
+
+tempo=Math.floor(Math.random()*121)+60
+rootNote=Math.floor(Math.random()*12)
+
+melody=[]
+
+for(let v=0;v<VOICES;v++){
+
+let voice=[]
+
+for(let s=0;s<STEPS;s++){
+
+let note=scale[Math.floor(Math.random()*scale.length)]
+
+if(note<60 || note>96) note=0
+
+voice.push(note)
+
+}
+
+melody.push(voice)
+
+}
+
+  
 
   // Definer range per stemme
   const voiceRanges = [
@@ -230,11 +259,7 @@ function generateMelody() {
     {min: 36, max: 88}   // Stemme 5
   ];
 
-  // Generer noter
-  for (let v = 0; v < VOICES; v++) {
-    melody[v] = [];
-    for (let s = 0; s < STEPS; s++) {
-      let note = scaleNotesArr[Math.floor(Math.random() * scaleNotesArr.length)];
+
 
       // Filter for stemme-range
       if (note < voiceRanges[v].min || note > voiceRanges[v].max) note = 0;
@@ -243,11 +268,13 @@ function generateMelody() {
     }
   }
 
-  // ABA-regel med dobbel varighet
-  applyABARule();
+applyABARule()   // ← NY REGEL
+//applyAscendingRule()
+applyUnisonRule()
+applyAllVoicesRule()
 
-  // Tegn rutenett
-  drawGrid();
+currentStep=0
+drawGrid()
 }  
 /*
 function drawGrid(){

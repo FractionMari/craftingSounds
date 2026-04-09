@@ -88,7 +88,7 @@ function octatonicScale() {
   return scale;
 }
 
-function diatonicScale() {
+/*function diatonicScale() {
   let scale = [];
   let intervals = [0,2,4,5,7,9,11]; // C-D-E-F-G-A-B
   for(let octave=0; octave<11; octave++){
@@ -98,8 +98,30 @@ function diatonicScale() {
     });
   }
   return scale;
+}*/
+function diatonicScale(){
+
+  let scale=[]
+  let intervals=[0,2,4,5,7,9,11] // dur-skala
+
+  for(let octave=0; octave<11; octave++){
+
+    intervals.forEach(iv=>{
+
+      let note = rootNote + iv + octave*12
+
+      if(note <=127){
+        scale.push(note)
+      }
+
+    })
+
+  }
+
+  return scale
 }
   /*
+
 function halfToneScale(){
 return Array.from({length:128},(_,i)=>i)
 }

@@ -276,9 +276,11 @@ Skala ja: ${scaleType}<br><br>
 function generateMelody() {
   melody = [];
   // tilfeldig tempo
-  bpm = Math.floor(Math.random()*121) + 60
+  //bpm = Math.floor(Math.random()*121) + 60
 
-  startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
+  //startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
+  tempo = Math.floor(Math.random()*121) + 60
+  startTempo = tempo
   // Velg tilfeldig toneart (0–11)
   rootNote = Math.floor(Math.random()*12);
 

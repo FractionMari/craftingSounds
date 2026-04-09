@@ -182,9 +182,14 @@ drawGrid()
 
 }
 */
+
 function drawGrid() {
+    console.log("scaleType: ", scaleType);
   let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
+  
 Skala: ${scaleType}<br><br>
+
+
 <table border="1" cellspacing="0" cellpadding="5"><tr>`;
 
   // Lag BPM-rad

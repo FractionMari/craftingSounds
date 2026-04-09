@@ -1,18 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-<meta charset="utf-8">
-<title>Melodigenerator med regler</title>
+<meta charset="UTF-8">
+<title>5-stemmet Melodi Generator (16 steg) versjon6</title>
+<h2>Melodigenerator 6</h2>
 <style>
-  table { border-collapse: collapse; }
-  td { width: 35px; height: 35px; text-align: center; }
-  .active { background-color: yellow; }
-  .tempo-slow { background-color: #0f8a80; color: #fff; }
-</style>
-</head>
-<body>
 
-<h2>Melodigenerator</h2>
+body{
+font-family:Arial;
+padding:30px;
+background:#9534f9;
+}
+
+button{
+margin:10px 5px;
+padding:10px 20px;
+font-size:16px;
+}
+
+table{
+border-collapse:collapse;
+margin-top:20px;
+}
+
+td{
+border:1px solid #999;
+padding:6px;
+width:38px;
+text-align:center;
+}
+
+.zero{
+background:#ddd;
+color:#999;
+}
+
+.active{
+background:#ffd54f;
+}
+  
+.tempo-slow {
+  background-color: #ff8a80 !important; /* lys rød markering */
+  color: #fff;
+}
+</style>
 <button onclick="generateMelody()">Generer Melodi</button>
 <button onclick="playMelody()">Spill/Stop</button>
 <br><br>
@@ -20,170 +51,556 @@
 <div>
   Tempo: <span id="tempoVal">120</span> BPM
 </div>
+
 <div id="grid"></div>
 
 <script>
-const VOICES = 5;
-const STEPS = 16;
-let melody = [];
-let tempo = 120;
-let rootNote = 60; // C
-let scaleType = "halvtoneskala";
-let currentStep = 0;
-let isPlaying = false;
 
-// ---------- GENERER MELODI ----------
-function generateMelody() {
-  melody = [];
-  rootNote = 60; // C
-  let scaleOptions = ["halvtoneskala","heltoneskala","oktaton","diatonisk"];
-  scaleType = scaleOptions[Math.floor(Math.random()*scaleOptions.length)];
+let melody=[]
+let tempo=120
+let scaleType=''
+let rootNote=60
 
-  for(let v=0; v<VOICES; v++){
-    melody[v] = [];
-    let scaleNotesArr = scaleNotes(scaleType, rootNote);
-    for(let s=0; s<STEPS; s++){
-      melody[v][s] = scaleNotesArr[Math.floor(Math.random()*scaleNotesArr.length)];
-      if(melody[v][s] < 60 || melody[v][s] > 96) melody[v][s]=0;
-    }
+let isPlaying=false
+let currentStep=0
+let intervalId
+
+const STEPS=32
+const VOICES=5
+  // Range for hver stemme
+  const voiceRanges = [
+    {min:60, max:96},
+    {min:50, max:103},
+    {min:55, max:108},
+    {min:48, max:92},
+    {min:36, max:88}
+  ];
+  /*
+function halfToneScale() {
+  return Array.from({length:128}, (_, i) => i);
+}*/
+function halfToneScale(){
+  let scale=[]
+  for(let i=0;i<128;i++){
+    let note = rootNote + i
+    if(note<=127) scale.push(note)
+  }
+  return scale
+}
+function wholeToneScale(){
+  let scale=[]
+  let note=rootNote
+
+  while(note<=127){
+    scale.push(note)
+    note+=2
   }
 
-  applyABARule();
-  drawGrid();
+  return scale
 }
+/*
+function wholeToneScale() {
+  let start = Math.random() < 0.5 ? 0 : 1;
+  return Array.from({length:64}, (_, i) => start + i*2);
+}
+*/
+  function octatonicScale(){
 
-// ---------- SKALA-FUNKSJON ----------
-function scaleNotes(scaleType, rootNote) {
-  let notes = [];
-  if(scaleType === "halvtoneskala"){
-    for(let i=0;i<128;i++) notes.push(i);
-  } else if(scaleType==="heltoneskala"){
-    let start = Math.random()<0.5?0:1;
-    for(let i=start;i<128;i+=2) notes.push(i);
-  } else if(scaleType==="oktaton"){
-    let n=0;
-    while(n<128){
-      notes.push(n);
-      n+=1;
-      if(n<128) notes.push(n);
-      n+=1;
-    }
-  } else if(scaleType==="diatonisk"){
-    let intervals = [0,2,4,5,7,9,11];
-    for(let i=0;i<11;i++){
-      intervals.forEach(iv=>{
-        let n = rootNote + iv + i*12;
-        if(n<=127) notes.push(n);
-      });
-    }
+  let scale=[]
+  let note=rootNote
+  let step=1
+
+  while(note<=127){
+
+    scale.push(note)
+
+    note+=step
+
+    step = (step===1?2:1)
+
   }
-  return notes;
-}
 
-// ---------- ABA-REGEL MED DOBBEL VARIGHET ----------
-function applyABARule(){
-  melody.forEach(voice=>{
-    for(let i=2;i<STEPS-2;i++){
-      let a = voice[i-2], b = voice[i-1], c = voice[i];
-      if(a===c && a!==b && a!==0 && b!==0){
-        let newABA = [a,a,b,b,a,a];
-        for(let j=0;j<newABA.length && i+1+j<STEPS;j++){
-          voice[i+1+j] = newABA[j];
-        }
-        i+=2;
+  return scale
+}
+  /*
+function octatonicScale() {
+  let scale = [];
+  let note = Math.floor(Math.random()*64);
+  for(let i=0;i<64;i++){
+    scale.push(note);
+    note += (i % 2 === 0 ? 1 : 2);
+    if(note>127) note=127;
+  }
+  return scale;
+}
+*/
+/*function diatonicScale() {
+  let scale = [];
+  let intervals = [0,2,4,5,7,9,11]; // C-D-E-F-G-A-B
+  for(let octave=0; octave<11; octave++){
+    intervals.forEach(iv => {
+      let n = iv + octave*12;
+      if(n<=127) scale.push(n);
+    });
+  }
+  return scale;
+}*/
+function diatonicScale(){
+
+  let scale=[]
+  let intervals=[0,2,4,5,7,9,11] // dur-skala
+
+  for(let octave=0; octave<11; octave++){
+
+    intervals.forEach(iv=>{
+
+      let note = rootNote + iv + octave*12
+
+      if(note <=127){
+        scale.push(note)
       }
-    }
-  });
+
+    })
+
+  }
+
+  return scale
+}
+  /*
+
+function halfToneScale(){
+return Array.from({length:128},(_,i)=>i)
 }
 
-// ---------- TEGN RUTENETT ----------
-function drawGrid(){
-  let html = `Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote%12]}<br>
-Skala: ${scaleType}<br><br>
-<table border="1" cellspacing="0" cellpadding="5"><tr><td><b>BPM</b></td>`;
-  for(let s=0;s<STEPS;s++){
+function wholeToneScale(){
+let start=Math.random()<0.5?0:1
+return Array.from({length:64},(_,i)=>start+i*2)
+}
+
+function octatonicScale(){
+let scale=[]
+let note=Math.floor(Math.random()*64)
+
+for(let i=0;i<128;i++){
+scale.push(note)
+note+=(i%2===0?2:1)
+if(note>127) break
+}
+
+return scale
+}
+
+function diatonicScale(){
+  let scale = [];
+  // C-dur: intervaller i halvtoner fra C: 0,2,4,5,7,9,11
+  let intervals = [0,2,4,5,7,9,11];
+  // Velg tilfeldig startoktav fra 0 til 10 så vi ikke går over 127
+  let startOctave = Math.floor(Math.random() * 11); 
+  for(let i=0;i<11;i++){ // gjenta oktaver opp til 127
+    intervals.forEach(iv=>{
+      let n = startOctave*12 + iv;
+      if(n <= 127) scale.push(n);
+    });
+  }
+  return scale;
+}
+*/
+
+/*function generateMelody(){
+
+const scales=['halvtoneskala','heltoneskala','oktaton','diatonisk']
+scaleType=scales[Math.floor(Math.random()*scales.length)]
+
+let scale
+
+if(scaleType==='halvtoneskala') scale=halfToneScale()
+if(scaleType==='heltoneskala') scale=wholeToneScale()
+if(scaleType==='oktaton') scale=octatonicScale()
+if(scaleType==='diatonisk') scale=diatonicScale()
+
+tempo=Math.floor(Math.random()*121)+60
+rootNote=Math.floor(Math.random()*12)
+
+melody=[]
+
+for(let v=0;v<VOICES;v++){
+
+let voice=[]
+
+for(let s=0;s<STEPS;s++){
+
+let note=scale[Math.floor(Math.random()*scale.length)]
+
+if(note<60 || note>96) note=0
+
+voice.push(note)
+
+}
+
+melody.push(voice)
+
+}
+applyABARule()   // ← NY REGEL
+//applyAscendingRule()
+applyUnisonRule()
+applyAllVoicesRule()
+
+currentStep=0
+drawGrid()
+
+}
+*/
+function drawGrid() {
+
+let noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+//let html = Toneart: ${noteNames[rootNote]}<br>
+  let html = `Toneart ja: ${noteNames[rootNote]}<br>
+Skala ja: ${scaleType}<br><br>
+<table border="1" cellspacing="0" cellpadding="5"><tr>`;
+
+
+  // Lag BPM-rad
+  html += `<td><b>BPM</b></td>`;
+  for (let s = 0; s < STEPS; s++) {
     html += `<td id="bpm_${s}">${tempo}</td>`;
   }
   html += `</tr>`;
 
-  for(let v=0;v<VOICES;v++){
+  // Lag tone-rader for stemmene
+  for (let v = 0; v < VOICES; v++) {
     html += `<tr><td><b>Stemme ${v+1}</b></td>`;
-    for(let s=0;s<STEPS;s++){
+    for (let s = 0; s < STEPS; s++) {
       html += `<td id="c${v}_${s}">${melody[v][s]}</td>`;
     }
     html += `</tr>`;
   }
+
   html += `</table>`;
-  let gridDiv = document.getElementById("grid");
-  if(gridDiv) gridDiv.innerHTML = html;
+  document.getElementById("grid").innerHTML = html;
+}  
+
+
+function generateMelody() {
+  melody = [];
+  // tilfeldig tempo
+  bpm = Math.floor(Math.random()*121) + 60
+
+  startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
+  // Velg tilfeldig toneart (0–11)
+  rootNote = Math.floor(Math.random()*12);
+
+  // Velg skala tilfeldig (navn + funksjon)
+  let scaleOptions = [
+    {name:"halvtoneskala", func:halfToneScale},
+    {name:"heltoneskala", func:wholeToneScale},
+    {name:"oktaton", func:octatonicScale},
+    {name:"diatonisk", func:diatonicScale}
+  ];
+
+  let chosen = scaleOptions[Math.floor(Math.random()*scaleOptions.length)];
+  scaleType = chosen.name;            // ← dette fikser "undefined"
+  let scaleNotesArr = chosen.func();
+
+  for(let v=0; v<VOICES; v++){
+    melody[v] = [];
+
+    for(let s=0; s<STEPS; s++){
+
+      let note = scaleNotesArr[Math.floor(Math.random()*scaleNotesArr.length)];
+
+      if(note < voiceRanges[v].min || note > voiceRanges[v].max){
+        note = 0;
+      }
+
+      melody[v][s] = note;
+    }
+  }
+
+  applyABARule();
+  applyImitationRule()
+  drawGrid();
 }
+/*
+function drawGrid(){
 
-// ---------- AVSPILLING MED DYNAMISK TEMPO ----------
-function playMelody(){
-  if(isPlaying){ isPlaying=false; return; }
+let html=`Tempo: ${tempo} BPM<br>
+Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
+Skala: ${scaleType}<br><br>`
 
-  const audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+html+="<table>"
+
+melody.forEach((voice,v)=>{
+
+html+="<tr>"
+
+voice.forEach((n,s)=>{
+
+let cls=n===0?'zero':''
+
+html+=`<td id="c${v}_${s}" class="${cls}">${n}</td>`
+
+})
+
+html+="</tr>"
+
+})
+
+html+="</table>"
+
+document.getElementById("info").innerHTML=html
+
+}
+*/
+  function playMelody() {
+  if (isPlaying) {
+    isPlaying = false;
+    return;
+  }
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   isPlaying = true;
   currentStep = 0;
-  let slowFlag = false;
-  let startTempo = tempo;
+  let slowFlag = false;       // flagg for tempo-senking
+  let startTempo = tempo;     // husk starttempo
 
-  function playStep(){
-    if(!isPlaying) return;
+  function playStep() {
+    if (!isPlaying) return;
 
-    // Spill toner
-    melody.forEach((voice,v)=>{
+    // ---------------- AVSPILLING -----------------
+    melody.forEach((voice, v) => {
       let note = voice[currentStep];
       let cell = document.getElementById(`c${v}_${currentStep}`);
-      if(cell) cell.classList.add("active");
-      setTimeout(()=>{ if(cell) cell.classList.remove("active"); },200);
+      if (cell) cell.classList.add("active");
+      setTimeout(() => { if (cell) cell.classList.remove("active"); }, 200);
 
-      if(note===0) return;
+      if (note === 0) return;
 
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.connect(gain);
       gain.connect(audioCtx.destination);
-      osc.frequency.value = 440*Math.pow(2,(note-69)/12);
-      osc.type="sine";
-      gain.gain.setValueAtTime(0.2,audioCtx.currentTime);
+
+      osc.frequency.value = 440 * Math.pow(2, (note - 69) / 12);
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
       osc.start();
-      osc.stop(audioCtx.currentTime+0.25);
+      osc.stop(audioCtx.currentTime + 0.25);
     });
 
-    // Dynamisk tempo
-    let nonZeroVoices = melody.filter(voice=>voice[currentStep]!==0).length;
+    // ---------------- DYNAMISK TEMPO -----------------
+    let nonZeroVoices = melody.filter(voice => voice[currentStep] !== 0).length;
 
-    if(nonZeroVoices===0){
-      slowFlag=true;
-      for(let v=0;v<VOICES;v++){
-        let cell=document.getElementById(`c${v}_${currentStep}`);
-        if(cell) cell.classList.add("tempo-slow");
+    if (nonZeroVoices === 0) {
+      // Alle 0 → reduser tempo på neste steg
+      slowFlag = true;
+      for (let v = 0; v < VOICES; v++) {
+        let cell = document.getElementById(`c${v}_${currentStep}`);
+        if (cell) cell.classList.add("tempo-slow");
       }
-    } else if(nonZeroVoices===3 || nonZeroVoices===4){
-      tempo=startTempo;
-      slowFlag=false;
-      console.log("Tempo gjenopprettet til start:",tempo,"BPM");
-    } else if(slowFlag){
-      tempo = Math.max(10, tempo-10);
-      slowFlag=false;
-      console.log("Tempo redusert til",tempo,"BPM");
+    } else if (nonZeroVoices === 3 || nonZeroVoices === 4) {
+      // Tre eller fire stemmer → gjenopprett starttempo
+      tempo = startTempo;
+      slowFlag = false; // nullstill flagg
+      console.log("Tempo gjenopprettet til start:", tempo, "BPM");
+    } else if (slowFlag) {
+      // Reduser tempo etter alle 0
+      tempo = Math.max(10, tempo - 10);
+      slowFlag = false;
+      console.log("Tempo redusert til", tempo, "BPM");
     }
 
-    // Oppdater BPM-div og rad
+    // Oppdater BPM i info-div
     let tempoSpan = document.getElementById("tempoVal");
-    if(tempoSpan) tempoSpan.innerText = tempo;
-    let bpmCell = document.getElementById(`bpm_${currentStep}`);
-    if(bpmCell) bpmCell.innerText = tempo;
+    if (tempoSpan) tempoSpan.innerText = tempo;
 
-    // Neste steg
-    let beat = (60/tempo)*1000;
+    // Oppdater BPM i BPM-rad
+    let bpmCell = document.getElementById(`bpm_${currentStep}`);
+    if (bpmCell) bpmCell.innerText = tempo;
+
+    // Beregn delay for neste steg basert på oppdatert tempo
+    let beat = (60 / tempo) * 1000;
+
+    // Gå til neste steg
     currentStep++;
-    if(currentStep>=STEPS) currentStep=0;
+    if (currentStep >= STEPS) currentStep = 0;
+
     setTimeout(playStep, beat);
   }
 
   playStep();
+}
+
+document.getElementById("generate").onclick=generateMelody
+document.getElementById("play").onclick=playMelody
+document.getElementById("print").onclick=()=>console.log(melody)
+
+
+function applyABARule(){ // gammel
+
+  melody.forEach(voice => {
+
+    for(let i = 2; i < STEPS; i++){
+
+      let a = voice[i-2]
+      let b = voice[i-1]
+      let c = voice[i]
+
+      // sjekk a-b-a og at ingen er 0
+      if(a === c && a !== b && a !== 0){
+    //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
+
+        let pattern = [a,a,b,b,a,a]
+
+        for(let j = 0; j < pattern.length; j++){
+
+          let pos = i + 1 + j
+
+          if(pos < STEPS){
+            voice[pos] = pattern[j]
+          }
+
+        }
+
+      }
+
+    }
+
+  })
+
+}
+
+ 
+  
+function applyUnisonRule(){
+
+for(let s=0; s<STEPS-2; s++){
+
+for(let v1=0; v1<VOICES; v1++){
+
+for(let v2=v1+1; v2<VOICES; v2++){
+
+let a = melody[v1][s]
+let b = melody[v2][s]
+
+if(a !== 0 && a === b){
+
+// første stemme
+melody[v1][s+1] = a + 7
+melody[v1][s+2] = a + 12
+
+// andre stemme
+melody[v2][s+1] = a - 5
+melody[v2][s+2] = a - 12
+
+}
+
+}
+
+}
+
+}
+  
+}
+  
+function applyAllVoicesRule(){
+
+for(let s=0; s<STEPS-5; s++){
+
+let allPlaying = true
+
+for(let v=0; v<VOICES; v++){
+if(melody[v][s] === 0){
+allPlaying = false
+break
+}
+}
+
+if(allPlaying){
+
+for(let v=0; v<VOICES; v++){
+
+let start = melody[v][s]
+
+let direction = Math.random() < 0.5 ? -1 : 1
+
+let stepSize = 1
+
+if(scaleType === "heltoneskala") stepSize = 2
+if(scaleType === "oktaton") stepSize = (Math.random()<0.5?1:2)
+if(scaleType === "diatonisk") {
+    // intervaller i C-dur: [2,2,1,2,2,2,1]
+    let intervals = [2,2,1,2,2,2,1];
+    // velg tilfeldig intervall hver gang
+    stepSize = intervals[Math.floor(Math.random()*intervals.length)];
+}
+
+for(let i=1;i<=5;i++){
+
+let newNote = start + direction * stepSize * i
+
+if(newNote >= 60 && newNote <= 96){
+melody[v][s+i] = newNote
+}else{
+melody[v][s+i] = 0
+}
+
+}
+
+}
+
+}
+
+}
+
+}
+function applyImitationRule(){
+
+  for(let v=0; v<VOICES; v++){
+
+    for(let s=0; s<STEPS-2; s++){
+
+      let a = melody[v][s]
+      let b = melody[v][s+1]
+      let c = melody[v][s+2]
+
+      if(a===0 || b===0) continue
+
+      let interval = b-a
+
+      if(interval===7 || interval===8 || interval===4 || interval===3){
+
+        let voices=[]
+
+        for(let i=0;i<VOICES;i++){
+          if(i!==v) voices.push(i)
+        }
+
+        // tilfeldig rekkefølge på stemmer
+        voices.sort(()=>Math.random()-0.5)
+
+        voices.forEach((voiceIndex,i)=>{
+
+          let step = s+3+i
+          if(step>=STEPS-2) return
+
+          let range = voiceRanges[voiceIndex]
+
+          let start = Math.floor(
+            Math.random()*(range.max-range.min)+range.min
+          )
+
+          melody[voiceIndex][step]   = start
+          melody[voiceIndex][step+1] = start + interval
+          melody[voiceIndex][step+2] = start + (c-b)
+
+        })
+
+      }
+
+    }
+
+  }
+
 }
 </script>
 

@@ -2,14 +2,14 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Melodi Generator (16 steg) versjon6</title>
-<h2>Melodigenerator 6</h2>
+<title>5-stemmet Melodi Generator (16 steg) versjon07</title>
+<h2>Melodigenerator 7</h2>
 <style>
 
 body{
 font-family:Arial;
 padding:30px;
-background:#9534f9;
+background:#7534f9;
 }
 
 button{
@@ -44,8 +44,10 @@ background:#ffd54f;
   color: #fff;
 }
 </style>
+<h2>Melodigenerator 3</h2>
 <button onclick="generateMelody()">Generer Melodi</button>
 <button onclick="playMelody()">Spill/Stop</button>
+<button onclick="exportMIDI()">Eksporter MIDI</button> 
 <br><br>
 
 <div>
@@ -67,14 +69,6 @@ let intervalId
 
 const STEPS=32
 const VOICES=5
-  // Range for hver stemme
-  const voiceRanges = [
-    {min:60, max:96},
-    {min:50, max:103},
-    {min:55, max:108},
-    {min:48, max:92},
-    {min:36, max:88}
-  ];
   /*
 function halfToneScale() {
   return Array.from({length:128}, (_, i) => i);
@@ -98,12 +92,7 @@ function wholeToneScale(){
 
   return scale
 }
-/*
-function wholeToneScale() {
-  let start = Math.random() < 0.5 ? 0 : 1;
-  return Array.from({length:64}, (_, i) => start + i*2);
-}
-*/
+
   function octatonicScale(){
 
   let scale=[]
@@ -122,29 +111,8 @@ function wholeToneScale() {
 
   return scale
 }
-  /*
-function octatonicScale() {
-  let scale = [];
-  let note = Math.floor(Math.random()*64);
-  for(let i=0;i<64;i++){
-    scale.push(note);
-    note += (i % 2 === 0 ? 1 : 2);
-    if(note>127) note=127;
-  }
-  return scale;
-}
-*/
-/*function diatonicScale() {
-  let scale = [];
-  let intervals = [0,2,4,5,7,9,11]; // C-D-E-F-G-A-B
-  for(let octave=0; octave<11; octave++){
-    intervals.forEach(iv => {
-      let n = iv + octave*12;
-      if(n<=127) scale.push(n);
-    });
-  }
-  return scale;
-}*/
+
+  
 function diatonicScale(){
 
   let scale=[]
@@ -166,90 +134,9 @@ function diatonicScale(){
 
   return scale
 }
-  /*
 
-function halfToneScale(){
-return Array.from({length:128},(_,i)=>i)
-}
 
-function wholeToneScale(){
-let start=Math.random()<0.5?0:1
-return Array.from({length:64},(_,i)=>start+i*2)
-}
-
-function octatonicScale(){
-let scale=[]
-let note=Math.floor(Math.random()*64)
-
-for(let i=0;i<128;i++){
-scale.push(note)
-note+=(i%2===0?2:1)
-if(note>127) break
-}
-
-return scale
-}
-
-function diatonicScale(){
-  let scale = [];
-  // C-dur: intervaller i halvtoner fra C: 0,2,4,5,7,9,11
-  let intervals = [0,2,4,5,7,9,11];
-  // Velg tilfeldig startoktav fra 0 til 10 så vi ikke går over 127
-  let startOctave = Math.floor(Math.random() * 11); 
-  for(let i=0;i<11;i++){ // gjenta oktaver opp til 127
-    intervals.forEach(iv=>{
-      let n = startOctave*12 + iv;
-      if(n <= 127) scale.push(n);
-    });
-  }
-  return scale;
-}
-*/
-
-/*function generateMelody(){
-
-const scales=['halvtoneskala','heltoneskala','oktaton','diatonisk']
-scaleType=scales[Math.floor(Math.random()*scales.length)]
-
-let scale
-
-if(scaleType==='halvtoneskala') scale=halfToneScale()
-if(scaleType==='heltoneskala') scale=wholeToneScale()
-if(scaleType==='oktaton') scale=octatonicScale()
-if(scaleType==='diatonisk') scale=diatonicScale()
-
-tempo=Math.floor(Math.random()*121)+60
-rootNote=Math.floor(Math.random()*12)
-
-melody=[]
-
-for(let v=0;v<VOICES;v++){
-
-let voice=[]
-
-for(let s=0;s<STEPS;s++){
-
-let note=scale[Math.floor(Math.random()*scale.length)]
-
-if(note<60 || note>96) note=0
-
-voice.push(note)
-
-}
-
-melody.push(voice)
-
-}
-applyABARule()   // ← NY REGEL
-//applyAscendingRule()
-applyUnisonRule()
-applyAllVoicesRule()
-
-currentStep=0
-drawGrid()
-
-}
-*/
+  
 function drawGrid() {
 
 let noteNames = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
@@ -283,9 +170,11 @@ Skala ja: ${scaleType}<br><br>
 function generateMelody() {
   melody = [];
   // tilfeldig tempo
-  bpm = Math.floor(Math.random()*121) + 60
+  //bpm = Math.floor(Math.random()*121) + 60
 
-  startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
+  //startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
+  tempo = Math.floor(Math.random()*121) + 60
+  startTempo = tempo
   // Velg tilfeldig toneart (0–11)
   rootNote = Math.floor(Math.random()*12);
 
@@ -300,6 +189,15 @@ function generateMelody() {
   let chosen = scaleOptions[Math.floor(Math.random()*scaleOptions.length)];
   scaleType = chosen.name;            // ← dette fikser "undefined"
   let scaleNotesArr = chosen.func();
+
+  // Range for hver stemme
+  const voiceRanges = [
+    {min:60, max:96},
+    {min:50, max:103},
+    {min:55, max:108},
+    {min:48, max:92},
+    {min:36, max:88}
+  ];
 
   for(let v=0; v<VOICES; v++){
     melody[v] = [];
@@ -317,40 +215,13 @@ function generateMelody() {
   }
 
   applyABARule();
-  applyImitationRule()
+  applyUnisonRule()
+  applyAllVoicesRule()
+  applyImitationRule();   // NY REGEL
   drawGrid();
 }
-/*
-function drawGrid(){
 
-let html=`Tempo: ${tempo} BPM<br>
-Toneart: ${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][rootNote]}<br>
-Skala: ${scaleType}<br><br>`
-
-html+="<table>"
-
-melody.forEach((voice,v)=>{
-
-html+="<tr>"
-
-voice.forEach((n,s)=>{
-
-let cls=n===0?'zero':''
-
-html+=`<td id="c${v}_${s}" class="${cls}">${n}</td>`
-
-})
-
-html+="</tr>"
-
-})
-
-html+="</table>"
-
-document.getElementById("info").innerHTML=html
-
-}
-*/
+  
   function playMelody() {
   if (isPlaying) {
     isPlaying = false;
@@ -397,7 +268,8 @@ document.getElementById("info").innerHTML=html
         let cell = document.getElementById(`c${v}_${currentStep}`);
         if (cell) cell.classList.add("tempo-slow");
       }
-    } else if (nonZeroVoices === 3 || nonZeroVoices === 4) {
+    } else if (nonZeroVoices === 4) {
+    //   } else if (nonZeroVoices === 3 || nonZeroVoices === 4) {
       // Tre eller fire stemmer → gjenopprett starttempo
       tempo = startTempo;
       slowFlag = false; // nullstill flagg
@@ -430,6 +302,7 @@ document.getElementById("info").innerHTML=html
   playStep();
 }
 
+  
 document.getElementById("generate").onclick=generateMelody
 document.getElementById("play").onclick=playMelody
 document.getElementById("print").onclick=()=>console.log(melody)
@@ -469,7 +342,7 @@ function applyABARule(){ // gammel
 
 }
 
- 
+
   
 function applyUnisonRule(){
 
@@ -555,53 +428,102 @@ melody[v][s+i] = 0
 }
 function applyImitationRule(){
 
-  for(let v=0; v<VOICES; v++){
+for(let s=4; s<STEPS-4; s++){
 
-    for(let s=0; s<STEPS-2; s++){
+for(let v1=0; v1<VOICES; v1++){
 
-      let a = melody[v][s]
-      let b = melody[v][s+1]
-      let c = melody[v][s+2]
+for(let v2=v1+1; v2<VOICES; v2++){
 
-      if(a===0 || b===0) continue
+let a1 = melody[v1][s]
+let a2 = melody[v1][s-1]
 
-      let interval = b-a
+let b1 = melody[v2][s]
+let b2 = melody[v2][s-1]
 
-      if(interval===7 || interval===8 || interval===4 || interval===3){
+if(a1!==0 && a1===b1 && a2===b2){
 
-        let voices=[]
+// finn de tre andre stemmene
+let others=[]
+for(let v=0; v<VOICES; v++){
+if(v!==v1 && v!==v2) others.push(v)
+}
 
-        for(let i=0;i<VOICES;i++){
-          if(i!==v) voices.push(i)
-        }
+// velg to tilfeldige
+others.sort(()=>Math.random()-0.5)
+let c = others[0]
+let d = others[1]
 
-        // tilfeldig rekkefølge på stemmer
-        voices.sort(()=>Math.random()-0.5)
+// imiter 4 foregående toner
+for(let i=0;i<4;i++){
 
-        voices.forEach((voiceIndex,i)=>{
+if(s+1+i < STEPS){
 
-          let step = s+3+i
-          if(step>=STEPS-2) return
-
-          let range = voiceRanges[voiceIndex]
-
-          let start = Math.floor(
-            Math.random()*(range.max-range.min)+range.min
-          )
-
-          melody[voiceIndex][step]   = start
-          melody[voiceIndex][step+1] = start + interval
-          melody[voiceIndex][step+2] = start + (c-b)
-
-        })
-
-      }
-
-    }
-
-  }
+melody[c][s+1+i] = melody[v1][s-3+i]
+melody[d][s+1+i] = melody[v2][s-3+i]
 
 }
+
+}
+
+}
+
+}
+
+}
+
+}
+
+}
+async function exportMIDI() {
+  // Sjekk at melody finnes
+  if (!melody || melody.length === 0) {
+    alert("Generer først en melodi!");
+    return;
+  }
+
+  // Importer Tonejs/Midi via CDN
+  if (typeof Midi === "undefined") {
+    await import("https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.js").then(module => {
+      window.Midi = module.Midi;
+    });
+  }
+
+  const midi = new Midi();
+
+  // Instrumenter: tverrfløyte, klarinett, fiolin, bratsj, cello
+  const instruments = ["flute", "clarinet", "violin", "viola", "cello"];
+
+  for (let v = 0; v < VOICES; v++) {
+    const track = midi.addTrack();
+    track.instrument.name = instruments[v];
+
+    let time = 0; // starttid i sekunder
+    const beatDuration = 60 / tempo; // varighet av ett slag
+
+    for (let s = 0; s < STEPS; s++) {
+      const note = melody[v][s];
+      if (note !== 0) {
+        // Alle noter varer ett slag
+        track.addNote({ midi: note, time: time, duration: beatDuration });
+      }
+      time += beatDuration; // neste steg
+    }
+  }
+
+  // Generer MIDI-fil som blob
+  const bytes = midi.toArray();
+  const blob = new Blob([bytes], { type: "audio/midi" });
+  const url = URL.createObjectURL(blob);
+
+  // Last ned fil
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "melodi.mid";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 </script>
 
 </body>

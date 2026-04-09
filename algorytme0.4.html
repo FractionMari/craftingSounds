@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon6</title>
-<h2>Melodigenerator 3</h2>
+<h2>Melodigenerator 4</h2>
 <style>
 
 body{
@@ -68,15 +68,54 @@ let intervalId
 
 const STEPS=32
 const VOICES=5
+  /*
 function halfToneScale() {
   return Array.from({length:128}, (_, i) => i);
+}*/
+function halfToneScale(){
+  let scale=[]
+  for(let i=0;i<128;i++){
+    let note = rootNote + i
+    if(note<=127) scale.push(note)
+  }
+  return scale
 }
+function wholeToneScale(){
+  let scale=[]
+  let note=rootNote
 
+  while(note<=127){
+    scale.push(note)
+    note+=2
+  }
+
+  return scale
+}
+/*
 function wholeToneScale() {
   let start = Math.random() < 0.5 ? 0 : 1;
   return Array.from({length:64}, (_, i) => start + i*2);
 }
+*/
+  function octatonicScale(){
 
+  let scale=[]
+  let note=rootNote
+  let step=1
+
+  while(note<=127){
+
+    scale.push(note)
+
+    note+=step
+
+    step = (step===1?2:1)
+
+  }
+
+  return scale
+}
+  /*
 function octatonicScale() {
   let scale = [];
   let note = Math.floor(Math.random()*64);
@@ -87,7 +126,7 @@ function octatonicScale() {
   }
   return scale;
 }
-
+*/
 /*function diatonicScale() {
   let scale = [];
   let intervals = [0,2,4,5,7,9,11]; // C-D-E-F-G-A-B

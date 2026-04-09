@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon10</title>
-<h2>Melodigenerator 22</h2>
+<h2>Melodigenerator 23</h2>
 <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
 <style>
 
 body{
 font-family:Arial;
 padding:30px;
-background:#1f24f9;
+background:#4f24f9;
 }
 
 button{
@@ -293,7 +293,42 @@ function generateMelody() {
 
     // Beregn delay for neste steg basert på oppdatert tempo
     let beat = (60 / tempo) * 1000;
+// ---------------- TONART-REGEL -----------------
+let allPlayingFor5 = true;
 
+// Sjekk om alle stemmer har spilt 5 steg på rad (ikke 0)
+for (let i = 0; i < VOICES; i++) {
+    for (let j = 0; j < 5; j++) {
+        let idx = (currentStep - j + STEPS) % STEPS; // loop rundt
+        if (melody[i][idx] === 0) {
+            allPlayingFor5 = false;
+            break;
+        }
+    }
+    if (!allPlayingFor5) break;
+}
+
+if (allPlayingFor5) {
+    // Transponer toneart +1 halvtone
+    rootNote = (rootNote + 1) % 12;
+    console.log("Toneart endret til:", rootNote);
+
+    // Transponer alle noter i kommende steg +1
+    for (let v = 0; v < VOICES; v++) {
+        for (let s = currentStep + 1; s < STEPS; s++) {
+            if (melody[v][s] !== 0) {
+                melody[v][s] += 1;
+                if (melody[v][s] > 127) melody[v][s] = 127;
+            }
+        }
+    }
+
+    // Legg inn 1 pausesteg i neste slag
+    for (let v = 0; v < VOICES; v++) {
+        let nextStep = (currentStep + 1) % STEPS;
+        melody[v][nextStep] = 0;
+    }
+}
     // Gå til neste steg
     currentStep++;
     if (currentStep >= STEPS) currentStep = 0;
@@ -360,7 +395,7 @@ function applyABCRule(){ // gammel
       if(a === b && a !== c && a !== 0 && c !== 0){
     //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
 
-        let pattern = [a,(a+1),c,(c+1),a,0]
+        let pattern = [(a+1),(a+1),(c+1),(c+1),(a+1),0]
   
 
         for(let j = 0; j < pattern.length; j++){

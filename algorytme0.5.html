@@ -356,17 +356,15 @@ function applyABCRule(){ // gammel
       let b = voice[i-1]
       let c = voice[i]
 
-      // sjekk a-b-c og at ingen er 0
-      if(a !== c && a !== b && c !== b &&a !== 0 && b !== 0 && c !== 0 ){
+      // sjekk a-b-a og at ingen er 0
+      if(a === b && a !== c && a !== 0 && b !== 0){
+    //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
 
-
-        let pattern = [a,a,c,c,a,a]
+        let pattern = [a,a,b,b,a,a]
 
         for(let j = 0; j < pattern.length; j++){
-          console.log(pattern.length);
 
           let pos = i + 1 + j
-           console.log(pos);
 
           if(pos < STEPS){
             voice[pos] = pattern[j]
@@ -381,6 +379,7 @@ function applyABCRule(){ // gammel
   })
 
 }
+
 
 
 

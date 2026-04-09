@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>5-stemmet Melodi Generator (16 steg) versjon6</title>
-<h2>Melodigenerator 4</h2>
+<h2>Melodigenerator 5</h2>
 <style>
 
 body{
@@ -275,7 +275,10 @@ Skala ja: ${scaleType}<br><br>
 
 function generateMelody() {
   melody = [];
-  
+  // tilfeldig tempo
+  bpm = Math.floor(Math.random()*121) + 60
+
+  startBpm = bpm   // lagrer originaltempoet (brukes av tempo-reglene)
   // Velg tilfeldig toneart (0–11)
   rootNote = Math.floor(Math.random()*12);
 

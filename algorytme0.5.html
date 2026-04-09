@@ -2,8 +2,8 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>5-stemmet Melodi Generator (16 steg) versjon9</title>
-<h2>Melodigenerator 9</h2>
+<title>5-stemmet Melodi Generator (16 steg) versjon10</title>
+<h2>Melodigenerator 10</h2>
 <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.27/build/Midi.min.js"></script>
 <style>
 
@@ -357,7 +357,7 @@ function applyABCRule(){ // gammel
       let c = voice[i]
 
       // sjekk a-b-a og at ingen er 0
-      if(a === b && a !== c && a !== 0 && b !== 0){
+      if(a === b && a !== c && a !== 0 && c !== 0){
     //  if(a === c && a !== b && a !== 0 && b !== 0){ // gammel
 
         let pattern = [a,a,c,c,a,a]
